@@ -1,8 +1,10 @@
+import Navbar from './components/Navbar'
+
 function App () {
   return (
     <>
       <div>
-        <h1 className="text-red-500 text-center">La duquesa</h1>
+        <Navbar />
       </div>
     </>
   )
