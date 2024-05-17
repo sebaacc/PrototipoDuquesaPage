@@ -5,7 +5,7 @@ import shopCar from '../img/cart-large-minimalistic-svgrepo-com.png'
 
 function Navbar () {
   return (
-    <section className="h-screen flex justify-between p-12">
+    <section className="flex justify-between p-12">
       <article className="sm:block md:block lg:hidden xl:hidden">
         <img src={menuHamburger} alt="" />
       </article>
