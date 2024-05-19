@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar'
 import Main from './components/Main'
+import Products from './components/Products'
 
 function App () {
   return (
@@ -7,6 +8,7 @@ function App () {
       <div>
         <Navbar />
         <Main/>
+        <Products />
       </div>
     </>
   )
