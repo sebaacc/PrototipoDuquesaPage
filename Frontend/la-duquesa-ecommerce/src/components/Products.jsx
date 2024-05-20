@@ -67,7 +67,7 @@ function Products () {
       </section>
       {/* Sugeridos */}
       <section className="ml-3 mt-12 p-6">
-        <article className="xl:block hidden">
+        <article className="hidden xl:flex flex-row mb-6">
           <h4 className="mr-6">Sugeridos</h4>
           <p className="font-bold text-[#BD6292]">Ver todos</p>
         </article>

@@ -10,7 +10,7 @@ function Navbar () {
         <img src={menuHamburger} alt="" />
       </article>
       <article className='flex justify-between'>
-        <img className='size-7 mr-1' src={ubication} alt="" />
+        <img className='size-7 mr-1 relative left-7 md:left-0 lg:left-0' src={ubication} alt="" />
         <p className='mt-1 flex flex-col md:flex-row text-center'>
           <span className="font-bold mr-1">Enviado a</span> KR 21B #29 B - 149
         </p>
