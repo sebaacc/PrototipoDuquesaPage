@@ -71,8 +71,8 @@ function Products () {
           <h4 className="mr-6">Sugeridos</h4>
           <p className="font-bold text-[#BD6292]">Ver todos</p>
         </article>
-        <div>
-          <article className="flex h-52 mb-10">
+        <div className='lg:flex flex-row'>
+          <article className="flex h-52 mb-10 lg:mr-8">
             <img className="w-48 rounded-l-xl" src={brownie} alt="brownie" />
             <span className="bg-[#D9D9D9] rounded-r-xl p-2 flex flex-col justify-center items-center">
               <p className="font-bold mb-3">
