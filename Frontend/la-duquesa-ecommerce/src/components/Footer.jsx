@@ -15,12 +15,14 @@ function Footer () {
       <img className="w-40 h-42 m-auto" src={logo} alt="" />
       <article className='m-auto'>
         <p className="text-white font-semibold h-20 size-80 text-xl m-auto lg:">
-          Vendemos lotes con ubicación estratégica
+          Tu antojo, nuestra especialidad
         </p>
-        <p className="text-white md:mb-6">Tus sueños se convierten en nuestros sueños</p>
+        <p className="text-white md:mb-6">El arte de la repostería en cada detalle</p>
       </article>
         <article className="md:m-auto flex ml-10 mt-8">
-          <FaYoutube className="size-6 mr-4 text-white" />
+          <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">
+            <FaYoutube className="size-6 mr-4 text-white" />
+          </a>
           <FaFacebook className="size-6 mr-4 text-white" />
           <FaInstagram className="size-6 mr-4 text-white" />
           <FaTiktok className="size-6 text-white" />
@@ -47,7 +49,7 @@ function Footer () {
         </article>
         <article className="mt-8 ml-10">
           <p className="flex text-white size-64 h-12">
-            <FaRegCopyright className="size-7 mr-2" /> 2024 - Promotora Baru -
+            <FaRegCopyright className="size-7 mr-2" /> 2024 - Promotora Duquesa -
             Todos los derechos reservados
           </p>
         </article>
