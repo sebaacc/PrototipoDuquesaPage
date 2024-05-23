@@ -8,6 +8,7 @@ import {
 import './index.css'
 import ErrorPage from './routes/ErrorPage.jsx'
 import Registro from './routes/Registro.jsx'
+import RegistroProducto from './routes/RegistroProducto.jsx'
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,11 @@ const router = createBrowserRouter([
   {
     path: 'registro',
     element: <Registro/>,
+    errorElement: <ErrorPage/>
+  },
+  {
+    path: 'registro-producto',
+    element: <RegistroProducto />,
     errorElement: <ErrorPage/>
   }
 ])

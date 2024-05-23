@@ -19,7 +19,7 @@ function Navbar () {
       <article className="hidden sm:hidden md:hidden lg:block xl:block 2xl:block mt-1">
         <ul className="flex text-black font-semibold">
           <li className="mr-16">Inicio</li>
-          <li className="mr-16">Prodcuto</li>
+          <li className="mr-16">Producto</li>
           <li className="mr-16">Nuestras sedes</li>
           <li className="mr-16 flex">
             Carrito
