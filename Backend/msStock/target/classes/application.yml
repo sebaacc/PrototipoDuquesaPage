@@ -1,0 +1,16 @@
+# Database configuration
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/msStock
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  mysql:
+    console:
+      enabled: true
+
+
+
