@@ -61,3 +61,27 @@ func (r *MongoSubCategoryRepository) DeleteByCategoryID(categoryID primitive.Obj
     _, err := r.collection.DeleteMany(context.TODO(), bson.M{"categoryId": categoryID})
     return err
 }
+
+func (r *MongoSubCategoryRepository) FindManyByCategoryID(categoryID primitive.ObjectID) ([]*models.SubCategory, error) {
+    var subCategories []*models.SubCategory
+    cursor, err := r.collection.Find(context.TODO(), bson.M{"categoryId": categoryID})
+    if err != nil {
+        return nil, err
+    }
+    defer cursor.Close(context.TODO())
+
+    for cursor.Next(context.TODO()) {
+        var subCategory models.SubCategory
+        err := cursor.Decode(&subCategory)
+        if err != nil {
+            return nil, err
+        }
+        subCategories = append(subCategories, &subCategory)
+    }
+
+    if err := cursor.Err(); err != nil {
+        return nil, err
+    }
+
+    return subCategories, nil
+}

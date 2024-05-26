@@ -12,4 +12,5 @@ type SubCategoryRepository interface {
     Update(category *models.SubCategory) error
     Delete(id primitive.ObjectID) error
 	DeleteByCategoryID(categoryID primitive.ObjectID) error
+    FindManyByCategoryID(categoryID primitive.ObjectID) ([]*models.SubCategory, error)
 }

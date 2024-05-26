@@ -70,11 +70,39 @@ func (s *subCategoryService) UpdateSubCategory(subCategory *models.SubCategory) 
 }
 
 func (s *subCategoryService) DeleteSubCategory(id primitive.ObjectID) error {
+
+    err := s.productRepo.DeleteBySubCategoryID(id)
+    if err != nil {
+        return err
+    }
+
     return s.subCategoryRepo.Delete(id)
 }
 
-func (s *subCategoryService) DeleteSubCategoryByCategoryId(id primitive.ObjectID) error {
-    s.productRepo.DeleteBySubCategoryID(id)
-    return s.subCategoryRepo.DeleteByCategoryID(id)
+
+
+func (s *subCategoryService) DeleteSubCategoryByCategoryId(categoryID primitive.ObjectID) error {
+    // Obtener todos los IDs de las subcategorías asociadas a la categoría
+    subCategories, err := s.subCategoryRepo.FindManyByCategoryID(categoryID)
+    if err != nil {
+        return err
+    }
+
+    // Eliminar productos asociados a cada subcategoría
+    for _, subCategory := range subCategories {
+        err := s.productRepo.DeleteBySubCategoryID(subCategory.ID)
+        if err != nil {
+            return err
+        }
+    }
+
+    // Eliminar las subcategorías por el ID de la categoría
+    err = s.subCategoryRepo.DeleteByCategoryID(categoryID)
+    if err != nil {
+        return err
+    }
+
+    return nil
 }
-	
+
+
