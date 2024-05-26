@@ -10,26 +10,26 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type CategoryHandler struct {
-    s services.CategoryService
+type SubCategoryHandler struct {
+    s services.SubCategoryService
 }
 
-func NewCategoryHandler(s services.CategoryService) *CategoryHandler {
-    return &CategoryHandler{s: s}
+func NewSubCategoryHandler(s services.SubCategoryService) *SubCategoryHandler {
+    return &SubCategoryHandler{s: s}
 }
 
-func (h *CategoryHandler) FindAll() gin.HandlerFunc {
+func (h *SubCategoryHandler) FindAll() gin.HandlerFunc {
     return func(c *gin.Context) {
-        categories, err := h.s.GetAllCategories()
+        subCategories, err := h.s.GetAllSubCategories()
         if err != nil {
             c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
             return
         }
-        c.JSON(http.StatusOK, categories)
+        c.JSON(http.StatusOK, subCategories)
     }
 }
 
-func (h *CategoryHandler) FindById() gin.HandlerFunc {
+func (h *SubCategoryHandler) FindById() gin.HandlerFunc {
     return func(c *gin.Context) {
         idParam := c.Param("id")
         id, err := primitive.ObjectIDFromHex(idParam)
@@ -37,39 +37,46 @@ func (h *CategoryHandler) FindById() gin.HandlerFunc {
             web.Failure(c, 400, errors.New("Invalid id"))
             return
         }
-        category, err := h.s.GetCategoryByID(id)
+        subCategory, err := h.s.GetSubCategoryByID(id)
         if err != nil {
-            web.Failure(c, 404, errors.New("Category not found"))
+            web.Failure(c, 404, errors.New("SubCategory not found"))
             return
         }
-        web.Success(c, 200, category)
+        web.Success(c, 200, subCategory)
     }
 }
 
-func (h *CategoryHandler) Post() gin.HandlerFunc {
+func (h *SubCategoryHandler) Post() gin.HandlerFunc {
     return func(c *gin.Context) {
-        var category models.Category
+        var subCategory models.SubCategory
 
-		//Se extraen los datos de esta manera y no con el shouldBinJson, ya que la imágen llega distinta a como está en el struct, por lo que daría error
-        category.Name = c.PostForm("name")
-        category.Description = c.PostForm("description")
+        subCategory.Name = c.PostForm("name")
+        subCategory.Description = c.PostForm("description")
+        categoryIdParam := c.PostForm("categoryId")
+		
+        categoryId, err := primitive.ObjectIDFromHex(categoryIdParam)
+        if err != nil {
+            web.Failure(c, 400, errors.New("Invalid categoryId"))
+            return
+        }
+        subCategory.CategoryID = categoryId
 
-        file, err := c.FormFile("categoryImage")
+        file, err := c.FormFile("subcategoryImage")
         if err != nil {
             web.Failure(c, 400, errors.New("No image provided"))
             return
         }
 
-        err = h.s.CreateCategory(&category, file)
+        err = h.s.CreateSubCategory(&subCategory, file)
         if err != nil {
-            web.Failure(c, 400, errors.New("Category creation failure"))
+            web.Failure(c, 400, errors.New("SubCategory creation failure"))
             return
         }
-        web.Success(c, 201, category)
+        web.Success(c, 201, subCategory)
     }
 }
 
-func (h *CategoryHandler) Put() gin.HandlerFunc {
+func (h *SubCategoryHandler) Put() gin.HandlerFunc {
     return func(c *gin.Context) {
         idParam := c.Param("id")
         id, err := primitive.ObjectIDFromHex(idParam)
@@ -77,27 +84,28 @@ func (h *CategoryHandler) Put() gin.HandlerFunc {
             web.Failure(c, 400, errors.New("Invalid id"))
             return
         }
-        _, err = h.s.GetCategoryByID(id)
+        _, err = h.s.GetSubCategoryByID(id)
         if err != nil {
-            web.Failure(c, 404, errors.New("Category not found"))
+            web.Failure(c, 404, errors.New("SubCategory not found"))
             return
         }
-        var category models.Category
-        err = c.ShouldBindJSON(&category)
+        var subCategory models.SubCategory
+        err = c.ShouldBindJSON(&subCategory)
         if err != nil {
             web.Failure(c, 400, errors.New("Invalid Json"))
             return
         }
-        err = h.s.UpdateCategory(&category)
+        subCategory.ID = id
+        err = h.s.UpdateSubCategory(&subCategory)
         if err != nil {
             web.Failure(c, 409, errors.New("Request failed"))
             return
         }
-        web.Success(c, 200, category)
+        web.Success(c, 200, subCategory)
     }
 }
 
-func (h *CategoryHandler) Delete() gin.HandlerFunc {
+func (h *SubCategoryHandler) Delete() gin.HandlerFunc {
     return func(c *gin.Context) {
         idParam := c.Param("id")
         id, err := primitive.ObjectIDFromHex(idParam)
@@ -105,9 +113,9 @@ func (h *CategoryHandler) Delete() gin.HandlerFunc {
             web.Failure(c, 400, errors.New("Invalid id"))
             return
         }
-        err = h.s.DeleteCategory(id)
+        err = h.s.DeleteSubCategory(id)
         if err != nil {
-            web.Failure(c, 404, errors.New("Category not found"))
+            web.Failure(c, 404, errors.New("SubCategory not found"))
             return
         }
         web.Success(c, 204, nil)
