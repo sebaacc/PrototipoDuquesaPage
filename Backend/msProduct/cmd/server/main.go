@@ -29,8 +29,8 @@ func main() {
 	productImagesRepository := repositories_implement.NewMongoProductImagesRepository(db)
 
 	//Inicialización del servicio pasando los repo anteriores
-	categoryService := services_implement.NewCategoryService(categoryRepository, subCategoryRepository)
-	subCategoryService := services_implement.NewSubCategoryService(subCategoryRepository)
+	subCategoryService := services_implement.NewSubCategoryService(subCategoryRepository, productRepository)
+	categoryService := services_implement.NewCategoryService(categoryRepository, subCategoryService)
 	productService := services_implement.NewProductService(productRepository)
 	productImagesService := services_implement.NewProductImagesService(productImagesRepository)
 

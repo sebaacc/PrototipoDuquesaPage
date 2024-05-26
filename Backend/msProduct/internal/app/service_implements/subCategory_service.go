@@ -14,12 +14,17 @@ import (
 )
 
 type subCategoryService struct {
-    repo repositories.SubCategoryRepository
+    subCategoryRepo repositories.SubCategoryRepository
+    productRepo     repositories.ProductRepository
 }
 
-func NewSubCategoryService(repo repositories.SubCategoryRepository) services.SubCategoryService {
-    return &subCategoryService{repo}
+func NewSubCategoryService(subCategoryRepo repositories.SubCategoryRepository, productRepo repositories.ProductRepository) services.SubCategoryService {
+    return &subCategoryService{
+        subCategoryRepo: subCategoryRepo,
+        productRepo:     productRepo,
+    }
 }
+
 
 func (s *subCategoryService) CreateSubCategory(subCategory *models.SubCategory, file *multipart.FileHeader) error {
     subCategory.ID = primitive.NewObjectID()
@@ -43,7 +48,7 @@ func (s *subCategoryService) CreateSubCategory(subCategory *models.SubCategory, 
     fmt.Println("URL de la imagen:", subCategory.SubCategoryImage)
 
     fmt.Println("SubCategoría a crear:", subCategory)
-    err = s.repo.Create(subCategory)
+    err = s.subCategoryRepo.Create(subCategory)
     if err != nil {
         fmt.Println("Error al crear la subcategoría en service:", err)
         return err
@@ -53,18 +58,23 @@ func (s *subCategoryService) CreateSubCategory(subCategory *models.SubCategory, 
 }
 
 func (s *subCategoryService) GetSubCategoryByID(id primitive.ObjectID) (*models.SubCategory, error) {
-    return s.repo.GetByID(id)
+    return s.subCategoryRepo.GetByID(id)
 }
 
 func (s *subCategoryService) GetAllSubCategories() ([]*models.SubCategory, error) {
-    return s.repo.GetAll()
+    return s.subCategoryRepo.GetAll()
 }
 
 func (s *subCategoryService) UpdateSubCategory(subCategory *models.SubCategory) error {
-    return s.repo.Update(subCategory)
+    return s.subCategoryRepo.Update(subCategory)
 }
 
 func (s *subCategoryService) DeleteSubCategory(id primitive.ObjectID) error {
-    return s.repo.Delete(id)
+    return s.subCategoryRepo.Delete(id)
+}
+
+func (s *subCategoryService) DeleteSubCategoryByCategoryId(id primitive.ObjectID) error {
+    s.productRepo.DeleteBySubCategoryID(id)
+    return s.subCategoryRepo.DeleteByCategoryID(id)
 }
 	

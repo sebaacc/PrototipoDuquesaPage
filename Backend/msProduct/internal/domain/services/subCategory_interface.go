@@ -12,5 +12,6 @@ type SubCategoryService interface {
     GetAllSubCategories() ([]*models.SubCategory, error)
     UpdateSubCategory(category *models.SubCategory) error
     DeleteSubCategory(id primitive.ObjectID) error
+    DeleteSubCategoryByCategoryId(id primitive.ObjectID) error
 }
 

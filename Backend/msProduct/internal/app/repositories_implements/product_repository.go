@@ -56,3 +56,8 @@ func (r *MongoProductRepository) Delete(id primitive.ObjectID) error {
 	_, err := r.collection.DeleteOne(context.TODO(), bson.M{"_id": id})
 	return err
 }
+
+func (r *MongoProductRepository) DeleteBySubCategoryID(subCategoryID primitive.ObjectID) error {
+    _, err := r.collection.DeleteMany(context.TODO(), bson.M{"subCategoryId": subCategoryID})
+    return err
+}

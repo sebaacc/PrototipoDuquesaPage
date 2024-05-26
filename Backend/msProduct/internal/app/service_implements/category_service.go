@@ -15,13 +15,13 @@ import (
 
 type categoryService struct {
 	categoryRepo    repositories.CategoryRepository
-	subCategoryRepo repositories.SubCategoryRepository
+	subCategoryService services.SubCategoryService
 }
 
-func NewCategoryService(categoryRepo repositories.CategoryRepository, subCategoryRepo repositories.SubCategoryRepository) services.CategoryService {
+func NewCategoryService(categoryRepo repositories.CategoryRepository, subCategoryService services.SubCategoryService) services.CategoryService {
 	return &categoryService{
 		categoryRepo:    categoryRepo,
-		subCategoryRepo: subCategoryRepo,
+		subCategoryService: subCategoryService,
 	}
 }
 
@@ -73,7 +73,7 @@ func (s *categoryService) UpdateCategory(category *models.Category) error {
 
 func (s *categoryService) DeleteCategory(id primitive.ObjectID) error {
 
-    err := s.subCategoryRepo.DeleteByCategoryID(id)
+    err := s.subCategoryService.DeleteSubCategoryByCategoryId(id)
 	if err != nil {
 		return err
 	}

@@ -11,4 +11,5 @@ type ProductRepository interface {
     GetAll() ([]*models.Product, error)
     Update(product *models.Product) error
     Delete(id primitive.ObjectID) error
+    DeleteBySubCategoryID(subCategoryID primitive.ObjectID) error
 }
