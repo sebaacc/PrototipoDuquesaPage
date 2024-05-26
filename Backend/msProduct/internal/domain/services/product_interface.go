@@ -12,4 +12,5 @@ type ProductService interface {
 	GetAllProducts() ([]*models.Product, error)
 	UpdateProduct(product *models.Product) error
 	DeleteProduct(id primitive.ObjectID) error
+	GetPaginatedProductsWithFilters(page, limit int64, name string, minPrice, maxPrice float64, subCategoryID primitive.ObjectID) ([]models.Product, error)
 }

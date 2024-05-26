@@ -139,3 +139,47 @@ func (h *ProductHandler) Delete() gin.HandlerFunc {
 		web.Success(c, 204, nil)
 	}
 }
+
+
+// GetPaginatedProductsWithFilters handles the retrieval of paginated products with filters
+func (h *ProductHandler) GetPaginatedProductsWithFilters() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		pageStr := c.Query("page")
+		limitStr := c.Query("limit")
+		name := c.Query("name")
+		minPriceStr := c.Query("minPrice")
+		maxPriceStr := c.Query("maxPrice")
+		subCategoryIdStr := c.Query("subCategoryId")
+
+		page, err := strconv.ParseInt(pageStr, 10, 64)
+		if err != nil || page < 1 {
+			page = 1
+		}
+
+		limit, err := strconv.ParseInt(limitStr, 10, 64)
+		if err != nil || limit < 1 {
+			limit = 10
+		}
+
+		minPrice, _ := strconv.ParseFloat(minPriceStr, 64)
+		maxPrice, _ := strconv.ParseFloat(maxPriceStr, 64)
+
+		var subCategoryID primitive.ObjectID
+		if subCategoryIdStr != "" {
+			subCategoryID, err = primitive.ObjectIDFromHex(subCategoryIdStr)
+			if err != nil {
+				web.Failure(c, 400, errors.New("Invalid subCategoryId"))
+				return
+			}
+		}
+
+		products, err := h.s.GetPaginatedProductsWithFilters(page, limit, name, minPrice, maxPrice, subCategoryID)
+		if err != nil {
+			web.Failure(c, 500, errors.New("Failed to get products"))
+			return
+		}
+
+		web.Success(c, 200, products)
+	}
+}
+

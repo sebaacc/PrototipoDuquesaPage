@@ -16,4 +16,6 @@ func ProductRoutes(r *gin.Engine, productService services.ProductService) {
 	r.POST(productRoute+"/createProduct", productHandler.Post())
 	r.PUT(productRoute+"/updateProduct/:id", productHandler.Put())
 	r.DELETE(productRoute+"/deleteProduct/:id", productHandler.Delete())
+	r.GET(productRoute+"/paginated", productHandler.GetPaginatedProductsWithFilters()) 
+
 }

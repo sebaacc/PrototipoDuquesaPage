@@ -105,4 +105,3 @@ func (s *subCategoryService) DeleteSubCategoryByCategoryId(categoryID primitive.
     return nil
 }
 
-

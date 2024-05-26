@@ -65,3 +65,7 @@ func (s *productService) UpdateProduct(product *models.Product) error {
 func (s *productService) DeleteProduct(id primitive.ObjectID) error {
 	return s.repo.Delete(id)
 }
+
+func (s *productService) GetPaginatedProductsWithFilters(page, limit int64, name string, minPrice, maxPrice float64, subCategoryID primitive.ObjectID) ([]models.Product, error) {
+	return s.repo.GetPaginatedProductsWithFilters(page, limit, name, minPrice, maxPrice, subCategoryID)
+}
