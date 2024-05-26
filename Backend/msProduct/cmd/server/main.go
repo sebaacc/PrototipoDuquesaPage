@@ -26,16 +26,19 @@ func main() {
 	categoryRepository := repositories_implement.NewMongoCategoryRepository(db)
 	subCategoryRepository := repositories_implement.NewMongoSubCategoryRepository(db)
 	productRepository := repositories_implement.NewMongoProductRepository(db)
+	productImagesRepository := repositories_implement.NewMongoProductImagesRepository(db)
 
 	//Inicialización del servicio pasando los repo anteriores
 	categoryService := services_implement.NewCategoryService(categoryRepository, subCategoryRepository)
 	subCategoryService := services_implement.NewSubCategoryService(subCategoryRepository)
 	productService := services_implement.NewProductService(productRepository)
+	productImagesService := services_implement.NewProductImagesService(productImagesRepository)
 
 	//Llamado a las rutas, que inicializan los handlers
 	routes.CategoryRoutes(r, categoryService)
 	routes.SubCategoryRoutes(r, subCategoryService)
 	routes.ProductRoutes(r, productService)
+	routes.ProductImagesRoutes(r, productImagesService)
 
 	log.Println("Application started successfully!")
 

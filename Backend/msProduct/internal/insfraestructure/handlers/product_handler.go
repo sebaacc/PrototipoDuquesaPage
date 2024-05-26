@@ -3,7 +3,7 @@ package handlers
 import (
 	"errors"
 	"net/http"
-
+	"strconv"
 	"github.com/gin-gonic/gin"
 	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/models"
 	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/services"
@@ -21,32 +21,45 @@ func NewProductHandler(s services.ProductService) *ProductHandler {
 
 // Create handles the creation of a new product
 func (h *ProductHandler) Post() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		var product models.Product
+    return func(c *gin.Context) {
+        var product models.Product
+        product.Name = c.PostForm("name")
+        product.Description = c.PostForm("description")
+        subCategoryIdParam := c.PostForm("subCategoryId")
+        subCategoryId, err := primitive.ObjectIDFromHex(subCategoryIdParam)
+        if err != nil {
+            web.Failure(c, 400, errors.New("Invalid categoryId"))
+            return
+        }
+        product.SubCategoryID = subCategoryId
 
-		product.Name = c.PostForm("name")
-		product.Description = c.PostForm("description")
+        priceStr := c.PostForm("price")
+        price, err := strconv.ParseFloat(priceStr, 64)
+        if err != nil {
+            web.Failure(c, 400, errors.New("Invalid price"))
+            return
+        }
+        product.Price = price
 
-		// Get multiple image files
-		form, err := c.MultipartForm()
-		if err != nil {
-			web.Failure(c, 400, errors.New("Invalid form data"))
-			return
-		}
-		files := form.File["images"]
+        form, err := c.MultipartForm()
+        if err != nil {
+            web.Failure(c, 400, errors.New("Invalid form data"))
+            return
+        }
+        files := form.File["images"]
+        if len(files) == 0 {
+            web.Failure(c, 400, errors.New("No images provided"))
+            return
+        }
 
-		if len(files) == 0 {
-			web.Failure(c, 400, errors.New("No images provided"))
-			return
-		}
+        err = h.s.CreateProduct(&product, files)
+        if err != nil {
+            web.Failure(c, 400, errors.New("Product creation failure"))
+            return
+        }
 
-		err = h.s.CreateProduct(&product, files)
-		if err != nil {
-			web.Failure(c, 400, errors.New("Product creation failure"))
-			return
-		}
-		web.Success(c, 201, product)
-	}
+        web.Success(c, 201, product)
+    }
 }
 
 // FindAll handles the retrieval of all products
