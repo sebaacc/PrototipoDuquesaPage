@@ -44,7 +44,7 @@ function Main () {
           <p className="flex justify-center">Torta fria</p>
         </article>
         <article className="font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] hover:text-slate-50  hidden lg:block">
-          <img className="hover:bg-white rounded-full" src={baguette} alt="Galletas" />
+          <img className="hover:bg-white rounded-full" src={baguette} alt="Baguette" />
           <p className="flex justify-center">Baguette</p>
         </article>
         {/* <article className="font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] hover:text-slate-50 hidden lg:block">
