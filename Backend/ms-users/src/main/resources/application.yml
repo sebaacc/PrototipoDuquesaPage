@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: ms-users
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:LaDuquesa}
+    password: ${MAIL_PASSWORD:LaDuquesa1234}
+    server-mail: grupo_7@dh.com
+    link:
+      verify: http://localhost:8080/api/users/verify
+    mail-template: ValidationEmail
+    mail-subject: "Validación de cuenta"
+    properties:
+        mail:
+            smtp:
+            auth: true
+            starttls:
+                enable: true
+
+server:
+  port: ${PORT:0}
+
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka
+
+keycloak:
+  realm: LaDuquesa
+  serverUrl: http://${KEYCLOK_HOST:localhost}:${KEYCLOK_PORT:8080}
+  clientId: LaDuquesa
+  clientSecret: BZnbBjaWjsAaUxNYZzv2ZKhokWyhxzqs
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
