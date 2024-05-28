@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 
 function RegistroProducto () {
@@ -14,11 +14,13 @@ function RegistroProducto () {
   const handleChange = (e) => {
     const { id, value } = e.target
     setFormData((prevData) => ({ ...prevData, [id]: value }))
+    setErrors((prevErrors) => ({ ...prevErrors, [id]: '' }))
   }
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     setFormData((prevData) => ({ ...prevData, imagen: file }))
+    setErrors((prevErrors) => ({ ...prevErrors, imagen: '' }))
   }
 
   const handleSubmit = (e) => {
@@ -43,7 +45,7 @@ function RegistroProducto () {
   return (
     <div>
       <Navbar />
-      <form className="w-full max-w-lg m-auto mt-10" onSubmit={handleSubmit}>
+      <form className="w-full max-w-lg m-auto mt-20" onSubmit={handleSubmit}>
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label
@@ -131,7 +133,7 @@ function RegistroProducto () {
         <div className="flex justify-center">
           <button
             type="submit"
-            className="bg-[#BD6292] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded sm:mb-11"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             Registrar Producto
           </button>
