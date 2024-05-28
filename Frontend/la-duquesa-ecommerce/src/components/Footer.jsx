@@ -7,7 +7,7 @@ import {
 } from 'react-icons/fa'
 import { MdEmail, MdLocationPin } from 'react-icons/md'
 import { GiInjustice } from 'react-icons/gi'
-import logo from '../img/logo.png/'
+import logo from '../img/logoConBorde.png'
 
 function Footer () {
   return (
