@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Validación de cuenta - La Duquesa</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <!-- use the font -->
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+        *{
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+            color: #fdfdfc;
+        }
+
+        img {
+            transform: scale(1.2);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 48px;
+            background: #202022;
+        }
+        
+        header{
+            background: #255c9c;
+            padding: 15px 50px 5px 40px ;
+
+        }
+        a:visited, a:link, a:active {
+            color: #255c9c;
+        }
+
+        div {
+            background: #202022;
+        }
+
+        p {
+            padding: 15px 50px 5px 40px ;
+        }
+
+        main p{
+            font-size: 1.2rem;
+            padding: 0px 50px 0px 40px ;
+        }
+
+        b {
+            color: #255c9c;
+        }
+
+        footer{
+            align-items: center;
+            background-color: #3a393e;
+            bottom: 0;
+            color: white;
+            font-size: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 10px 50px 10px 40px ;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <img src="https://i.ibb.co/WBcgkYV/Logo.png" alt="Logo" />
+</header>
+<div>
+<p>Hola! <b th:text="${first_name + ' ' + last_name}"></b></p>
+<main>
+<p>
+    Te has suscrito con éxito a <b>La Duquesa</b> en la fecha
+    <b th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></b>
+</p>
+
+<p>
+    Para <b>completar tu registro</b>, por favor, haz click en el siguiente enlace:
+    <a th:text="${link}" th:href="${link}"></a>
+</p>
+<p>
+    Un saludo
+</p>
+</main>
+<p><b>TeamSix DMH</b></p>
+</div>
+<footer>
+    <h6>©2022 Digital Money House</h6>
+    <div className="social">
+        <i className="fab fa-facebook"></i>
+        <i className="fab fa-linkedin-in"></i>
+        <i className="fab fa-twitter"></i>
+        <i className="fab fa-instagram"></i>
+    </div>
+</footer>
+
+</body>
+</html>

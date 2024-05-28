@@ -70,7 +70,12 @@ spring:
             - Path=/go/**
           filters:
             - StripPrefix=1
-
+        - id: ms-users
+          uri: lb://ms-users
+          predicates:
+            - Path=/users/**
+          filters:
+            - StripPrefix=1
 logging:
   level:
     org.springframework.security: DEBUG
