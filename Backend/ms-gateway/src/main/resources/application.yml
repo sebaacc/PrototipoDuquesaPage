@@ -1,0 +1,76 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+    shutdown:
+      enabled: true
+info:
+  env:
+    enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka
+
+server:
+  port: 8090
+
+spring:
+  application:
+    name: ms-gateway
+
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            user-name-attribute: preferred_username
+            issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
+        registration:
+          keycloak:
+            client-id: ${KEYCLOAK_CLIENT_ID:LaDuquesa}
+            client-secret: ${KEYCLOAK_CLIENT_SECRET:BZnbBjaWjsAaUxNYZzv2ZKhokWyhxzqs}
+            redirect-uri: '{baseUrl}/login/oauth2/code/keycloak'
+            scope: openid
+
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - PATCH
+              - DELETE
+              - OPTIONS
+
+      default-filters:
+        - LogFilter
+        - TokenRelay
+      routes:
+        - id: ms-java
+          uri: lb://ms-java
+          predicates:
+            - Path=/java/**
+          filters:
+            - StripPrefix=1
+        - id: ms-go
+          uri: lb://ms-go
+          predicates:
+            - Path=/go/**
+          filters:
+            - StripPrefix=1
+
+logging:
+  level:
+    org.springframework.security: DEBUG
