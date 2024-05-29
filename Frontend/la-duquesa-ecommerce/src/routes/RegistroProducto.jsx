@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
@@ -12,6 +12,7 @@ function RegistroProducto () {
 
   const [errors, setErrors] = useState({})
   const [showAlert, setShowAlert] = useState(false)
+  const fileInputRef = useRef(null) // Ref para el input de archivos
 
   const handleChange = (e) => {
     const { id, value } = e.target
@@ -90,6 +91,9 @@ function RegistroProducto () {
         descripcion: '',
         imagenes: []
       })
+
+      // Limpia el input de archivos
+      fileInputRef.current.value = ''
 
       // Oculta la alerta después de 3 segundos
       setTimeout(() => {
@@ -170,6 +174,7 @@ function RegistroProducto () {
               type="file"
               multiple
               onChange={handleImageChange}
+              ref={fileInputRef} // Ref asignada al input de archivos
             />
             {errors.imagen && <p className="text-red-500 text-xs italic">{errors.imagen}</p>}
             <div className="mt-3 flex flex-wrap">
@@ -212,7 +217,7 @@ function RegistroProducto () {
               fill="currentColor"
               viewBox="0 0 20 20"
             >
-              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8Z" />
+              <path d="M18 10a8 8 0 1 0-16 0 8 8 0 0 0 16 0ZM10 .5a9.51 9.51 0 0 1 9.51 9.51 9.51 0 0 1-9.51 9.51 9.51 0 0 1-9.51-9.51 9.51 9.51 0 0 1 9.51-9.51ZM10 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8Z" />
               <path d="M9 8h2v5H9V8Zm0 7h2v2H9v-2Z" />
             </svg>
             <span className="sr-only">Info</span>
