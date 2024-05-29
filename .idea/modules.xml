@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/ecommerce-equipo4.iml" filepath="$PROJECT_DIR$/.idea/ecommerce-equipo4.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Backend/msCart/ms-cart.iml" filepath="$PROJECT_DIR$/Backend/msCart/ms-cart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Backend/ms-discovery/ms-discovery.iml" filepath="$PROJECT_DIR$/Backend/ms-discovery/ms-discovery.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Backend/ms-gateway/ms-gateway.iml" filepath="$PROJECT_DIR$/Backend/ms-gateway/ms-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Backend/ms-users/ms-users.iml" filepath="$PROJECT_DIR$/Backend/ms-users/ms-users.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Backend/msUser/msUser.iml" filepath="$PROJECT_DIR$/Backend/msUser/msUser.iml" />
+    </modules>
+  </component>
+</project>
