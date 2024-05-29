@@ -7,7 +7,7 @@ function RegistroProducto () {
     nombre: '',
     precio: '',
     descripcion: '',
-    imagen: null
+    imagenes: []
   })
 
   const [errors, setErrors] = useState({})
@@ -44,9 +44,19 @@ function RegistroProducto () {
   }
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0]
-    setFormData((prevData) => ({ ...prevData, imagen: file }))
+    const files = Array.from(e.target.files)
+    setFormData((prevData) => ({
+      ...prevData,
+      imagenes: [...prevData.imagenes, ...files]
+    }))
     setErrors((prevErrors) => ({ ...prevErrors, imagen: '' }))
+  }
+
+  const handleRemoveImage = (index) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      imagenes: prevData.imagenes.filter((_, i) => i !== index)
+    }))
   }
 
   const handleSubmit = (e) => {
@@ -65,7 +75,7 @@ function RegistroProducto () {
     } else if (formData.descripcion.length < 10) {
       formErrors.descripcion = 'La descripción debe tener al menos 10 caracteres.'
     }
-    if (!formData.imagen) formErrors.imagen = 'Por favor, sube una imagen.'
+    if (formData.imagenes.length === 0) formErrors.imagen = 'Por favor, sube al menos una imagen.'
 
     setErrors(formErrors)
 
@@ -137,23 +147,37 @@ function RegistroProducto () {
             {errors.descripcion && <p className="text-red-500 text-xs italic">{errors.descripcion}</p>}
           </div>
           <div className="w-full px-3 mb-6">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="imagen">
-              Imagen
+            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="imagenes">
+              Imágenes
             </label>
             <input
               className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
                 errors.imagen ? 'border-red-500' : 'border-gray-200'
               } rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white`}
-              id="imagen"
+              id="imagenes"
               type="file"
+              multiple
               onChange={handleImageChange}
             />
             {errors.imagen && <p className="text-red-500 text-xs italic">{errors.imagen}</p>}
-            {formData.imagen && (
-              <div className="mt-3">
-                <img src={URL.createObjectURL(formData.imagen)} alt="Preview" className="w-32 h-32 object-cover" />
-              </div>
-            )}
+            <div className="mt-3 flex flex-wrap">
+              {formData.imagenes.map((imagen, index) => (
+                <div key={index} className="relative m-2">
+                  <img
+                    src={URL.createObjectURL(imagen)}
+                    alt={`Imagen ${index + 1}`}
+                    className="w-32 h-32 object-cover"
+                  />
+                  <button
+                    type="button"
+                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+                    onClick={() => handleRemoveImage(index)}
+                  >
+                    X
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         <div className="flex justify-center">
@@ -179,8 +203,8 @@ function RegistroProducto () {
               <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
             </svg>
             <span className="sr-only">Info</span>
-            <div className="text-white">
-              <span className="font-medium text-[#BD6292]">Producto Registrado!</span>
+            <div>
+              <span className="font-medium">Producto registrado con éxito!</span>
             </div>
           </div>
         )}
