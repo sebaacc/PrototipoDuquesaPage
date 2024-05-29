@@ -6,7 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="msCart" />
+        <module name="ms-cart" />
         <module name="msUser" />
         <module name="ms-users" />
         <module name="ms-discovery" />
@@ -14,19 +14,19 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="ms-cart" target="17" />
       <module name="ms-discovery" target="17" />
       <module name="ms-gateway" target="17" />
       <module name="ms-users" target="17" />
-      <module name="msCart" target="17" />
       <module name="msUser" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ms-cart" options="-parameters" />
       <module name="ms-discovery" options="-parameters" />
       <module name="ms-gateway" options="-parameters" />
       <module name="ms-users" options="-parameters" />
-      <module name="msCart" options="-parameters" />
       <module name="msUser" options="-parameters" />
     </option>
   </component>
