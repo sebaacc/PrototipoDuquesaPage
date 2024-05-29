@@ -1,19 +1,25 @@
 package com.example.msCart.internal.domain.services;
 
 import com.example.msCart.internal.domain.models.Cart;
-import com.example.msCart.internal.domain.models.Product;
 
 
 import java.util.List;
 
 public interface ICartService {
 
-    public List<Cart> getCart();
+    // Método para ver todos los productos que tiene el carrito
+   // List<Product> getAllProductsInCart(Long cartId);
 
-    public void saveProduct(Product prod);
+    // Método para agregar un producto a un carrito
+    Cart addProductToCart(Long cartId, Long productId, Integer quantity);
 
-    public void removeProduct(String id);
+    // Método para eliminar un producto de un carrito
+    Cart removeProductFromCart(Long cartId, Long productId);
 
-    public void editProduct (Product prod)
+    // Método para vaciar un carrito
+   // Cart clearCart(Long cartId);
+
+    // Método para calcular el total del carrito
+    //double calculateTotalPrice(Long cartId);
 
 }
