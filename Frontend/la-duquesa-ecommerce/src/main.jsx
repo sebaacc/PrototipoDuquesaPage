@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import ErrorPage from './routes/ErrorPage.jsx'
 import Registro from './routes/Registro.jsx'
+import Detalle from './routes/Detalle.jsx'
 import RegistroProducto from './routes/RegistroProducto.jsx'
 import CarritoDeCompras from './routes/CarritoDeCompras.jsx'
 
@@ -27,6 +28,11 @@ const router = createBrowserRouter([
   {
     path: 'carrito-de-compras',
     element: <CarritoDeCompras />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'detalle-de-producto/:id',
+    element: <Detalle />,
     errorElement: <ErrorPage />
   }
 ])

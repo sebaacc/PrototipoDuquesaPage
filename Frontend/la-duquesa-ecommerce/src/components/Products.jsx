@@ -1,6 +1,7 @@
 import chocoColate from '../img/choco-chocolate 1.png'
 import bread from '../img/bread.png'
 import brownie from '../img/brownie.png'
+import { Link } from 'react-router-dom'
 
 function Products () {
   return (
@@ -19,9 +20,11 @@ function Products () {
               <p className="text-gray-500 font-bold">20 - 30 min</p>
             </span>
             <span className="mt-4 block">
-              <button className="mr-6 w-28 p-3 bg-[#BD6292] text-white rounded-xl">
-                Pastelería
-              </button>
+              <Link to="/detalle-de-producto/1">
+                <button className="mr-6 w-28 p-3 bg-[#BD6292] text-white rounded-xl">
+                  Información
+                </button>
+              </Link>
               <button className="p-3 w-28 bg-[#BD6292] text-white rounded-xl">
                 Torta fría
               </button>
@@ -37,9 +40,11 @@ function Products () {
               <p className="text-gray-500 font-bold">20 - 30 min</p>
             </span>
             <span className="mt-4 block">
+            <Link to="/detalle-de-producto/2">
               <button className="mr-6 w-28 p-3 bg-[#BD6292] text-white rounded-xl">
-                Pastelería
+                Información
               </button>
+            </Link>
               <button className="p-3 w-28 bg-[#BD6292] text-white rounded-xl">
                 Torta fría
               </button>
@@ -55,9 +60,11 @@ function Products () {
               <p className="text-gray-500 font-bold">20 - 30 min</p>
             </span>
             <span className="mt-4 block">
+            <Link to="/detalle-de-producto/3">
               <button className="mr-6 w-28 p-3 bg-[#BD6292] text-white rounded-xl">
-                Pastelería
+                Información
               </button>
+              </Link>
               <button className="p-3 w-28 bg-[#BD6292] text-white rounded-xl">
                 Torta fría
               </button>
