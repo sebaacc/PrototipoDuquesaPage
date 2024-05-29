@@ -116,7 +116,7 @@ function Navbar () {
           <Link to={'/'}>
             <li className="mr-16">Nuestras sedes</li>
           </Link>
-          <Link to={'carrito-de-compras'}>
+          <Link to={'/carrito-de-compras'}>
             <li className="mr-16 flex">Carrito</li>
           </Link>
         </ul>

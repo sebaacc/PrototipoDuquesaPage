@@ -52,13 +52,13 @@ function RegistroProducto () {
     <div>
       <Navbar />
       <form
-        className="w-full max-w-lg m-auto mt-10 mb-10"
+        className="w-4/5 max-w-lg m-auto mt-10 mb-10"
         onSubmit={handleSubmit}
       >
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label
-              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
               htmlFor="nombre"
             >
               Nombre
@@ -79,7 +79,7 @@ function RegistroProducto () {
           </div>
           <div className="w-full md:w-1/2 px-3">
             <label
-              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
               htmlFor="precio"
             >
               Precio
@@ -87,7 +87,7 @@ function RegistroProducto () {
             <input
               className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
                 errors.precio ? 'border-red-500' : 'border-gray-200'
-              } rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+              } rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mb-6`}
               id="precio"
               type="text"
               placeholder="$0000"
@@ -100,7 +100,7 @@ function RegistroProducto () {
           </div>
           <div className="w-full px-3 mb-6">
             <label
-              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
               htmlFor="descripcion"
             >
               Descripción
@@ -109,7 +109,7 @@ function RegistroProducto () {
               id="descripcion"
               className={`block w-full p-4 border ${
                 errors.descripcion ? 'border-red-500' : 'border-gray-300'
-              } rounded-lg bg-[#e5e7eb] text-base focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 text-black dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+              } rounded-lg bg-[#e5e7eb] text-base focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-6`}
               maxLength={100}
               value={formData.descripcion}
               onChange={handleChange}
@@ -152,7 +152,7 @@ function RegistroProducto () {
         <div className="flex justify-center">
           <button
             type="submit"
-            className="bg-[#BD6292] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-[#8B7BB1] hover:bg-[#BD6292] text-white font-bold py-2 px-4 rounded"
           >
             Registrar Producto
           </button>
