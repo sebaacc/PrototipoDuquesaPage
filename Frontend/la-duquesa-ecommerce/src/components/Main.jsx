@@ -11,7 +11,7 @@ function Main () {
     <main>
       <header>
         <h1 className="text-4xl font-black pl-9 pr-9 sm:text-center">
-          Qué te gustaría ordenar esta vez?
+          ¿Qué te gustaría ordenar esta vez?
         </h1>
       </header>
       <div className="m-10 md:flex justify-center">
