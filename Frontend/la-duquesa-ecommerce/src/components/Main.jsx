@@ -31,43 +31,12 @@ function Main () {
           id="search-product"
         />
       </div>
-      {/* <section className="flex items-center justify-center">
-        <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]">
-          <img className="hover:bg-white rounded-full" src={brioche} alt="Brioche" />
-          <p className="flex justify-center">Brioche</p>
-        </article>
-        <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]">
-          <img className="hover:bg-white rounded-full" src={cinnabon} alt="Cinnabon" />
-          <p className="flex justify-center">Cinnabon</p>
-        </article>
-        <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]">
-          <img className="hover:bg-white rounded-full" src={galletas} alt="Galletas" />
-          <p className="flex justify-center">Galletas</p>
-        </article>
-        <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]">
-          <img className="hover:bg-white rounded-full" src={croissant} alt="Croissant" />
-          <p className="flex justify-center">Croissant</p>
-        </article>
-        <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]  hidden md:block">
-          <img className="hover:bg-white rounded-full" src={torta} alt="Cinnabon" />
-          <p className="flex justify-center">Torta fria</p>
-        </article>
-        <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]  hidden lg:block">
-          <img className="hover:bg-white rounded-full" src={baguette} alt="Baguette" />
-          <p className="flex justify-center">Baguette</p>
-        </article>
-        {/* <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] hidden lg:block">
-          <img className="hover:bg-white rounded-full" src={pudin} alt="Croissant" />
-          <p className="flex justify-center">Croissant</p>
-        </article> */}
-      {/*
-      </section> */}
 
       <section className="flex items-center justify-center">
         <div className="hidden md:flex flex-wrap justify-center">
-          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]">
+          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
             <img
-              className="hover:bg-white rounded-full w-[80px] h-[80px]"
+              className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
               src={brioche}
               alt="Brioche"
             />
@@ -75,9 +44,9 @@ function Main () {
               Brioche
             </p>
           </article>
-          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]">
+          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
             <img
-              className="hover:bg-white rounded-full w-[80px] h-[80px]"
+              className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
               src={cinnabon}
               alt="Cinnabon"
             />
@@ -85,9 +54,9 @@ function Main () {
               Cinnabon
             </p>
           </article>
-          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]">
+          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
             <img
-              className="hover:bg-white rounded-full w-[80px] h-[80px]"
+              className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
               src={galletas}
               alt="Galletas"
             />
@@ -95,9 +64,9 @@ function Main () {
               Galletas
             </p>
           </article>
-          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]">
+          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
             <img
-              className="hover:bg-white rounded-full w-[80px] h-[80px]"
+              className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
               src={croissant}
               alt="Croissant"
             />
@@ -105,9 +74,9 @@ function Main () {
               Croissant
             </p>
           </article>
-          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] hidden md:block">
+          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
             <img
-              className="hover:bg-white rounded-full w-[80px] h-[80px]"
+              className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
               src={torta}
               alt="Torta Fria"
             />
@@ -115,9 +84,9 @@ function Main () {
               Torta Fria
             </p>
           </article>
-          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] hidden lg:block">
+          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
             <img
-              className="hover:bg-white rounded-full w-[80px] h-[80px]"
+              className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
               src={baguette}
               alt="Baguette"
             />
@@ -135,9 +104,9 @@ function Main () {
             scrollbar={{ draggable: true }}
           >
             <SwiperSlide>
-              <article className="flex flex-col items-center w-[95px] group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]">
+              <article className="flex flex-col items-center w-[95px] group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
                 <img
-                  className="hover:bg-white rounded-full w-[80px] h-[80px]"
+                  className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
                   src={brioche}
                   alt="Brioche"
                 />
@@ -147,9 +116,9 @@ function Main () {
               </article>
             </SwiperSlide>
             <SwiperSlide>
-              <article className="flex flex-col items-center w-[95px] group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]">
+              <article className="flex flex-col items-center w-[95px] group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
                 <img
-                  className="hover:bg-white rounded-full w-[80px] h-[80px]"
+                  className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
                   src={cinnabon}
                   alt="Cinnabon"
                 />
@@ -159,9 +128,9 @@ function Main () {
               </article>
             </SwiperSlide>
             <SwiperSlide>
-              <article className="flex flex-col items-center w-[95px] group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]">
+              <article className="flex flex-col items-center w-[95px] group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
                 <img
-                  className="hover:bg-white rounded-full w-[80px] h-[80px]"
+                  className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
                   src={galletas}
                   alt="Galletas"
                 />
@@ -171,9 +140,9 @@ function Main () {
               </article>
             </SwiperSlide>
             <SwiperSlide>
-              <article className="flex flex-col items-center w-[95px] group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]">
+              <article className="flex flex-col items-center w-[95px] group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
                 <img
-                  className="hover:bg-white rounded-full w-[80px] h-[80px]"
+                  className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
                   src={croissant}
                   alt="Croissant"
                 />
@@ -183,9 +152,9 @@ function Main () {
               </article>
             </SwiperSlide>
             <SwiperSlide>
-              <article className="flex flex-col items-center w-[95px] group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]">
+              <article className="flex flex-col items-center w-[95px] group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
                 <img
-                  className="hover:bg-white rounded-full w-[80px] h-[80px]"
+                  className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
                   src={torta}
                   alt="Torta Fria"
                 />
@@ -195,9 +164,9 @@ function Main () {
               </article>
             </SwiperSlide>
             <SwiperSlide>
-              <article className="flex flex-col items-center w-[95px] group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292]">
+              <article className="flex flex-col items-center w-[95px] group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
                 <img
-                  className="hover:bg-white rounded-full w-[80px] h-[80px]"
+                  className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
                   src={baguette}
                   alt="Baguette"
                 />
