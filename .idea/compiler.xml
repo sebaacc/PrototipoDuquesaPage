@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="msCart" />
         <module name="msUser" />
+        <module name="ms-users" />
         <module name="ms-discovery" />
         <module name="ms-gateway" />
       </profile>
@@ -15,6 +16,7 @@
     <bytecodeTargetLevel>
       <module name="ms-discovery" target="17" />
       <module name="ms-gateway" target="17" />
+      <module name="ms-users" target="17" />
       <module name="msCart" target="17" />
       <module name="msUser" target="17" />
     </bytecodeTargetLevel>
@@ -23,6 +25,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="ms-discovery" options="-parameters" />
       <module name="ms-gateway" options="-parameters" />
+      <module name="ms-users" options="-parameters" />
       <module name="msCart" options="-parameters" />
       <module name="msUser" options="-parameters" />
     </option>

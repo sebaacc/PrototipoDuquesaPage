@@ -5,6 +5,7 @@
       <list>
         <option value="$PROJECT_DIR$/Backend/msCart/pom.xml" />
         <option value="$PROJECT_DIR$/Backend/msUser/pom.xml" />
+        <option value="$PROJECT_DIR$/Backend/ms-users/pom.xml" />
         <option value="$PROJECT_DIR$/Backend/ms-gateway/pom.xml" />
         <option value="$PROJECT_DIR$/Backend/ms-discovery/pom.xml" />
       </list>
