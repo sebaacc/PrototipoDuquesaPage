@@ -96,7 +96,7 @@ function Main () {
           </article>
         </div>
 
-        <div className="block md:hidden w-full ml-5">
+        <div className="block md:hidden w-[460px] m-auto mb-20">
           <Swiper
             modules={[Scrollbar, A11y]}
             spaceBetween={10}
