@@ -80,10 +80,22 @@ function RegistroProducto () {
     setErrors(formErrors)
 
     if (Object.keys(formErrors).length === 0) {
+      // Simula el registro del producto y muestra la alerta
       setShowAlert(true)
+
+      // Restablece los campos del formulario
+      setFormData({
+        nombre: '',
+        precio: '',
+        descripcion: '',
+        imagenes: []
+      })
+
+      // Oculta la alerta después de 3 segundos
       setTimeout(() => {
         setShowAlert(false)
       }, 3000)
+
       console.log('Form data:', formData)
     }
   }
@@ -200,7 +212,8 @@ function RegistroProducto () {
               fill="currentColor"
               viewBox="0 0 20 20"
             >
-              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8Z" />
+              <path d="M9 8h2v5H9V8Zm0 7h2v2H9v-2Z" />
             </svg>
             <span className="sr-only">Info</span>
             <div>
