@@ -5,6 +5,7 @@ import brownie from '../img/brownie.png'
 import cronometro from '../img/cronometro.png'
 import Calificacion from '../img/Calificacion.png'
 import { useState } from 'react'
+import chocoColate from '../img/choco-chocolate 1.png'
 
 // const Objeto =[
 //   {
@@ -58,12 +59,12 @@ const Detalle = () => {
                   <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4">
                     {image === 1 && (
                       <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">
-                        <span className="text-5xl">1</span>
+                        <span className="text-5xl"><img src={chocoColate}/></span>
                       </div>
                     )}
                     {image === 2 && (
                       <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">
-                        <span className="text-5xl">2</span>
+                        <span className="text-5xl"><img src={brownie}/></span>
                       </div>
                     )}
                     {image === 3 && (
