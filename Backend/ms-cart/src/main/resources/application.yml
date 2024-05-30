@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: ms-cart
+  datasource:
+    url: jdbc:mysql://localhost:3306/mscart
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  mysql:
+    console:
+      enabled: true
+
+server:
+  port: ${PORT:0}
+
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka
