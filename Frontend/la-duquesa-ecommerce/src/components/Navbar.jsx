@@ -4,9 +4,10 @@ import ubication from '../img/icons8-location-64 1.png'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
-import { TbTruckDelivery } from 'react-icons/tb'
-import { MdFavorite, MdHelp } from 'react-icons/md'
+import { TbTruckDelivery, TbReport } from 'react-icons/tb'
+import { MdFavorite, MdHelp, MdOutlineProductionQuantityLimits } from 'react-icons/md'
 import { IoIosAddCircle } from 'react-icons/io'
+// import { icon } from '@fortawesome/fontawesome-svg-core'
 
 // import shopCar from '../img/cart-large-minimalistic-svgrepo-com.png'
 
@@ -25,6 +26,16 @@ function Navbar () {
       icon: <IoIosAddCircle size={25} className="mr-4" />,
       text: 'Cargar Producto',
       route: '/registro-producto'
+    },
+    {
+      icon: <TbReport size={25} className="mr-4 P-2" />,
+      text: 'Reporte de usuario',
+      route: '/reporte-usuario'
+    },
+    {
+      icon: <MdOutlineProductionQuantityLimits size={25} className="mr-4" />,
+      text: 'Reporte de producto',
+      route: '/reporte-producto'
     },
     { icon: <MdHelp size={25} className="mr-4" />, text: 'Ayuda' }
   ]
@@ -74,7 +85,7 @@ function Navbar () {
                   Inicio
                 </li>
               </Link>
-              <Link>
+              <Link to={'/tienda'}>
                 <li className="text-xl flex cursor-pointer  w-[80%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1]">
                   Productos
                 </li>
@@ -110,7 +121,7 @@ function Navbar () {
           <Link to={'/'}>
             <li className="mr-16">Inicio</li>
           </Link>
-          <Link to={'/'}>
+          <Link to={'/tienda'}>
             <li className="mr-16">Productos</li>
           </Link>
           <Link to={'/'}>
@@ -166,7 +177,7 @@ function Navbar () {
                 return (
                   <div key={index} className=" py-4">
                     <Link to={route}>
-                      <li className="text-xl flex cursor-pointer  w-[80%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1]">
+                      <li className="text-xl flex cursor-pointer  w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1]">
                         {icon} {text}
                       </li>
                     </Link>

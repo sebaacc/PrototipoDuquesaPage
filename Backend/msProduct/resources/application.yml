@@ -1,0 +1,19 @@
+instance:
+  hostName: "localhost"
+  app: "MSPRODUCT"
+  ipAddr: "10.0.0.10"
+  status: "UP"
+  port:
+  #Lo comentamos ya que estamos generando un puerto automáticamente
+   # number: 5090
+    enabled: "true"
+  securePort:
+    number: 8443
+    enabled: "true"
+  #Lo comentamos ya que estamos generando un puerto automáticamente
+  #healthCheckUrl: "http://localhost:5090/healthcheck"
+  #statusPageUrl: "http://localhost:5090/status"
+  #homePageUrl: "http://localhost:5090"
+  dataCenterInfo:
+    class: "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo"
+    name: "MyOwn"

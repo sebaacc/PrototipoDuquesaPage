@@ -6,10 +6,10 @@ import bolsaVacia from '../img/Shopping-Bag-1.svg'
 function CarritoDeCompras () {
   const listaProductos = [
     {
-      nombre: 'Torta Brownie',
+      nombre: 'Torta de chocolate',
       descripcion: 'alguna descripcion',
-      img: 'https://aprende.com/wp-content/uploads/2020/10/brownies-postre_opt-940x580.jpg',
-      precio: '62000',
+      img: 'src/img/choco-chocolate 1.png',
+      precio: '14000',
       cantidad: 1
     },
     {
@@ -43,7 +43,7 @@ function CarritoDeCompras () {
       <Navbar />
       <div className="w-4/5 max-w-3xl m-auto mb-10 flex flex-col items-center gap-5">
         <h1 className="text-4xl font-black pl-9 pr-9 sm:text-center">
-          Carrito de productos
+          Carrito de Compras
         </h1>
         <div className="flex bg-[#F6F6F6] border-2 border-solid border-[#E9E9E9] rounded-xl flex-col">
           {productos.length === 0

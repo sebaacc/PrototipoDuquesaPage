@@ -8,6 +8,9 @@ import Registro from './routes/Registro.jsx'
 import Detalle from './routes/Detalle.jsx'
 import RegistroProducto from './routes/RegistroProducto.jsx'
 import CarritoDeCompras from './routes/CarritoDeCompras.jsx'
+import Tienda from './routes/Tienda.jsx'
+import ReporteDeUsuario from './routes/ReporteDeUsuario.jsx'
+import ReporteDeProducto from './routes/ReporteDeProducto.jsx'
 
 const router = createBrowserRouter([
   {
@@ -33,6 +36,21 @@ const router = createBrowserRouter([
   {
     path: 'detalle-de-producto/:id',
     element: <Detalle />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'tienda',
+    element: <Tienda />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'reporte-usuario',
+    element: <ReporteDeUsuario />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'reporte-producto',
+    element: <ReporteDeProducto />,
     errorElement: <ErrorPage />
   }
 ])
