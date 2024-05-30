@@ -63,7 +63,10 @@ function RegistroProducto () {
 
     files.forEach((file) => {
       if (validImageTypes.includes(file.type)) {
-        newImages.push(file)
+        newImages.push({
+          file,
+          url: URL.createObjectURL(file)
+        })
       } else {
         newErrors.imagen = 'Solo se permiten archivos JPG o PNG.'
       }
@@ -85,8 +88,8 @@ function RegistroProducto () {
 
     // Crear un nuevo DataTransfer y agregar las imágenes restantes
     const dataTransfer = new DataTransfer()
-    newImages.forEach(image => {
-      dataTransfer.items.add(image)
+    newImages.forEach((image) => {
+      dataTransfer.items.add(image.file)
     })
 
     // Actualizar el estado del formulario
@@ -149,7 +152,7 @@ function RegistroProducto () {
       // Limpia el input de archivos
       fileInputRef.current.value = ''
 
-      // Oculta la alerta después de 4 segundos
+      // Oculta la alerta después de 6 segundos
       setTimeout(() => {
         setShowAlert(false)
       }, 6000)
@@ -209,7 +212,6 @@ function RegistroProducto () {
               className={`block w-full p-4 border ${
                 errors.descripcion ? 'border-red-500' : 'border-gray-300'
               } rounded-lg bg-[#e5e7eb] text-base focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2`}
-              maxLength={100}
               value={formData.descripcion}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -226,59 +228,42 @@ function RegistroProducto () {
               } rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white mb-2`}
               id="imagenes"
               type="file"
+              accept="image/*"
               multiple
               onChange={handleImageChange}
-              ref={fileInputRef} // Ref asignada al input de archivos
+              ref={fileInputRef}
             />
             {errors.imagen && <p className="text-red-500 text-xs italic">{errors.imagen}</p>}
-            <div className="mt-3 flex flex-wrap">
-              {formData.imagenes.map((imagen, index) => (
-                <div key={index} className="relative m-2">
-                  <img
-                    src={URL.createObjectURL(imagen)}
-                    alt={`Imagen ${index + 1}`}
-                    className="w-32 h-32 object-cover"
-                  />
+            <div className="grid grid-cols-3 gap-4 mt-2">
+              {formData.imagenes.map((image, index) => (
+                <div key={index} className="relative">
+                  <img src={image.url} alt={`Imagen ${index + 1}`} className="w-full h-auto rounded" />
                   <button
                     type="button"
-                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-8 p-1"
+                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 mt-1 mr-1"
                     onClick={() => handleRemoveImage(index)}
                   >
-                    X
+                    &times;
                   </button>
                 </div>
               ))}
             </div>
           </div>
         </div>
-        <div className="md:flex md:items-center">
+        {showAlert && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong className="font-bold">¡Producto registrado con éxito!</strong>
+            <span className="block sm:inline"> Los detalles del producto han sido guardados.</span>
+          </div>
+        )}
+        <div className="flex justify-center"> {/* Centrando el botón */}
           <button
+            className="shadow bg-[#a662bd] hover:bg-purple-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
             type="submit"
-            className="shadow bg-[#9D8EC3] hover:bg-[#BD6292] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline sm:m-auto"
           >
             Registrar Producto
           </button>
         </div>
-        {showAlert && (
-          <div
-            className="flex items-center p-4 mb-4 text-sm rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 mt-5"
-            role="alert"
-          >
-            <svg
-              className="flex-shrink-0 inline w-4 h-4 me-3"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-            </svg>
-            <span className="sr-only">Info</span>
-            <div className='text-white'>
-              <span className="font-medium text-[#BD6292] ">Producto</span> agregado correctamente.
-            </div>
-          </div>
-        )}
       </form>
       <Footer />
     </div>
