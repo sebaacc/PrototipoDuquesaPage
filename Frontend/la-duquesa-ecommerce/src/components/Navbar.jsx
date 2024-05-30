@@ -74,7 +74,7 @@ function Navbar () {
                   Inicio
                 </li>
               </Link>
-              <Link>
+              <Link to={'/tienda'}>
                 <li className="text-xl flex cursor-pointer  w-[80%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1]">
                   Productos
                 </li>
@@ -110,7 +110,7 @@ function Navbar () {
           <Link to={'/'}>
             <li className="mr-16">Inicio</li>
           </Link>
-          <Link to={'/'}>
+          <Link to={'/tienda'}>
             <li className="mr-16">Productos</li>
           </Link>
           <Link to={'/'}>
