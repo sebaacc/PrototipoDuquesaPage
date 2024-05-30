@@ -2,7 +2,9 @@ import Navbar from '../components/Navbar'
 
 function Tienda () {
   return (
-    <Navbar />
+    <div>
+      <Navbar />
+    </div>
   )
 }
 
