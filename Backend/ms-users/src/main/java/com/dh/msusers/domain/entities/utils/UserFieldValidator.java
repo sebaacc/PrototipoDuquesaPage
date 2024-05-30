@@ -1,4 +1,4 @@
-package com.dh.msusers.application.utils;
+package com.dh.msusers.domain.entities.utils;
 
 import com.dh.msusers.domain.entities.User;
 import lombok.experimental.UtilityClass;

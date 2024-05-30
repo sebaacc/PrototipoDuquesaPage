@@ -22,12 +22,10 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartId;
-    private User client;
-    private Product product;
+    private String client;
+    private String product;
     private Integer quantity;
     private double price;
-    private double total_price;
-
 
 
 }

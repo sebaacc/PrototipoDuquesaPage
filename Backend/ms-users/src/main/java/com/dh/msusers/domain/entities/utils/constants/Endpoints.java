@@ -1,4 +1,4 @@
-package com.dh.msusers.application.utils.constants;
+package com.dh.msusers.domain.entities.utils.constants;
 
 import lombok.experimental.UtilityClass;
 

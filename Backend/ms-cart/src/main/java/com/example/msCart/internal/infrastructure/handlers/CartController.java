@@ -1,9 +1,10 @@
 package com.example.msCart.internal.infrastructure.handlers;
 
 
+import com.example.msCart.internal.domain.models.Cart;
 import com.example.msCart.internal.domain.services.ICartService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,22 +22,22 @@ public class CartController {
         }
 
 
-        @PostMapping("/{cartId}/products/{productId}")
-        public ResponseEntity<String> addProductToCart(@PathVariable Long cartId, @PathVariable Long productId, @RequestParam Integer quantity) {
-                if (cartService.addProductToCart(cartId, productId, quantity) != null) {
-                        return ResponseEntity.status(HttpStatus.CREATED).body("Product added to cart successfully");
-                } else {
-                        return ResponseEntity.notFound().build();
-                }
+        @PostMapping("/addProductToCart")
+        public ResponseEntity addProductToCart(@RequestBody Cart cart) {
+                cartService.addProductToCart(cart);
+                return ResponseEntity.ok("Product add to cart");
         }
 
-        @DeleteMapping("/{cartId}/products/{productId}")
-        public ResponseEntity<String> removeProductFromCart(@PathVariable Long cartId, @PathVariable Long productId) {
-                if (cartService.removeProductFromCart(cartId, productId) != null) {
-                        return ResponseEntity.ok("Product removed from cart successfully");
-                } else {
-                        return ResponseEntity.notFound().build();
-                }
+        @DeleteMapping("/removeProductFromCart/{userId}/{productId}")
+        public ResponseEntity removeProductFromCart(@PathVariable String userId, @PathVariable String productId) {
+                cartService.removeProductFromCart(userId, productId);
+                return ResponseEntity.ok("Product remove");
+        }
+
+        @DeleteMapping("/clearCart/{userId}")
+        public ResponseEntity clearCart(@PathVariable String userId) {
+                cartService.clearCart(userId);
+                return ResponseEntity.ok("Cart remove");
         }
 
 
