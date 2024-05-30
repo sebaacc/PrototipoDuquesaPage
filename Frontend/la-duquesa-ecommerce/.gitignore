@@ -11,7 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
-Main.jsx
+salvaMain.txt
 
 # Editor directories and files
 .vscode/*
