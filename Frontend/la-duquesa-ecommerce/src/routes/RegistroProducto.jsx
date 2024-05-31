@@ -22,7 +22,10 @@ function RegistroProducto () {
     // Validación en tiempo real para el campo de precio
     if (id === 'precio') {
       if (isNaN(value)) {
-        setErrors((prevErrors) => ({ ...prevErrors, [id]: 'Por favor, introduce un precio válido.' }))
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [id]: 'Por favor, introduce un precio válido.'
+        }))
       } else {
         setErrors((prevErrors) => ({ ...prevErrors, [id]: '' }))
       }
@@ -31,7 +34,10 @@ function RegistroProducto () {
     // Validación en tiempo real para el campo de nombre
     if (id === 'nombre') {
       if (/\d/.test(value)) {
-        setErrors((prevErrors) => ({ ...prevErrors, [id]: 'El nombre no debe contener números.' }))
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [id]: 'El nombre no debe contener números.'
+        }))
       } else {
         setErrors((prevErrors) => ({ ...prevErrors, [id]: '' }))
       }
@@ -104,7 +110,8 @@ function RegistroProducto () {
     // Mostrar alerta de error si no quedan imágenes
     setErrors((prevErrors) => ({
       ...prevErrors,
-      imagen: newImages.length === 0 ? 'Por favor, sube al menos una imagen.' : ''
+      imagen:
+        newImages.length === 0 ? 'Por favor, sube al menos una imagen.' : ''
     }))
   }
 
@@ -128,7 +135,8 @@ function RegistroProducto () {
     if (!formData.descripcion) {
       formErrors.descripcion = 'Por favor, rellena este campo.'
     } else if (formData.descripcion.length < 10) {
-      formErrors.descripcion = 'La descripción debe tener al menos 10 caracteres.'
+      formErrors.descripcion =
+        'La descripción debe tener al menos 10 caracteres.'
     }
 
     if (formData.imagenes.length === 0) {
@@ -164,10 +172,16 @@ function RegistroProducto () {
   return (
     <div>
       <Navbar />
-      <form className="w-4/5 max-w-lg m-auto mt-10 mb-10" onSubmit={handleSubmit}>
+      <form
+        className="w-4/5 max-w-lg m-auto mt-10 mb-10"
+        onSubmit={handleSubmit}
+      >
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3" htmlFor="nombre">
+            <label
+              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
+              htmlFor="nombre"
+            >
               Nombre
             </label>
             <input
@@ -181,14 +195,21 @@ function RegistroProducto () {
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            {errors.nombre && <p className="text-red-500 text-xs italic">{errors.nombre}</p>}
+            {errors.nombre && (
+              <p className="text-red-500 text-xs italic">{errors.nombre}</p>
+            )}
           </div>
           <div className="w-full md:w-1/2 px-3 relative">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3" htmlFor="precio">
+            <label
+              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
+              htmlFor="precio"
+            >
               Precio
             </label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-700">$</span>
+              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-700">
+                $
+              </span>
               <input
                 className={`appearance-none block w-full pl-8 bg-gray-200 text-gray-700 border ${
                   errors.precio ? 'border-red-500' : 'border-gray-200'
@@ -201,10 +222,15 @@ function RegistroProducto () {
                 onBlur={handleBlur}
               />
             </div>
-            {errors.precio && <p className="text-red-500 text-xs italic">{errors.precio}</p>}
+            {errors.precio && (
+              <p className="text-red-500 text-xs italic">{errors.precio}</p>
+            )}
           </div>
           <div className="w-full px-3 mb-6 mt-4">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3" htmlFor="descripcion">
+            <label
+              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
+              htmlFor="descripcion"
+            >
               Descripción
             </label>
             <textarea
@@ -215,11 +241,19 @@ function RegistroProducto () {
               value={formData.descripcion}
               onChange={handleChange}
               onBlur={handleBlur}
+              maxLength={1000}
             />
-            {errors.descripcion && <p className="text-red-500 text-xs italic">{errors.descripcion}</p>}
+            {errors.descripcion && (
+              <p className="text-red-500 text-xs italic">
+                {errors.descripcion}
+              </p>
+            )}
           </div>
           <div className="w-full px-3">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="imagenes">
+            <label
+              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              htmlFor="imagenes"
+            >
               Imágenes
             </label>
             <input
@@ -233,11 +267,17 @@ function RegistroProducto () {
               onChange={handleImageChange}
               ref={fileInputRef}
             />
-            {errors.imagen && <p className="text-red-500 text-xs italic">{errors.imagen}</p>}
+            {errors.imagen && (
+              <p className="text-red-500 text-xs italic">{errors.imagen}</p>
+            )}
             <div className="grid grid-cols-3 gap-4 mt-2">
               {formData.imagenes.map((image, index) => (
                 <div key={index} className="relative">
-                  <img src={image.url} alt={`Imagen ${index + 1}`} className="w-full h-auto rounded" />
+                  <img
+                    src={image.url}
+                    alt={`Imagen ${index + 1}`}
+                    className="w-full h-auto rounded"
+                  />
                   <button
                     type="button"
                     className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 mt-1 mr-1"
@@ -251,12 +291,22 @@ function RegistroProducto () {
           </div>
         </div>
         {showAlert && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <strong className="font-bold">¡Producto registrado con éxito!</strong>
-            <span className="block sm:inline"> Los detalles del producto han sido guardados.</span>
+          <div
+            className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+            role="alert"
+          >
+            <strong className="font-bold">
+              ¡Producto registrado con éxito!
+            </strong>
+            <span className="block sm:inline">
+              {' '}
+              Los detalles del producto han sido guardados.
+            </span>
           </div>
         )}
-        <div className="flex justify-center"> {/* Centrando el botón */}
+        <div className="flex justify-center">
+          {' '}
+          {/* Centrando el botón */}
           <button
             className="shadow bg-[#a662bd] hover:bg-purple-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
             type="submit"

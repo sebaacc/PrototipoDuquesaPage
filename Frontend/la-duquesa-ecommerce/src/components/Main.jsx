@@ -1,5 +1,5 @@
 import brioche from '../img/cake_1-removebg-preview 1.png'
-import cinnabon from '../img/Egg___Bacon-removebg-preview 1.png'
+import cinnamon from '../img/Egg___Bacon-removebg-preview 1.png'
 import galletas from '../img/carrot_1-removebg-preview 1.png'
 import croissant from '../img/Croissant_Designed_by_FreePik.png'
 import torta from '../img/torta_designed_by_freepik.png'
@@ -47,11 +47,11 @@ function Main () {
           <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
             <img
               className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
-              src={cinnabon}
-              alt="Cinnabon"
+              src={cinnamon}
+              alt="Cinnamon"
             />
             <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
-              Cinnabon
+              Cinnamon
             </p>
           </article>
           <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
@@ -78,10 +78,10 @@ function Main () {
             <img
               className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
               src={torta}
-              alt="Torta Fria"
+              alt="Torta Fría"
             />
             <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
-              Torta Fria
+              Torta Fría
             </p>
           </article>
           <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
@@ -96,7 +96,7 @@ function Main () {
           </article>
         </div>
 
-        <div className="block md:hidden w-[460px] m-auto mb-20">
+        <div className="block md:hidden w-[100%] m-auto mb-20">
           <Swiper
             modules={[Scrollbar, A11y]}
             spaceBetween={10}
@@ -119,11 +119,11 @@ function Main () {
               <article className="flex flex-col items-center w-[95px] group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
                 <img
                   className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
-                  src={cinnabon}
-                  alt="Cinnabon"
+                  src={cinnamon}
+                  alt="Cinnamon"
                 />
                 <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
-                  Cinnabon
+                  Cinnamon
                 </p>
               </article>
             </SwiperSlide>
@@ -156,10 +156,10 @@ function Main () {
                 <img
                   className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
                   src={torta}
-                  alt="Torta Fria"
+                  alt="Torta Fría"
                 />
                 <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
-                  Torta Fria
+                  Torta Fría
                 </p>
               </article>
             </SwiperSlide>
