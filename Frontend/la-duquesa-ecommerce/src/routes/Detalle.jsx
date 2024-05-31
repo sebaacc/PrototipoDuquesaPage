@@ -4,9 +4,9 @@ import bread from '../img/bread.png'
 import brownie from '../img/brownie.png'
 import cronometro from '../img/cronometro.png'
 import Calificacion from '../img/Calificacion.png'
-import { useState } from 'react'
-import chocoColate from '../img/choco-chocolate 1.png'
+import chocolate from '../img/choco-chocolate 1.png'
 import { Link } from 'react-router-dom'
+import ImageGallery from '../components/ImageGallery'
 
 // const Objeto =[
 //   {
@@ -18,11 +18,23 @@ import { Link } from 'react-router-dom'
 //   }]
 
 const Detalle = () => {
-  const [image, setImage] = useState(1)
+  // const [image, setImage] = useState(1)
+  const images = [
+    chocolate,
+    brownie,
+    chocolate,
+    brownie,
+    chocolate,
+    brownie,
+    null,
+    null,
+    null
+  ]
   return (
     <>
       <div>
         <Navbar />
+
         <div className="m-10 md:flex justify-center">
           <input
             className="border p-3 rounded-lg w-[330px] h-[60px] bg-[#D9D9D9] text-black font-medium sm:w-[560px] md:w-[600px] lg:w-[630px] xl:w-[1000px]"
@@ -31,7 +43,7 @@ const Detalle = () => {
             id="search-product"
           />
         </div>
-        <div className="bg-white shadow-sm sticky top-0">
+        <div className="bg-white shadow-sm top-0">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1 md:py-4">
             <div className="flex items-center justify-between md:justify-start">
               <div className="flex items-center space-x-4">
@@ -52,57 +64,9 @@ const Detalle = () => {
 
         <div className="py-6">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-            <div className="flex flex-col md:flex-row -mx-4">
-              <div className="md:flex-1 px-4">
-                {/**/}
-
-                <div>
-                  <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4">
-                    {image === 1 && (
-                      <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">
-                        <span className="text-5xl">
-                          <img src={chocoColate} />
-                        </span>
-                      </div>
-                    )}
-                    {image === 2 && (
-                      <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">
-                        <span className="text-5xl">
-                          <img src={brownie} />
-                        </span>
-                      </div>
-                    )}
-                    {image === 3 && (
-                      <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">
-                        <span className="text-5xl">3</span>
-                      </div>
-                    )}
-                    {image === 4 && (
-                      <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">
-                        <span className="text-5xl">4</span>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex -mx-2 mb-4">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div key={i} className="flex-1 px-2">
-                        <button
-                          onClick={() => setImage(i)}
-                          className={`focus:outline-none w-full rounded-lg h-24 md:h-32 bg-gray-100 flex items-center justify-center ${
-                            image === i
-                              ? 'ring-2 ring-indigo-300 ring-inset'
-                              : ''
-                          }`}
-                        >
-                          <span className="text-2xl">{i}</span>
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/**/}
+            <div className="flex flex-col md:flex-row">
+              <div className="md:flex-1 px-4 sm:w-1/2">
+                <ImageGallery images={images} />
               </div>
               <div className="md:flex-1 px-4">
                 <h2 className="mb-2 leading-tight tracking-tight font-bold text-gray-800 text-2xl md:text-3xl">
@@ -180,7 +144,7 @@ const Detalle = () => {
           </div>
         </div>
 
-        <div className="ml-5 mr-5 mt-12">
+        <div className="ml-9 mr-5 mt-12">
           <h1>Descripción</h1>
           <p className="text-gray-500">
             ¡Deléitate con nuestra deliciosa y esponjosa torta de chocolate!
