@@ -28,16 +28,16 @@ import java.util.Optional;
 
     @Override
     public void removeProductFromCart(String userId, String productId) {
-        Optional<Cart> cart = cartRepository.findByClientIdAndProductId(userId, productId);
+        Optional<Cart> cart = cartRepository.findByClientAndProduct(userId, productId);
         if (cart.isPresent()) {
-            cartRepository.deleteByClientIdAndProductId(userId, productId);
+            cartRepository.deleteByClientAndProduct(userId, productId);
         }
 
     }
 
     @Override
     public void clearCart(String userId) {
-        cartRepository.deleteByClientId(userId);
+        cartRepository.deleteByClient(userId);
 
     }
 

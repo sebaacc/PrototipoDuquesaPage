@@ -10,11 +10,11 @@ import java.util.Optional;
 @Repository
 public interface ICartRepository extends JpaRepository<Cart, Long> {
 
-    List<Cart> findByClientId(String clientId);
+    List<Cart> findByClient(String clientId);
 
-    Optional<Cart> findByClientIdAndProductId(String clientId, String productId);
+    Optional<Cart> findByClientAndProduct(String clientId, String productId);
 
-    void deleteByClientId(String clientId);
+    void deleteByClient(String clientId);
 
-    void deleteByClientIdAndProductId(String clientId, String productId);
+    void deleteByClientAndProduct(String clientId, String productId);
 }
