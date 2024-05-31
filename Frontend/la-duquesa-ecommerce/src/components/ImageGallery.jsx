@@ -1,18 +1,33 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { MdImageNotSupported } from 'react-icons/md'
+import { Pagination, Scrollbar, A11y } from 'swiper/modules'
+
+import { Swiper, SwiperSlide } from 'swiper/react'
+
+// Import Swiper styles
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/scrollbar'
 
 const ImageGallery = ({ images }) => {
   const [imageIndex, setImageIndex] = useState(0)
 
+  // Solo llenar el array de imágenes con placeholders si hay menos de 4 imágenes
+  const filledImages =
+    images.length < 4
+      ? [...images, ...Array(4 - images.length).fill(null)]
+      : images
+
   return (
     <>
       <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4">
-        {images[imageIndex]
+        {filledImages[imageIndex]
           ? (
           <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center p-3">
             <img
-              src={images[imageIndex]}
+              src={filledImages[imageIndex]}
               alt={`Imagen ${imageIndex + 1}`}
               className="h-full w-full object-contain"
             />
@@ -27,37 +42,44 @@ const ImageGallery = ({ images }) => {
             )}
       </div>
 
-      <div className="flex -mx-2 mb-4 overflow-x-auto space-x-2 me-auto ">
-        {images.map(
-          (image, i) =>
-            image && (
-              <div key={i} className="flex-1 px-2 min-w-max max-w-[30%]">
-                <button
-                  onClick={() => setImageIndex(i)}
-                  className={`focus:outline-none w-full rounded-lg h-24 md:h-32 bg-gray-100 flex items-center justify-center ${
-                    imageIndex === i ? 'ring-2 ring-indigo-300 ring-inset' : ''
-                  }`}
-                >
+      <Swiper
+        modules={[Pagination, Scrollbar, A11y]}
+        spaceBetween={10}
+        slidesPerView={4}
+        pagination={{ clickable: true, style: { color: 'white' } }}
+        scrollbar={{ draggable: false }}
+        className=" max-sm:h-[8rem] md:h-[10rem] font-black"
+        style={{
+          '--swiper-pagination-color': '#BD6292',
+          '--swiper-pagination-bullet-size': '10px'
+        }}
+      >
+        {filledImages.map((image, i) => (
+          <div key={i}>
+            <SwiperSlide className=" mb-8">
+              <button
+                onClick={() => setImageIndex(i)}
+                className={`focus:outline-none w-full rounded-lg h-24 md:h-32 bg-gray-100 flex items-center justify-center ${
+                  imageIndex === i ? 'ring-2 ring-indigo-300 ring-inset' : ''
+                }`}
+                disabled={!image}
+              >
+                {image
+                  ? (
                   <img
                     src={image}
                     alt={`Miniatura ${i + 1}`}
                     className="h-full w-full object-cover rounded-lg"
                   />
-                </button>
-              </div>
-            )
-        )}
-        {images.length < 1 && (
-          <div className="flex-1 px-2 min-w-max">
-            <button
-              className="focus:outline-none w-full rounded-lg h-24 md:h-32 bg-gray-100 flex items-center justify-center text-2xl text-gray-400"
-              disabled
-            >
-              <MdImageNotSupported />
-            </button>
+                    )
+                  : (
+                  <MdImageNotSupported className="text-2xl text-gray-400" />
+                    )}
+              </button>
+            </SwiperSlide>
           </div>
-        )}
-      </div>
+        ))}
+      </Swiper>
     </>
   )
 }

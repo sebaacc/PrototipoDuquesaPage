@@ -5,8 +5,13 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { TbTruckDelivery, TbReport } from 'react-icons/tb'
-import { MdFavorite, MdHelp, MdOutlineProductionQuantityLimits } from 'react-icons/md'
+import {
+  MdFavorite,
+  MdHelp,
+  MdOutlineProductionQuantityLimits
+} from 'react-icons/md'
 import { IoIosAddCircle } from 'react-icons/io'
+import { CiShoppingCart } from 'react-icons/ci'
 // import { icon } from '@fortawesome/fontawesome-svg-core'
 
 // import shopCar from '../img/cart-large-minimalistic-svgrepo-com.png'
@@ -97,7 +102,7 @@ function Navbar () {
               </Link>
               <Link to={'/carrito-de-compras'}>
                 <li className="text-xl flex cursor-pointer  w-[80%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1]">
-                  Carrito
+                  Carrito <CiShoppingCart className='size-6 ml-1'/>
                 </li>
               </Link>
             </ul>
@@ -128,7 +133,7 @@ function Navbar () {
             <li className="mr-16">Nuestras sedes</li>
           </Link>
           <Link to={'/carrito-de-compras'}>
-            <li className="mr-16 flex">Carrito</li>
+            <li className="mr-16 flex">Carrito <CiShoppingCart className='size-6 ml-1'/></li>
           </Link>
         </ul>
       </article>
