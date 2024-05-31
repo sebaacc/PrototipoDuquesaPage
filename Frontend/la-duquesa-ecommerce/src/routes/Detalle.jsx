@@ -7,6 +7,7 @@ import Calificacion from '../img/Calificacion.png'
 import chocolate from '../img/choco-chocolate 1.png'
 import { Link } from 'react-router-dom'
 import ImageGallery from '../components/ImageGallery'
+import ScrollToTop from '../components/ScrollToTop'
 
 // const Objeto =[
 //   {
@@ -25,14 +26,12 @@ const Detalle = () => {
     chocolate,
     brownie,
     chocolate,
-    brownie,
-    null,
-    null,
-    null
+    brownie
   ]
   return (
     <>
       <div>
+        <ScrollToTop/>
         <Navbar />
 
         <div className="m-10 md:flex justify-center">
