@@ -5,6 +5,7 @@ function CardCarrito ({ producto, setProductos }) {
   const { nombre, img, precio, cantidad } = producto
   // Define el estado para el valor seleccionado del select
   const [selectedValue, setSelectedValue] = useState('opcion2') // Valor por defecto
+  const precioFormateado = (precio * cantidad).toLocaleString('es-ES')
 
   // Maneja el cambio del valor seleccionado
   const handleChange = (event) => {
@@ -45,7 +46,7 @@ function CardCarrito ({ producto, setProductos }) {
           </div>
 
           <p className="mb-4 mt-4 text-[#2D5651] font-normal font-sans">
-            ${precio * cantidad}
+            ${precioFormateado}
           </p>
           <div className=" flex gap-2">
             <p className=" font-light">Envío:</p>
