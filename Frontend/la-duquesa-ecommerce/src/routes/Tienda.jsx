@@ -14,7 +14,7 @@ function Tienda () {
     <div>
       <Navbar />
       <div className="flex mt-0">
-        <section className='ml-10 mr-24'>
+        <section className='ml-10'>
           <button
             id="dropdownDefaultButton"
             data-dropdown-toggle="dropdown"
