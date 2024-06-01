@@ -5,9 +5,13 @@ function CardCarrito ({ producto, setProductos }) {
   const { nombre, img, precio, cantidad } = producto
   // Define el estado para el valor seleccionado del select
   const [selectedValue, setSelectedValue] = useState('opcion2') // Valor por defecto
-  const precioFormateado = (precio * cantidad).toLocaleString('es-ES')
 
-  // Maneja el cambio del valor seleccionado
+  const formatearPrecio = (precio) => {
+    return precio.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+  }
+  const precioFormateado = formatearPrecio(precio * cantidad)
+
+  // Maneja el cambio del valor seleccionado del "select" de cantidad
   const handleChange = (event) => {
     setSelectedValue(event.target.value)
     const newQuantity = parseInt(event.target.value, 10)
