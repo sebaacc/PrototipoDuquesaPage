@@ -16,15 +16,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/cart")
 public class CartController {
 
-        private final ICartService cartService;
-        private final ProductClient productClient;
-
         @Autowired
-        public CartController(ICartService cartService, ProductClient productClient) {
-                this.cartService = cartService;
-                this.productClient = productClient;
-        }
+        private  ICartService cartService;
+        @Autowired
+        private  ProductClient productClient;
 
+
+        @GetMapping("/category/{id}")
+        public ResponseEntity<Object> getCategory(@PathVariable String id) {
+                System.out.println("Received request to get category with ID: " + id); // Registro de depuración
+                Object response = productClient.getCategoryById(id);
+                System.out.println("Response from ProductClient: " + response); // Registro de depuración
+                return ResponseEntity.ok(response);
+        }
 
         @PostMapping("/addProductToCart")
         public ResponseEntity addProductToCart(@RequestBody Cart cart) {
@@ -33,10 +37,7 @@ public class CartController {
         }
 
         @PostMapping("/addCategory")
-        public ResponseEntity<String> addCategory(@RequestBody Category category) {
-                if (category == null || category.getName() == null) {
-                        return ResponseEntity.badRequest().body("Category or category name cannot be null");
-                }
+        public ResponseEntity<String> addCategory(@RequestBody Object category) {
 
                 ResponseEntity<Category> response = productClient.saveCategory(category);
                 return ResponseEntity.ok("Category added");
