@@ -4,6 +4,7 @@ import com.example.msCart.internal.app.repositories_implements.ICartRepository;
 import com.example.msCart.internal.domain.models.Cart;
 
 import com.example.msCart.internal.domain.services.ICartService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,9 +13,12 @@ import java.util.Optional;
 @Service
     public class CartServiceImplements implements ICartService {
 
-    private ICartRepository cartRepository;
+    private final ICartRepository cartRepository;
 
-  /*  @Override
+    public CartServiceImplements(ICartRepository cartRepository) {
+        this.cartRepository = cartRepository;
+    }
+    /*  @Override
     public List<Product> getAllProductsInCart(String clientId) {
         return cartRepository.findByClientId(clientId);
     }
@@ -27,6 +31,7 @@ import java.util.Optional;
     }
 
     @Override
+    @Transactional
     public void removeProductFromCart(String userId, String productId) {
         Optional<Cart> cart = cartRepository.findByClientAndProduct(userId, productId);
         if (cart.isPresent()) {
@@ -36,6 +41,7 @@ import java.util.Optional;
     }
 
     @Override
+    @Transactional
     public void clearCart(String userId) {
         cartRepository.deleteByClient(userId);
 
