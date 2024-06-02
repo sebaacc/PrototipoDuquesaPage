@@ -13,8 +13,11 @@ func ProductRoutes(r *gin.Engine, productService services.ProductService) {
 
 	r.GET(productRoute+"/findAllProducts", productHandler.FindAll())
 	r.GET(productRoute+"/findProductById/:id", productHandler.FindById())
+	r.GET(productRoute+"/isProductAmountAvailable/:id/:amount/:buying", productHandler.IsAmountAvailable())
+	r.GET(productRoute + "/findMultipleProducts", productHandler.GetMultipleProducts())
 	r.POST(productRoute+"/createProduct", productHandler.Post())
 	r.PUT(productRoute+"/updateProduct/:id", productHandler.Put())
+	r.PATCH(productRoute+"/updateAmount/:id/:amount", productHandler.UpdateAvailableAmount())
 	r.DELETE(productRoute+"/deleteProduct/:id", productHandler.Delete())
 	r.GET(productRoute+"/paginated", productHandler.GetPaginatedProductsWithFilters()) 
 

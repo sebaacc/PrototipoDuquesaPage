@@ -2,14 +2,16 @@ package com.example.msCart.internal.infrastructure.handlers;
 
 
 import com.example.msCart.internal.domain.models.Cart;
-import com.example.msCart.internal.domain.models.Category;
+import com.example.msCart.internal.domain.models.Product;
 import com.example.msCart.internal.domain.services.ICartService;
 import com.example.msCart.internal.infrastructure.feign.ProductClient;
+import com.example.msCart.internal.utils.exceptions.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -22,37 +24,30 @@ public class CartController {
         private  ProductClient productClient;
 
 
-        @GetMapping("/category/{id}")
-        public ResponseEntity<Object> getCategory(@PathVariable String id) {
-                System.out.println("Received request to get category with ID: " + id); // Registro de depuración
-                Object response = productClient.getCategoryById(id);
-                System.out.println("Response from ProductClient: " + response); // Registro de depuración
-                return ResponseEntity.ok(response);
+
+        @GetMapping("/findCartProducts/{userId}")
+        public ResponseEntity<List<Product>> findCartProducts(@PathVariable String userId)
+        {
+           return ResponseEntity.ok(cartService.getAllProductsInCart(userId));
         }
 
         @PostMapping("/addProductToCart")
-        public ResponseEntity addProductToCart(@RequestBody Cart cart) {
+        public ResponseEntity addProductToCart(@RequestBody Cart cart) throws BadRequestException {
                 cartService.addProductToCart(cart);
-                return ResponseEntity.ok("Product add to cart");
+                return ResponseEntity.ok("Product added to cart");
         }
 
-        @PostMapping("/addCategory")
-        public ResponseEntity<String> addCategory(@RequestBody Object category) {
-
-                ResponseEntity<Category> response = productClient.saveCategory(category);
-                return ResponseEntity.ok("Category added");
-        }
 
         @DeleteMapping("/removeProductFromCart/{userId}/{productId}")
         public ResponseEntity removeProductFromCart(@PathVariable String userId, @PathVariable String productId) {
                 cartService.removeProductFromCart(userId, productId);
-                return ResponseEntity.ok("Product remove");
+                return ResponseEntity.ok("Product removed");
         }
 
         @DeleteMapping("/clearCart/{userId}")
         public ResponseEntity clearCart(@PathVariable String userId) {
                 cartService.clearCart(userId);
-                return ResponseEntity.ok("Cart remove");
+                return ResponseEntity.ok("Cart removed");
         }
 
 

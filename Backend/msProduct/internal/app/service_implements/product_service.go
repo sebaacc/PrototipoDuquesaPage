@@ -69,3 +69,57 @@ func (s *productService) DeleteProduct(id primitive.ObjectID) error {
 func (s *productService) GetPaginatedProductsWithFilters(page, limit int64, name string, minPrice, maxPrice float64, subCategoryID primitive.ObjectID) ([]models.Product, error) {
 	return s.repo.GetPaginatedProductsWithFilters(page, limit, name, minPrice, maxPrice, subCategoryID)
 }
+
+func (s *productService) IsAmountAvailable(amount uint64, id primitive.ObjectID, buying bool) (bool, error) {
+    product, err := s.repo.GetByID(id)
+    if err != nil {
+        return false, err
+    }
+
+    productAmount := product.Amount
+
+	if productAmount < amount {
+		return false, nil // La cantidad solicitada no está disponible
+	}
+
+
+    if buying {
+		product.Amount = productAmount - amount
+        // Actualizar el producto en la base de datos
+        err = s.repo.Update(product)
+        if err != nil {
+            return false, err
+        }
+    }
+
+    return true, nil
+}
+
+func (s *productService) GetMultipleProductsWithId(ids []primitive.ObjectID) ([]*models.Product, error) {
+    products, err := s.repo.GetByIDs(ids)
+
+    if err != nil {
+        return nil, err
+    }
+
+    return products, nil
+}
+
+func (s *productService) UpdateAvailableAmount(amount uint64, id primitive.ObjectID) error {
+	
+    product, err := s.repo.GetByID(id)
+    if err != nil {
+        return err
+    }
+
+    product.Amount = amount
+
+    err = s.repo.Update(product)
+    if err != nil {
+        return err
+    }
+
+    return nil
+}
+
+

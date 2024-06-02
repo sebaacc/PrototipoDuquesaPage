@@ -15,4 +15,5 @@ type ProductRepository interface {
     DeleteBySubCategoryID(subCategoryID primitive.ObjectID) error
     GetPaginatedProductsWithFilters(page, limit int64, name string, minPrice, maxPrice float64, subCategoryID primitive.ObjectID) ([]models.Product, error)
     BuildFilters(name string, minPrice, maxPrice float64, subCategoryID primitive.ObjectID) bson.M
+    GetByIDs(ids []primitive.ObjectID) ([]*models.Product, error)
 }

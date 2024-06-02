@@ -61,7 +61,7 @@ info:
 resilience4j:
   circuitbreaker:
     instances:
-      guardandoEnSerieService:
+      productService:
         slidingWindowType: COUNT_BASED
         slidingWindowSize: 5
         failureRateThreshold: 50
@@ -74,7 +74,7 @@ resilience4j:
 
   retry:
     instances:
-      guardandoEnSerieService:
+      productService:
         waitDuration: 1000
         maxAttempts: 3
         retryExceptions:

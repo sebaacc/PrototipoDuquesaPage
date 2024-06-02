@@ -16,10 +16,9 @@ type response struct {
 }
 
 func Success(ctx *gin.Context, status int, data interface{}) {
-	ctx.JSON(status, response{
-		Data: data,
-	})
+	ctx.JSON(status, data)
 }
+
 
 func Failure(ctx *gin.Context, status int, err error) {
 	ctx.JSON(status, errorResponse{

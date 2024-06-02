@@ -112,3 +112,18 @@ func (r *MongoProductRepository) BuildFilters(name string, minPrice, maxPrice fl
     return filters
 }
 
+func (r *MongoProductRepository) GetByIDs(ids []primitive.ObjectID) ([]*models.Product, error) {
+    var products []*models.Product
+    cursor, err := r.collection.Find(context.TODO(), bson.M{"_id": bson.M{"$in": ids}})
+    if err != nil {
+        return nil, err
+    }
+    defer cursor.Close(context.TODO())
+
+    if err = cursor.All(context.TODO(), &products); err != nil {
+        return nil, err
+    }
+
+    return products, nil
+}
+
