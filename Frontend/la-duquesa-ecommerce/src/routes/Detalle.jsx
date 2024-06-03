@@ -102,11 +102,11 @@ const Detalle = () => {
                 <p className="text-gray-500"></p>
 
                 <div className="flex py-4 space-x-4">
-                  <div className="relative">
+                  <div className="relative  ">
                     <div className="text-center left-0 pt-2 right-0 absolute block text-xs uppercase text-gray-400 tracking-wide font-semibold">
-                      Qty
+                      Cantidad
                     </div>
-                    <select className="cursor-pointer appearance-none rounded-xl border border-gray-200 pl-4 pr-8 h-14 flex items-end pb-1">
+                    <select className="cursor-pointer appearance-none rounded-xl border border-gray-200 pl-4 pr-12 h-14 flex items-end pb-1">
                       <option>1</option>
                       <option>2</option>
                       <option>3</option>
