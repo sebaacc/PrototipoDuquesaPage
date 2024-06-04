@@ -1,195 +1,294 @@
-import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import chocolate from '../img/choco-chocolate 1.png'
-import brownie from '../img/brownie.png'
 import cake from '../img/cake-2.jpg'
-import bread from '../img/bread.png'
+import brownie from '../img/brownie.png'
+import chocolate from '../img/choco-chocolate 1.png'
+import { useState } from 'react'
 
-const products = [
-  {
-    id: 1,
-    title: 'Pastel de chocolate',
-    description: 'Delicioso pastel de chocolate con relleno de crema',
-    category: 'Pasteles',
-    image: `${chocolate}`
-  },
-  {
-    id: 2,
-    title: 'Tarta de manzana',
-    description: 'Tarta de manzana con canela y azúcar',
-    category: 'Tartas',
-    image: `${brownie}`
-  },
-  {
-    id: 3,
-    title: 'Galletas de avena',
-    description: 'Galletas de avena con chispas de chocolate',
-    category: 'Galletas',
-    image: `${cake}`
-  },
-  {
-    id: 4,
-    title: 'Cupcakes de vainilla',
-    description: 'Cupcakes de vainilla con glaseado de crema',
-    category: 'Pasteles',
-    image: `${cake}`
-  },
-  {
-    id: 5,
-    title: 'Pie de limón',
-    description: 'Delicioso pie de limón con merengue',
-    category: 'Tartas',
-    image: `${bread}`
-  },
-  {
-    id: 6,
-    title: 'Macarons de frambuesa',
-    description: 'Macarons de frambuesa con relleno de crema',
-    category: 'Galletas',
-    image: `${brownie}`
-  },
-  {
-    id: 7,
-    title: 'Pastel de zanahoria',
-    description: 'Pastel de zanahoria con nueces y crema de queso',
-    category: 'Pasteles',
-    image: `${chocolate}`
-  },
-  {
-    id: 8,
-    title: 'Tarta de queso',
-    description: 'Tarta de queso con base de galleta',
-    category: 'Tartas',
-    image: `${cake}`
-  },
-  {
-    id: 9,
-    title: 'Galletas de mantequilla',
-    description: 'Galletas de mantequilla con chispas de chocolate',
-    category: 'Galletas',
-    image: `${brownie}`
-  }
-]
-
-const ProductList = () => {
+const PastryGallery = () => {
   const [filter, setFilter] = useState('Todos')
-  const [itemsPerPage, setItemsPerPage] = useState(12)
-  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [selectedPastry, setSelectedPastry] = useState(null)
+  const [itemsPerPage, setItemsPerPage] = useState(6)
+  const [currentPage, setCurrentPage] = useState(1)
 
-  const filteredProducts =
-    filter === 'Todos'
-      ? products
-      : products.filter((product) => product.category === filter)
-
-  const handleItemsPerPageChange = (num) => {
-    setItemsPerPage(num)
-    setDropdownOpen(false)
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter)
+    setCurrentPage(1)
   }
+
+  const handlePastryClick = (pastry) => {
+    setSelectedPastry(pastry)
+  }
+
+  const closeModal = () => {
+    setSelectedPastry(null)
+  }
+
+  const handleItemsPerPageChange = (event) => {
+    setItemsPerPage(parseInt(event.target.value))
+    setCurrentPage(1)
+  }
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage)
+  }
+
+  const filteredPastries =
+    filter === 'Todos'
+      ? pastries
+      : pastries.filter((pastry) => pastry.type === filter)
+  const totalItems = filteredPastries.length
+  const totalPages = Math.ceil(totalItems / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentPastries = filteredPastries.slice(startIndex, endIndex)
 
   return (
-    <div className="container mx-auto">
-        <Navbar />
-      <h1 className="text-4xl flex text-center justify-center">
-        Nuestros productos
-      </h1>
-      <div className="flex flex-col md:flex-row items-start gap-8 p-8">
-        <div className="w-full md:w-1/4 bg-[#BD6292] p-4 rounded-lg">
-          <h2 className="text-lg font-bold mb-4">Filtros</h2>
-          <div className="grid gap-2">
-            {['Todos', 'Pasteles', 'Tartas', 'Galletas'].map((category) => (
-              <button
-                key={category}
-                onClick={() => setFilter(category)}
-                className={`bg-white focus:bg-[#cdbafa] rounded disabled:opacity-50 h-10 px-4 py-2 ${
-                  filter === category
-                    ? 'bg-background text-accent-foreground'
-                    : 'border-white border-input hover:bg-accent hover:text-accent-foreground'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
+    <section className="min-h-screen">
+      <Navbar />
+      <div className="px-4 container max-w-6xl mx-auto py-4">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 ">
+          <div className="grid gap-4">
+            <h1 className="text-3xl font-bold">Nuestros productos</h1>
+            <p className="text-gray-50">
+              Explora nuestras deliciosas pastelerías
+            </p>
           </div>
-          <div className="mt-4">
-            <label
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              htmlFor="items-per-page"
+          <div className="flex items-center gap-4">
+            <FilterButton
+              filter="Todos"
+              currentFilter={filter}
+              onClick={handleFilterChange}
+            />
+            <FilterButton
+              filter="Pastel"
+              currentFilter={filter}
+              onClick={handleFilterChange}
+            />
+            <FilterButton
+              filter="Galleta"
+              currentFilter={filter}
+              onClick={handleFilterChange}
+            />
+            <FilterButton
+              filter="Tarta"
+              currentFilter={filter}
+              onClick={handleFilterChange}
+            />
+            <FilterButton
+              filter="Pastelería"
+              currentFilter={filter}
+              onClick={handleFilterChange}
+            />
+            <select
+              onChange={handleItemsPerPageChange}
+              value={itemsPerPage}
+              className="px-4 py-2 rounded bg-gray-200 text-gray-700"
             >
-              Mostrar
-            </label>
-            <div className="relative">
-              <button
-                type="button"
-                role="combobox"
-                aria-controls="radix-:r4:"
-                aria-expanded={dropdownOpen ? 'true' : 'false'}
-                aria-autocomplete="none"
-                dir="ltr"
-                data-state={dropdownOpen ? 'open' : 'closed'}
-                className="flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm w-24 bg-[#cdbafa]"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                <span style={{ pointerEvents: 'none' }}>
-                  {itemsPerPage} por página
-                </span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-chevron-down h-4 w-4 opacity-50"
-                  aria-hidden="true"
-                >
-                  <path d="m6 9 6 6 6-6"></path>
-                </svg>
-              </button>
-              {dropdownOpen && (
-                <ul className="absolute z-10 mt-1 w-full bg-white border border-input rounded-md shadow-lg">
-                  {[6, 12, 18].map((num) => (
-                    <li
-                      key={num}
-                      className="cursor-pointer px-4 py-2 hover:bg-accent hover:text-accent-foreground hover:bg-[#cdbafa]"
-                      onClick={() => handleItemsPerPageChange(num)}
-                    >
-                      {num} por página
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
+              <option value={3}>3</option>
+              <option value={6}>6</option>
+              <option value={9}>9</option>
+            </select>
           </div>
         </div>
-        <div className="w-full md:w-3/4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {filteredProducts.slice(0, itemsPerPage).map((product) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {currentPastries.map((pastry, index) => (
             <div
-              key={product.id}
-              className="bg-[#8B7BB1] rounded-lg overflow-hidden shadow-lg"
+              key={index}
+              className="relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-2 cursor-pointer"
+              onClick={() => handlePastryClick(pastry)}
             >
               <img
-                src={product.image}
-                alt={product.title}
-                width="400"
-                height="300"
-                className="w-full h-48 object-cover"
-                style={{ aspectRatio: '400 / 300', objectFit: 'cover' }}
+                src={pastry.image}
+                alt={pastry.title}
+                width="500"
+                height="400"
+                className="object-cover w-full h-64"
+                style={{ aspectRatio: '500 / 400', objectFit: 'cover' }}
               />
-              <div className="p-4">
-                <h3 className="text-lg font-bold">{product.title}</h3>
-                <p className="text-white mt-2">{product.description}</p>
+              <div className="bg-white p-4">
+                <h3 className="font-bold text-xl">{pastry.title}</h3>
+                <p className="text-sm text-gray-500">{pastry.description}</p>
               </div>
             </div>
           ))}
         </div>
+        <div className="flex justify-center mt-8">
+          <nav
+            aria-label="pagination"
+            className="mx-auto flex w-full justify-center"
+            role="navigation"
+          >
+            <ul className="flex flex-row items-center gap-1">
+              <li>
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-1 pl-2.5"
+                  aria-label="Go to previous page"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-chevron-left h-4 w-4"
+                  >
+                    <path d="m15 18-6-6 6-6"></path>
+                  </svg>
+                  <span>Anterior</span>
+                </button>
+              </li>
+              {[...Array(totalPages)].map((_, index) => (
+                <li key={index}>
+                  <button
+                    onClick={() => handlePageChange(index + 1)}
+                    className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${
+                      currentPage === index + 1
+                        ? 'border border-input bg-background'
+                        : 'hover:bg-accent hover:text-accent-foreground'
+                    } h-10 w-10`}
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+              <li>
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-1 pr-2.5"
+                  aria-label="Go to next page"
+                >
+                  <span>Siguiente</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-chevron-right h-4 w-4"
+                  >
+                    <path d="m9 18 6-6-6-6"></path>
+                  </svg>
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        {selectedPastry && (
+          <PastryModal pastry={selectedPastry} onClose={closeModal} />
+        )}
       </div>
       <Footer />
-    </div>
+    </section>
   )
 }
 
-export default ProductList
+const FilterButton = ({ filter, currentFilter, onClick }) => (
+  <button
+    onClick={() => onClick(filter)}
+    className={`px-4 py-2 rounded ${
+      filter === currentFilter
+        ? 'bg-[#BD6292] text-white'
+        : 'bg-gray-200 text-gray-700'
+    }`}
+  >
+    {filter}
+  </button>
+)
+
+const PastryModal = ({ pastry, onClose }) => (
+  <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+    <div className="bg-white p-8 rounded-lg max-w-lg mx-auto">
+      <h2 className="text-2xl font-bold mb-4">{pastry.title}</h2>
+      <img
+        src={pastry.image}
+        alt={pastry.title}
+        width="500"
+        height="400"
+        className="object-cover w-full h-64 mb-4"
+        style={{ aspectRatio: '500 / 400', objectFit: 'cover' }}
+      />
+      <p className="text-gray-700 mb-4">{pastry.description}</p>
+      <button
+        onClick={onClose}
+        className="px-4 py-2 bg-[#BD6292] text-white rounded flex m-auto"
+      >
+        Cerrar
+      </button>
+    </div>
+  </div>
+)
+
+const pastries = [
+  {
+    title: 'Pastel de Chocolate',
+    description: 'Pastel de chocolate decadente con rico glaseado',
+    type: 'Pastel',
+    image: cake
+  },
+  {
+    title: 'Tarta de Fresas',
+    description: 'Tarta ligera y esponjosa con fresas frescas',
+    type: 'Pastel',
+    image: chocolate
+  },
+  {
+    title: 'Galletas de Mantequilla de Maní',
+    description:
+      'Galletas de mantequilla de maní masticables con un toque de sal',
+    type: 'Galleta',
+    image: brownie
+  },
+  {
+    title: 'Tarta de Manzana',
+    description:
+      'Tarta de manzana clásica hecha en casa con una corteza hojaldrada',
+    type: 'Tarta',
+    image: cake
+  },
+  {
+    title: 'Croissant',
+    description: 'Croissant estilo francés, mantecoso y hojaldrado',
+    type: 'Pastelería',
+    image: brownie
+  },
+  {
+    title: 'Tarta de Limón',
+    description:
+      'Tarta de limón con una corteza crujiente de galleta de mantequilla',
+    type: 'Pastelería',
+    image: chocolate
+  },
+  {
+    title: 'Galletas con Chispas de Chocolate',
+    description: 'Galletas suaves y masticables con chispas de chocolate',
+    type: 'Galleta',
+    image: chocolate
+  },
+  {
+    title: 'Pastel de Terciopelo Rojo',
+    description:
+      'Pastel de terciopelo rojo húmedo y rico con glaseado de queso crema',
+    type: 'Pastel',
+    image: cake
+  },
+  {
+    title: 'Tarta de Arándanos',
+    description: 'Tarta de arándanos jugosa con una corteza hojaldrada',
+    type: 'Tarta',
+    image: brownie
+  }
+]
+
+export default PastryGallery
