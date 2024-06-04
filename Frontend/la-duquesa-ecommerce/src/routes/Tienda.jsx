@@ -3,6 +3,7 @@ import Footer from '../components/Footer'
 import cake from '../img/cake-2.jpg'
 import brownie from '../img/brownie.png'
 import chocolate from '../img/choco-chocolate 1.png'
+import { CiShoppingCart } from 'react-icons/ci'
 import { useState } from 'react'
 
 const Tienda = () => {
@@ -116,11 +117,12 @@ const Tienda = () => {
                 <p className="text-sm text-gray-500">{pastry.description}</p>
                 <button
                   onClick={(e) => {
-                    e.stopPropagation() // Prevent triggering handlePastryClick
+                    e.stopPropagation()
                     handleAddToCart(pastry)
                   }}
-                  className="mt-2 px-4 py-2 bg-[#BD6292] text-white rounded"
+                  className="mt-2 px-4 py-2 bg-[#BD6292] text-white rounded flex items-center justify-center hover:bg-[#CE76A4]"
                 >
+                  <span><CiShoppingCart className='size-6 mr-2'/></span>
                   Agregar al carrito
                 </button>
               </div>
@@ -236,7 +238,7 @@ const PastryModal = ({ pastry, onClose }) => (
       <p className="mb-4">{pastry.description}</p>
       <button
         onClick={() => onClose()}
-        className="px-4 py-2 bg-[#BD6292] text-white rounded"
+        className="px-4 py-2 bg-[#BD6292] text-white rounded m-auto flex hover:bg-[#CE76A4]"
       >
         Cerrar
       </button>

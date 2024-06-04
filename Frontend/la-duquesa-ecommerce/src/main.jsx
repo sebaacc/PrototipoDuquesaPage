@@ -12,6 +12,7 @@ import Tienda from './routes/Tienda.jsx'
 import ReporteDeUsuario from './routes/ReporteDeUsuario.jsx'
 import ReporteDeProducto from './routes/ReporteDeProducto.jsx'
 import LogIn from './routes/LogIn.jsx'
+import Pagos from './routes/Pagos.jsx'
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,11 @@ const router = createBrowserRouter([
   {
     path: 'login',
     element: <LogIn />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'pagos',
+    element: <Pagos />,
     errorElement: <ErrorPage />
   }
 ])
