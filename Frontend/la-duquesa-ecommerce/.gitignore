@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 salvaMain.txt
+Tiendav1.txt
 
 # Editor directories and files
 .vscode/*
