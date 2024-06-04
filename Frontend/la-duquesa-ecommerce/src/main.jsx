@@ -13,6 +13,7 @@ import ReporteDeUsuario from './routes/ReporteDeUsuario.jsx'
 import ReporteDeProducto from './routes/ReporteDeProducto.jsx'
 import LogIn from './routes/LogIn.jsx'
 import Pagos from './routes/Pagos.jsx'
+import Register from './routes/Register.jsx'
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,11 @@ const router = createBrowserRouter([
   {
     path: 'pagos',
     element: <Pagos />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'register',
+    element: <Register />,
     errorElement: <ErrorPage />
   }
 ])
