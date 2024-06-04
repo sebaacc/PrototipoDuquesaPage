@@ -5,11 +5,12 @@ import brownie from '../img/brownie.png'
 import chocolate from '../img/choco-chocolate 1.png'
 import { useState } from 'react'
 
-const PastryGallery = () => {
+const Tienda = () => {
   const [filter, setFilter] = useState('Todos')
   const [selectedPastry, setSelectedPastry] = useState(null)
   const [itemsPerPage, setItemsPerPage] = useState(6)
   const [currentPage, setCurrentPage] = useState(1)
+  const [cart, setCart] = useState([])
 
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter)
@@ -31,6 +32,10 @@ const PastryGallery = () => {
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage)
+  }
+
+  const handleAddToCart = (pastry) => {
+    setCart([...cart, pastry])
   }
 
   const filteredPastries =
@@ -109,6 +114,15 @@ const PastryGallery = () => {
               <div className="bg-white p-4">
                 <h3 className="font-bold text-xl">{pastry.title}</h3>
                 <p className="text-sm text-gray-500">{pastry.description}</p>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation() // Prevent triggering handlePastryClick
+                    handleAddToCart(pastry)
+                  }}
+                  className="mt-2 px-4 py-2 bg-[#BD6292] text-white rounded"
+                >
+                  Agregar al carrito
+                </button>
               </div>
             </div>
           ))}
@@ -219,10 +233,10 @@ const PastryModal = ({ pastry, onClose }) => (
         className="object-cover w-full h-64 mb-4"
         style={{ aspectRatio: '500 / 400', objectFit: 'cover' }}
       />
-      <p className="text-gray-700 mb-4">{pastry.description}</p>
+      <p className="mb-4">{pastry.description}</p>
       <button
-        onClick={onClose}
-        className="px-4 py-2 bg-[#BD6292] text-white rounded flex m-auto"
+        onClick={() => onClose()}
+        className="px-4 py-2 bg-[#BD6292] text-white rounded"
       >
         Cerrar
       </button>
@@ -245,15 +259,13 @@ const pastries = [
   },
   {
     title: 'Galletas de Mantequilla de Maní',
-    description:
-      'Galletas de mantequilla de maní masticables con un toque de sal',
+    description: 'Galletas de mantequilla de maní masticables con un toque de sal',
     type: 'Galleta',
     image: brownie
   },
   {
     title: 'Tarta de Manzana',
-    description:
-      'Tarta de manzana clásica hecha en casa con una corteza hojaldrada',
+    description: 'Tarta de manzana clásica hecha en casa con una corteza hojaldrada',
     type: 'Tarta',
     image: cake
   },
@@ -265,8 +277,7 @@ const pastries = [
   },
   {
     title: 'Tarta de Limón',
-    description:
-      'Tarta de limón con una corteza crujiente de galleta de mantequilla',
+    description: 'Tarta de limón con una corteza crujiente de galleta de mantequilla',
     type: 'Pastelería',
     image: chocolate
   },
@@ -278,8 +289,7 @@ const pastries = [
   },
   {
     title: 'Pastel de Terciopelo Rojo',
-    description:
-      'Pastel de terciopelo rojo húmedo y rico con glaseado de queso crema',
+    description: 'Pastel de terciopelo rojo húmedo y rico con glaseado de queso crema',
     type: 'Pastel',
     image: cake
   },
@@ -288,7 +298,73 @@ const pastries = [
     description: 'Tarta de arándanos jugosa con una corteza hojaldrada',
     type: 'Tarta',
     image: brownie
+  },
+  {
+    title: 'Eclair de Vainilla',
+    description: 'Eclair relleno de crema de vainilla y cubierto con glaseado de chocolate',
+    type: 'Pastelería',
+    image: chocolate
+  },
+  {
+    title: 'Macarons de Frambuesa',
+    description: 'Macarons ligeros y crujientes con relleno de frambuesa',
+    type: 'Pastelería',
+    image: brownie
+  },
+  {
+    title: 'Muffin de Arándanos',
+    description: 'Muffin esponjoso con arándanos frescos',
+    type: 'Pastelería',
+    image: cake
+  },
+  {
+    title: 'Tarta de Queso',
+    description: 'Tarta de queso cremosa con base de galleta graham',
+    type: 'Tarta',
+    image: chocolate
+  },
+  {
+    title: 'Pan de Plátano',
+    description: 'Pan de plátano húmedo con nueces',
+    type: 'Pastelería',
+    image: brownie
+  },
+  {
+    title: 'Pastel de Zanahoria',
+    description: 'Pastel de zanahoria húmedo con glaseado de queso crema',
+    type: 'Pastel',
+    image: cake
+  },
+  {
+    title: 'Galletas de Avena',
+    description: 'Galletas crujientes de avena con pasas',
+    type: 'Galleta',
+    image: chocolate
+  },
+  {
+    title: 'Tarta de Moras',
+    description: 'Tarta de moras frescas con corteza dorada',
+    type: 'Tarta',
+    image: brownie
+  },
+  {
+    title: 'Profiteroles',
+    description: 'Bolas de masa rellenas de crema pastelera y cubiertas con chocolate',
+    type: 'Pastelería',
+    image: cake
+  },
+  {
+    title: 'Galletas de Jengibre',
+    description: 'Galletas de jengibre especiadas y crujientes',
+    type: 'Galleta',
+    image: chocolate
+  },
+  {
+    title: 'Tarta de Durazno',
+    description: 'Tarta de durazno jugosa con corteza hojaldrada',
+    type: 'Tarta',
+    image: brownie
   }
 ]
 
-export default PastryGallery
+export default Tienda
