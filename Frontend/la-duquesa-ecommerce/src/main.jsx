@@ -55,7 +55,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />
   },
   {
-    path: 'iniciar-sesion',
+    path: 'login',
     element: <LogIn />,
     errorElement: <ErrorPage />
   }
