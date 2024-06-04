@@ -10,3 +10,30 @@ body {
   box-sizing: border-box;
   color: black;
 }
+
+.custom-swiper {
+  height: 11rem; /* Altura para escritorio */
+}
+
+@media (max-width: 640px) {
+  .custom-swiper {
+    height: 9rem; /* Altura para móvil */
+  }
+}
+
+.custom-swiper .swiper-scrollbar {
+  height: 1rem; /* Ajusta esta altura según tus necesidades */
+  background-color: rgba(0, 0, 0, 0.1); /* Color de fondo de la scrollbar */
+}
+
+.custom-swiper .swiper-scrollbar-drag {
+  height: 100%; /* Asegura que el dragger ocupe toda la altura de la scrollbar */
+  background-color: #bd6292; /* Color del dragger */
+  border-radius: 10px; /* Opcional: para un estilo más redondeado */
+}
+.custom-swiper .swiper-pagination-fraction,
+.swiper-pagination-custom,
+.swiper-horizontal > .swiper-pagination-bullets,
+.swiper-pagination-bullets.swiper-pagination-horizontal {
+  bottom: var(--swiper-pagination-bottom, 23px);
+}

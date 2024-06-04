@@ -14,7 +14,7 @@ public interface ICartService {
     Cart addProductToCart(Long cartId, Long productId, Integer quantity);
 
     // Método para eliminar un producto de un carrito
-    Cart removeProductFromCart(Long cartId, Long productId);
+    String removeProductFromCart(Long cartId, Long productId);
 
     // Método para vaciar un carrito
    // Cart clearCart(Long cartId);
