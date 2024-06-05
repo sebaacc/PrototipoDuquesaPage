@@ -21,6 +21,8 @@ public interface ICartService {
     // Método para vaciar un carrito
     void clearCart(String userId);
 
+    public void removeProductFromAllCarts(String productId);
+
     // Método para calcular el total del carrito
     //double calculateTotalPrice(Long cartId);
 

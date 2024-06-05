@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"math/rand"
 	"mime/multipart"
+	"net/http"
 	"path/filepath"
 
 	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/models"
 	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/repositories"
 	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/services"
+	"gitlab.com/eescarria/ecommerce-equipo4.git/pkg/feign"
 	"gitlab.com/eescarria/ecommerce-equipo4.git/pkg/utils"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -63,8 +65,57 @@ func (s *productService) UpdateProduct(product *models.Product) error {
 }
 
 func (s *productService) DeleteProduct(id primitive.ObjectID) error {
-	return s.repo.Delete(id)
+    // Elimina el producto del repositorio
+    if err := s.repo.Delete(id); err != nil {
+		fmt.Println("Ha llegado 1")
+		fmt.Println(err)
+        return err
+    }
+	
+    // Obtiene una URL aleatoria de una instancia del microservicio
+    url, err := feign.GetRandomInstanceURL("msproduct")
+	fmt.Println(url)
+    if err != nil {
+		fmt.Println("Ha llegado 2")
+		fmt.Println(err)
+        return err
+    }
+
+    // Construye la URL para la petición DELETE
+    deleteURL := fmt.Sprintf("%s/cart/removeProductFromAllCarts/%s", url, id.Hex())
+
+	fmt.Println("Url")
+	fmt.Println(deleteURL)
+
+    // Crea una petición DELETE
+    req, err := http.NewRequest("DELETE", deleteURL, nil)
+    if err != nil {
+		fmt.Println("Ha llegado 3")
+		fmt.Println(err)
+        return err
+    }
+
+    // Envia la petición
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    if err != nil {
+		fmt.Println("Ha llegado 4")
+		fmt.Println(err)
+        return err
+    }
+    defer resp.Body.Close()
+	
+    // Verifica el código de estado de la respuesta
+    if resp.StatusCode != http.StatusOK {
+		fmt.Println("Ha llegado 5")
+		fmt.Println(err)
+        return err
+    }
+
+
+    return nil
 }
+
 
 func (s *productService) GetPaginatedProductsWithFilters(page, limit int64, name string, minPrice, maxPrice float64, subCategoryID primitive.ObjectID) ([]models.Product, error) {
 	return s.repo.GetPaginatedProductsWithFilters(page, limit, name, minPrice, maxPrice, subCategoryID)

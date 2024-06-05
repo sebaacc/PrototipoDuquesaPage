@@ -17,4 +17,6 @@ public interface ICartRepository extends JpaRepository<Cart, Long> {
     void deleteByClient(String clientId);
 
     void deleteByClientAndProduct(String client, String product);
+
+    void deleteByProduct(String productId);
 }

@@ -7,6 +7,7 @@ import com.example.msCart.internal.domain.models.Product;
 import com.example.msCart.internal.domain.services.ICartService;
 import com.example.msCart.internal.infrastructure.feign.ProductClient;
 import com.example.msCart.internal.utils.exceptions.BadRequestException;
+import feign.FeignException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -47,20 +48,26 @@ import java.util.Optional;
     }
 
 
-    @Override
     public void addProductToCart(Cart cart) throws BadRequestException {
 
-        Boolean isAvailable = productClient.isProductAvailable(cart.getProduct(), cart.getQuantity(), false);
-        System.out.println(isAvailable);
-        if(isAvailable)
+        Optional<Cart> posibleCart = cartRepository.findByClientAndProduct(cart.getClient(), cart.getProduct());
+
+        if(posibleCart.isPresent())
         {
-            cartRepository.save(cart);
-        }
-        else
-        {
-           throw new BadRequestException("The amount of products that you want to add is not available");
+            throw new BadRequestException("The user already has that product added to the cart");
         }
 
+        try {
+            Boolean isAvailable = productClient.isProductAvailable(cart.getProduct(), cart.getQuantity(), false);
+            if (isAvailable) {
+                cartRepository.save(cart);
+            } else {
+                throw new BadRequestException("The amount of products that you want to add is not available");
+            }
+            //Si Go no nos devuelve un producto, manejamos la exception
+        } catch (FeignException.BadRequest e) {
+            throw new BadRequestException("Could not find a product");
+        }
     }
 
     @Override
@@ -77,6 +84,13 @@ import java.util.Optional;
     @Transactional
     public void clearCart(String userId) {
         cartRepository.deleteByClient(userId);
+    }
+
+
+    @Override
+    public void removeProductFromAllCarts(String productId)
+    {
+        cartRepository.deleteByProduct(productId);
     }
 
 

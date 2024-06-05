@@ -170,21 +170,24 @@ func (h *ProductHandler) Put() gin.HandlerFunc {
 
 // Delete handles the deletion of a product
 func (h *ProductHandler) Delete() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		idParam := c.Param("id")
-		id, err := primitive.ObjectIDFromHex(idParam)
-		if err != nil {
-			web.Failure(c, 400, errors.New("Invalid id"))
-			return
-		}
-		err = h.s.DeleteProduct(id)
-		if err != nil {
-			web.Failure(c, 404, errors.New("Product not found"))
-			return
-		}
-		web.Success(c, 204, nil)
-	}
+    return func(c *gin.Context) {
+        idParam := c.Param("id")
+        id, err := primitive.ObjectIDFromHex(idParam)
+        if err != nil {
+            web.Failure(c, http.StatusBadRequest, errors.New("invalid id"))
+            return
+        }
+
+        err = h.s.DeleteProduct(id)
+        if err != nil {
+            web.Failure(c, http.StatusInternalServerError, errors.New("error deleting product"))
+            return
+        }
+
+        web.Success(c, http.StatusNoContent, nil)
+    }
 }
+
 
 // GetPaginatedProductsWithFilters handles the retrieval of paginated products with filters
 func (h *ProductHandler) GetPaginatedProductsWithFilters() gin.HandlerFunc {

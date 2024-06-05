@@ -34,7 +34,7 @@ public class CartController {
         @PostMapping("/addProductToCart")
         public ResponseEntity addProductToCart(@RequestBody Cart cart) throws BadRequestException {
                 cartService.addProductToCart(cart);
-                return ResponseEntity.ok("Product added to cart");
+                return ResponseEntity.ok("Product added to the cart");
         }
 
 
@@ -49,6 +49,14 @@ public class CartController {
                 cartService.clearCart(userId);
                 return ResponseEntity.ok("Cart removed");
         }
+
+        @DeleteMapping("/removeProductFromAllCarts/{productId}")
+        public ResponseEntity deleteProductFromAllCarts(@PathVariable String productId) {
+                cartService.removeProductFromAllCarts(productId);
+                return ResponseEntity.ok("Product removed");
+        }
+
+
 
 
 
