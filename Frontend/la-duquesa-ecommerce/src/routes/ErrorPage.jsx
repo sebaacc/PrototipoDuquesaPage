@@ -11,7 +11,7 @@ export default function ErrorPage () {
           <div className="bg-white shadow overflow-hidden sm:rounded-lg pb-8">
             <div className="border-t border-gray-200 text-center pt-8">
               <h1 className="text-9xl font-bold text-purple-400">404</h1>
-              <h1 className="text-6xl font-medium py-8">
+              <h1 className="text-5xl font-medium py-8">
                 Oops! Página no encontrada
               </h1>
               <p className="text-2xl pb-8 px-12 font-medium">
