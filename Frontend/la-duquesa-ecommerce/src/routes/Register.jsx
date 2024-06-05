@@ -53,57 +53,59 @@ function SignUp () {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#F7F8FC]">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow m-10 md:mt-20">
-      <Link to={'/'} className="text-sm text-[#7F7C82] font-bold">
-        <div className="flex items-center font-bold">
-          <ArrowLeftIcon className="h-6 w-6 text-[#7F7C82]" />
+      <div className="w-full max-w-lg p-8 space-y-6 bg-white rounded-lg shadow m-10 md:mt-20 ">
+        <Link to={'/'} className="text-sm text-[#7F7C82] font-bold">
+          <div className="flex items-center font-bold">
+            <ArrowLeftIcon className="h-6 w-6 text-[#7F7C82]" />
             Volver al inicio
-        </div>
+          </div>
         </Link>
         <div className="text-center">
           <img src={logo} alt="La Quesa Bakery" className="mx-auto h-24 w-32" />
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              htmlFor="firstName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Nombre
-            </label>
-            <input
-              id="firstName"
-              name="firstName"
-              type="text"
-              placeholder="Nombre"
-              className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
-              value={form.firstName}
-              onChange={handleChange}
-            />
-            {errors.firstName && (
-              <p className="text-red-500 text-xs mt-2">{errors.firstName}</p>
-            )}
-          </div>
-          <div>
-            <label
-              htmlFor="lastName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Apellido
-            </label>
-            <input
-              id="lastName"
-              name="lastName"
-              type="text"
-              placeholder="Apellido"
-              className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
-              value={form.lastName}
-              onChange={handleChange}
-            />
-            {errors.lastName && (
-              <p className="text-red-500 text-xs mt-2">{errors.lastName}</p>
-            )}
-          </div>
+          <section className="flex gap-10">
+            <div>
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Nombre
+              </label>
+              <input
+                id="firstName"
+                name="firstName"
+                type="text"
+                placeholder="Nombre"
+                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                value={form.firstName}
+                onChange={handleChange}
+              />
+              {errors.firstName && (
+                <p className="text-red-500 text-xs mt-2">{errors.firstName}</p>
+              )}
+            </div>
+            <div>
+              <label
+                htmlFor="lastName"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Apellido
+              </label>
+              <input
+                id="lastName"
+                name="lastName"
+                type="text"
+                placeholder="Apellido"
+                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                value={form.lastName}
+                onChange={handleChange}
+              />
+              {errors.lastName && (
+                <p className="text-red-500 text-xs mt-2">{errors.lastName}</p>
+              )}
+            </div>
+          </section>
           <div>
             <label
               htmlFor="gender"
@@ -114,11 +116,12 @@ function SignUp () {
             <select
               id="gender"
               name="gender"
+              placeholder="seleccione"
               className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
               value={form.gender}
               onChange={handleChange}
             >
-              <option value="">Seleccione</option>
+              <option value="select">Seleccione</option>
               <option value="male">Masculino</option>
               <option value="female">Femenino</option>
               <option value="other">Prefiero No Decirlo </option>
@@ -147,6 +150,9 @@ function SignUp () {
               <p className="text-red-500 text-xs mt-2">{errors.email}</p>
             )}
           </div>
+          <section>
+
+          </section>
           <div>
             <label
               htmlFor="password"
@@ -198,7 +204,8 @@ function SignUp () {
         </form>
         <div className="flex justify-between text-sm text-[#7F7C82]">
           <Link to="/login" className="">
-            ¿Ya tienes una cuenta? <span className='hover:font-bold'>Iniciar Sesión</span>
+            ¿Ya tienes una cuenta?{' '}
+            <span className="hover:font-bold">Iniciar Sesión</span>
           </Link>
         </div>
       </div>

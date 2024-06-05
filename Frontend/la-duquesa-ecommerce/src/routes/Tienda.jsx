@@ -1,8 +1,25 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import cake from '../img/cake-2.jpg'
-import brownie from '../img/brownie.png'
-import chocolate from '../img/choco-chocolate 1.png'
+import croissant from '../img/productos/croissant.jpg'
+import galletaChocolate from '../img/productos/galleta-chispas-chocolate.jpg'
+import galletaMani from '../img/productos/galleta-mani.jpg'
+import galletaAvena from '../img/productos/galletas-avena.jpg'
+import galletaJenjibre from '../img/productos/galletas-jengibre.jpg'
+import macaronsFrambuesa from '../img/productos/macarons-de-frambuesa.jpg'
+import muffinsArandanos from '../img/productos/muffins-arandanos.jpg'
+import panPlatano from '../img/productos/pan-de-platano.jpg'
+import pastelTercipelo from '../img/productos/pastel-terciopelo-rojo.jpg'
+import pastelZanahoria from '../img/productos/pastel-zanahoria.jpg'
+import tartaArandanos from '../img/productos/tarta-de-arandanos.jpg'
+import tartaDurzano from '../img/productos/tarta-de-durazno.jpg'
+import tartaMora from '../img/productos/tarta-moras.jpg'
+import tartaQueso from '../img/productos/tarta-queso.jpg'
+import tortaFresa from '../img/productos/tortaDeFresas.jpg'
+import tartaLimon from '../img/productos/tortaDeLimon.jpg'
+import tartaManzana from '../img/productos/tarta-manzana.jpg'
+import eclairVainilla from '../img/productos/eclair-vainilla.jpg'
+import profiteroles from '../img/productos/profiteroles.jpg'
+import pastelChocolate from '../img/productos/pastel-cocolate.jpg'
 import { CiShoppingCart } from 'react-icons/ci'
 import { useState } from 'react'
 
@@ -12,6 +29,7 @@ const Tienda = () => {
   const [itemsPerPage, setItemsPerPage] = useState(6)
   const [currentPage, setCurrentPage] = useState(1)
   const [cart, setCart] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
 
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter)
@@ -39,10 +57,19 @@ const Tienda = () => {
     setCart([...cart, pastry])
   }
 
-  const filteredPastries =
-    filter === 'Todos'
-      ? pastries
-      : pastries.filter((pastry) => pastry.type === filter)
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value)
+    setCurrentPage(1)
+  }
+
+  const filteredPastries = pastries
+    .filter((pastry) =>
+      filter === 'Todos' ? true : pastry.type === filter
+    )
+    .filter((pastry) =>
+      pastry.title.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+
   const totalItems = filteredPastries.length
   const totalPages = Math.ceil(totalItems / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
@@ -56,10 +83,11 @@ const Tienda = () => {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 ">
           <div className="grid gap-4">
             <h1 className="text-3xl font-bold">Nuestros productos</h1>
-            <p className="text-gray-50">
+            <p className="text-black">
               Explora nuestras deliciosas pastelerías
             </p>
           </div>
+
           <div className="flex items-center gap-4">
             <FilterButton
               filter="Todos"
@@ -97,6 +125,15 @@ const Tienda = () => {
             </select>
           </div>
         </div>
+        <article className="mb-6 text-white flex justify-end">
+          <input
+            className="bg-[#CE76A4] text-white w-1/3 p-2 border-none rounded-lg placeholder:text-white"
+            placeholder="Encuentra tus productos..."
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </article>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {currentPastries.map((pastry, index) => (
             <div
@@ -122,7 +159,9 @@ const Tienda = () => {
                   }}
                   className="mt-2 px-4 py-2 bg-[#BD6292] text-white rounded flex items-center justify-center hover:bg-[#CE76A4]"
                 >
-                  <span><CiShoppingCart className='size-6 mr-2'/></span>
+                  <span>
+                    <CiShoppingCart className="size-6 mr-2" />
+                  </span>
                   Agregar al carrito
                 </button>
               </div>
@@ -251,121 +290,127 @@ const pastries = [
     title: 'Pastel de Chocolate',
     description: 'Pastel de chocolate decadente con rico glaseado',
     type: 'Pastel',
-    image: cake
+    image: pastelChocolate
   },
   {
     title: 'Tarta de Fresas',
     description: 'Tarta ligera y esponjosa con fresas frescas',
     type: 'Pastel',
-    image: chocolate
+    image: tortaFresa
   },
   {
     title: 'Galletas de Mantequilla de Maní',
-    description: 'Galletas de mantequilla de maní masticables con un toque de sal',
+    description:
+      'Galletas de mantequilla de maní masticables con un toque de sal',
     type: 'Galleta',
-    image: brownie
+    image: galletaMani
   },
   {
     title: 'Tarta de Manzana',
-    description: 'Tarta de manzana clásica hecha en casa con una corteza hojaldrada',
+    description:
+      'Tarta de manzana clásica hecha en casa con una corteza hojaldrada',
     type: 'Tarta',
-    image: cake
+    image: tartaManzana
   },
   {
     title: 'Croissant',
     description: 'Croissant estilo francés, mantecoso y hojaldrado',
     type: 'Pastelería',
-    image: brownie
+    image: croissant
   },
   {
     title: 'Tarta de Limón',
-    description: 'Tarta de limón con una corteza crujiente de galleta de mantequilla',
+    description:
+      'Tarta de limón con una corteza crujiente de galleta de mantequilla',
     type: 'Pastelería',
-    image: chocolate
+    image: tartaLimon
   },
   {
     title: 'Galletas con Chispas de Chocolate',
     description: 'Galletas suaves y masticables con chispas de chocolate',
     type: 'Galleta',
-    image: chocolate
+    image: galletaChocolate
   },
   {
     title: 'Pastel de Terciopelo Rojo',
-    description: 'Pastel de terciopelo rojo húmedo y rico con glaseado de queso crema',
+    description:
+      'Pastel de terciopelo rojo húmedo y rico con glaseado de queso crema',
     type: 'Pastel',
-    image: cake
+    image: pastelTercipelo
   },
   {
     title: 'Tarta de Arándanos',
     description: 'Tarta de arándanos jugosa con una corteza hojaldrada',
     type: 'Tarta',
-    image: brownie
+    image: tartaArandanos
   },
   {
     title: 'Eclair de Vainilla',
-    description: 'Eclair relleno de crema de vainilla y cubierto con glaseado de chocolate',
+    description:
+      'Eclair relleno de crema de vainilla y cubierto con glaseado de chocolate',
     type: 'Pastelería',
-    image: chocolate
+    image: eclairVainilla
   },
   {
     title: 'Macarons de Frambuesa',
     description: 'Macarons ligeros y crujientes con relleno de frambuesa',
     type: 'Pastelería',
-    image: brownie
+    image: macaronsFrambuesa
   },
   {
     title: 'Muffin de Arándanos',
     description: 'Muffin esponjoso con arándanos frescos',
     type: 'Pastelería',
-    image: cake
+    image: muffinsArandanos
   },
   {
     title: 'Tarta de Queso',
     description: 'Tarta de queso cremosa con base de galleta graham',
     type: 'Tarta',
-    image: chocolate
+    image: tartaQueso
   },
   {
     title: 'Pan de Plátano',
     description: 'Pan de plátano húmedo con nueces',
     type: 'Pastelería',
-    image: brownie
+    image: panPlatano
   },
   {
     title: 'Pastel de Zanahoria',
     description: 'Pastel de zanahoria húmedo con glaseado de queso crema',
     type: 'Pastel',
-    image: cake
+    image: pastelZanahoria
   },
   {
     title: 'Galletas de Avena',
     description: 'Galletas crujientes de avena con pasas',
     type: 'Galleta',
-    image: chocolate
+    image: galletaAvena
   },
   {
     title: 'Tarta de Moras',
     description: 'Tarta de moras frescas con corteza dorada',
     type: 'Tarta',
-    image: brownie
+    image: tartaMora
   },
   {
     title: 'Profiteroles',
-    description: 'Bolas de masa rellenas de crema pastelera y cubiertas con chocolate',
+    description:
+      'Bolas de masa rellenas de crema pastelera y cubiertas con chocolate',
     type: 'Pastelería',
-    image: cake
+    image: profiteroles
   },
   {
     title: 'Galletas de Jengibre',
     description: 'Galletas de jengibre especiadas y crujientes',
     type: 'Galleta',
-    image: chocolate
+    image: galletaJenjibre
   },
   {
     title: 'Tarta de Durazno',
     description: 'Tarta de durazno jugosa con corteza hojaldrada',
     type: 'Tarta',
-    image: brownie
+    image: tartaDurzano
   }
 ]
 
