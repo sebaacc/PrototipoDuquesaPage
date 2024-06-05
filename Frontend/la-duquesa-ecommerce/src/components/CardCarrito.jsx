@@ -6,7 +6,12 @@ function CardCarrito ({ producto, setProductos }) {
   // Define el estado para el valor seleccionado del select
   const [selectedValue, setSelectedValue] = useState('opcion2') // Valor por defecto
 
-  // Maneja el cambio del valor seleccionado
+  const formatearPrecio = (precio) => {
+    return precio.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+  }
+  const precioFormateado = formatearPrecio(precio * cantidad)
+
+  // Maneja el cambio del valor seleccionado del "select" de cantidad
   const handleChange = (event) => {
     setSelectedValue(event.target.value)
     const newQuantity = parseInt(event.target.value, 10)
@@ -18,9 +23,16 @@ function CardCarrito ({ producto, setProductos }) {
     console.log('valor seleccionado' + selectedValue)
   }
 
+  // Maneja la eliminación del producto
+  const handleDelete = () => {
+    setProductos((prevProductos) =>
+      prevProductos.filter((p) => p.nombre !== producto.nombre)
+    )
+  }
+
   return (
     <>
-      <div className="w-11/12 flex m-auto mt-5 mb-5 border-2 border-[#D1D1D1] rounded-xl">
+      <div className="relative w-11/12 flex m-auto mt-5 mb-5 border-2 border-[#D1D1D1] rounded-xl">
         <img
           className="w-2/4 rounded-l-xl object-cover"
           src={img}
@@ -45,13 +57,19 @@ function CardCarrito ({ producto, setProductos }) {
           </div>
 
           <p className="mb-4 mt-4 text-[#2D5651] font-normal font-sans">
-            ${precio * cantidad}
+            ${precioFormateado}
           </p>
-          <div className=" flex gap-2">
-            <p className=" font-light">Envío:</p>
+          <div className="flex gap-2">
+            <p className="font-light">Envío:</p>
             <span className="text-[#2D5651] font-semibold">Gratis</span>
           </div>
         </span>
+        <button
+          className="absolute top-2 right-2 bg-[#2f2f2f] text-white rounded-full w-6 h-6 flex items-center justify-center"
+          onClick={handleDelete}
+        >
+          ✕
+        </button>
       </div>
     </>
   )

@@ -9,6 +9,11 @@ import Detalle from './routes/Detalle.jsx'
 import RegistroProducto from './routes/RegistroProducto.jsx'
 import CarritoDeCompras from './routes/CarritoDeCompras.jsx'
 import Tienda from './routes/Tienda.jsx'
+import ReporteDeUsuario from './routes/ReporteDeUsuario.jsx'
+import ReporteDeProducto from './routes/ReporteDeProducto.jsx'
+import LogIn from './routes/LogIn.jsx'
+import Pagos from './routes/Pagos.jsx'
+import Register from './routes/Register.jsx'
 
 const router = createBrowserRouter([
   {
@@ -38,7 +43,32 @@ const router = createBrowserRouter([
   },
   {
     path: 'tienda',
-    elementL: <Tienda />,
+    element: <Tienda />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'reporte-usuario',
+    element: <ReporteDeUsuario />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'reporte-producto',
+    element: <ReporteDeProducto />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'login',
+    element: <LogIn />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'pagos',
+    element: <Pagos />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'register',
+    element: <Register />,
     errorElement: <ErrorPage />
   }
 ])

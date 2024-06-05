@@ -10,7 +10,7 @@ function Products () {
         <h3 className="mr-2 font-black text-2xl">Productos populares</h3>
         <p className="ml-12 font-bold text-[#BD6292]">Ver todos</p>
       </span>
-      <section className="flex ml-10 mt-8">
+      <section className="flex ml-10 mt-8 justify-around">
         <article className="mr-10">
           <img src={chocoColate} alt="torta de chocolate" />
           <div className="bg-[#D9D9D9] p-6 rounded-b-2xl">
