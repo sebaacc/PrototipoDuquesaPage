@@ -6,10 +6,11 @@ import com.dh.msusers.domain.entities.User;
 import com.dh.msusers.domain.entities.UserResponse;
 import com.dh.msusers.domain.repositories.IKeycloakRepository;
 import com.dh.msusers.domain.services.IKeycloakService;
+import com.dh.msusers.exceptions.RestException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class KeycloakService implements IKeycloakService {
         return keycloakRepository.findById(id).stream()
                 .findFirst()
                 .map(UserResponse::new)
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, String.format("User with id %s not found", id)));
+                .orElseThrow(() -> new RestException(NOT_FOUND, String.format("User with id %s not found", id)));
     }
 
     @Override
@@ -43,9 +44,9 @@ public class KeycloakService implements IKeycloakService {
         try {
             return keycloakRepository.tokenIntrospect(token);
         } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(e.getStatusCode(), e.getResponseBodyAsString());
+            throw new RestException(INTERNAL_SERVER_ERROR, e.getResponseBodyAsString());
         } catch (Exception e) {
-            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, e.getMessage());
+            throw new RestException(INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
@@ -55,16 +56,21 @@ public class KeycloakService implements IKeycloakService {
 
         List<User> users = keycloakRepository.findByUsername(user.getUsername());
         if (!users.isEmpty()) {
-            throw new ResponseStatusException(CONFLICT, "Username already exists");
+            throw new RestException(CONFLICT, "Username already exists");
         }
 
         try {
             return new UserResponse(keycloakRepository.save(user));
         } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(e.getStatusCode(), e.getResponseBodyAsString());
+            throw new RestException(INTERNAL_SERVER_ERROR, e.getResponseBodyAsString());
         } catch (Exception e) {
-            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, e.getMessage());
+            throw new RestException(INTERNAL_SERVER_ERROR, e.getMessage());
         }
+    }
+
+    @Override
+    public ResponseEntity<?> verify(String verificationCode) {
+        return keycloakRepository.verify(verificationCode);
     }
 
     @Override
@@ -72,9 +78,9 @@ public class KeycloakService implements IKeycloakService {
         try {
             return keycloakRepository.login(username, password);
         } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(e.getStatusCode(), e.getResponseBodyAsString());
+            throw new RestException(INTERNAL_SERVER_ERROR, e.getResponseBodyAsString());
         } catch (Exception e) {
-            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, e.getMessage());
+            throw new RestException(INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
@@ -82,7 +88,7 @@ public class KeycloakService implements IKeycloakService {
     public UserResponse patchUpdate(User user, String id) {
         User userToPatch = keycloakRepository.findById(id).stream()
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, String.format("User with id %s not found", id)));
+                .orElseThrow(() -> new RestException(NOT_FOUND, String.format("User with id %s not found", id)));
 
         if (nonNull(user.getFirstName()) && UserFieldValidator.isValidName(user.getFirstName())) {
             userToPatch.setFirstName(user.getFirstName());
@@ -103,9 +109,9 @@ public class KeycloakService implements IKeycloakService {
         try {
             return new UserResponse(keycloakRepository.patchUpdate(userToPatch, id));
         } catch (HttpClientErrorException e) {
-            throw new ResponseStatusException(e.getStatusCode(), e.getResponseBodyAsString());
+            throw new RestException(INTERNAL_SERVER_ERROR, e.getResponseBodyAsString());
         } catch (Exception e) {
-            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, e.getMessage());
+            throw new RestException(INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 }

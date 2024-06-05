@@ -3,6 +3,7 @@ package com.dh.msusers.application.repositories;
 import com.dh.msusers.domain.entities.TokenResponse;
 import com.dh.msusers.domain.entities.User;
 import com.dh.msusers.domain.repositories.IKeycloakRepository;
+import com.dh.msusers.exceptions.RestException;
 import com.dh.msusers.infrastructure.mail.IEmailService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -18,20 +19,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static com.dh.msusers.application.utils.SafeUtils.getElementByIndex;
+import static com.dh.msusers.application.utils.SafeUtils.stream;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
+import static org.apache.commons.lang.StringUtils.EMPTY;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
@@ -44,6 +46,7 @@ public class KeycloakRepository implements IKeycloakRepository {
     private final Keycloak keycloak;
     private final ObjectMapper mapper;
     private final IEmailService mailService;
+
     @Value("${keycloak.realm}")
     private String realm;
     @Value("${keycloak.clientId}")
@@ -116,6 +119,12 @@ public class KeycloakRepository implements IKeycloakRepository {
     public User save(User user) {
         try {
             RealmResource realmResource = keycloak.realm(realm);
+
+            String verificationCode = UUID.randomUUID().toString().substring(0, 6);
+            user.setVerificationCode(verificationCode);
+
+            user.setEnabled(false);
+
             realmResource.users()
                     .create(setUserRepresentation(new UserRepresentation(), user));
 
@@ -123,7 +132,7 @@ public class KeycloakRepository implements IKeycloakRepository {
             mailService.send(userCreated);
             return userCreated;
         } catch (Exception e) {
-            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, e.getMessage());
+            throw new RestException(INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
@@ -151,11 +160,46 @@ public class KeycloakRepository implements IKeycloakRepository {
     }
 
     @Override
-    public User patchUpdate(User user, String id) {
+    public ResponseEntity<?> verify(String verificationCode) {
+        List<User> users = stream(keycloak.realm(realm)
+                .users()
+                .searchByAttributes("verificationCode:" + verificationCode))
+                .map(User::new)
+                .toList();
+
+        if (CollectionUtils.isEmpty(users)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Verification code not found"));
+        }
+
+        UserRepresentation userRepresentation = keycloak.realm(realm)
+                .users()
+                .get(Optional.ofNullable(getElementByIndex(users, 0))
+                        .map(User::getId)
+                        .orElse(EMPTY))
+                .toRepresentation();
+
+        if (Boolean.TRUE.equals(userRepresentation.isEnabled())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "User already verified"));
+        }
+
+        userRepresentation.setEnabled(true);
+
+        keycloak.realm(realm)
+                .users()
+                .get(Optional.ofNullable(getElementByIndex(users, 0))
+                        .map(User::getId)
+                        .orElse(EMPTY))
+                .update(userRepresentation);
+
+        return ResponseEntity.ok(Map.of("message", "User verified successfully"));
+    }
+
+    @Override
+    public User patchUpdate(User user, String id) throws JsonProcessingException {
         List<User> userResponse = findById(id);
 
         if (CollectionUtils.isEmpty(userResponse)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with id %s not found", id));
+            throw new RestException(HttpStatus.NOT_FOUND, String.format("User with id %s not found", id));
         }
 
         UserRepresentation userRepresentation = keycloak.realm(realm)
@@ -184,6 +228,22 @@ public class KeycloakRepository implements IKeycloakRepository {
             userRepresentation.setCredentials(Collections.singletonList(updatePassword(user.getPassword())));
         }
 
+        if (user.getPhone() != null) {
+            attributes.put("phone", singletonList(user.getPhone().toString()));
+        }
+
+        if (user.getDocument() != null) {
+            attributes.put("document", singletonList(user.getDocument().toString()));
+        }
+
+        if (user.getLocation() != null) {
+            attributes.put("location", singletonList(mapper.writeValueAsString(user.getLocation())));
+        }
+
+        if (user.getLocationDetails() != null) {
+            attributes.put("locationDetails", singletonList(user.getLocationDetails()));
+        }
+
         userRepresentation.setAttributes(attributes);
 
         keycloak.realm(realm)
@@ -194,13 +254,21 @@ public class KeycloakRepository implements IKeycloakRepository {
         return new User(userRepresentation);
     }
 
-    private UserRepresentation setUserRepresentation(UserRepresentation userRepresentation, User user) {
+    private UserRepresentation setUserRepresentation(UserRepresentation userRepresentation, User user) throws JsonProcessingException {
         userRepresentation.setFirstName(user.getFirstName());
         userRepresentation.setLastName(user.getLastName());
 
         userRepresentation.setEmail(user.getEmail());
         userRepresentation.setUsername(user.getUsername());
-        userRepresentation.setEnabled(true);
+        userRepresentation.setEnabled(user.getEnabled());
+
+        userRepresentation.setAttributes(Map.of(
+                "phone", singletonList(user.getPhone().toString()),
+                "document", singletonList(user.getDocument().toString()),
+                "location", singletonList(mapper.writeValueAsString(user.getLocation())),
+                "locationDetails", singletonList(user.getLocationDetails()),
+                "verificationCode", singletonList(user.getVerificationCode())
+        ));
 
         userRepresentation.setCredentials(singletonList(updatePassword(user.getPassword())));
         return userRepresentation;

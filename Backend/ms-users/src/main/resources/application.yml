@@ -11,19 +11,19 @@ spring:
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
     port: ${MAIL_PORT:587}
-    username: ${MAIL_USERNAME:LaDuquesa}
-    password: ${MAIL_PASSWORD:LaDuquesa1234}
-    server-mail: grupo_7@dh.com
+    username: ${MAIL_USERNAME:hairphoriastore@gmail.com}
+    password: ${MAIL_PASSWORD:ywwidqyyvhvaortv}
     link:
-      verify: http://localhost:8080/api/users/verify
+      verify: http://localhost:8090/users/verify
     mail-template: ValidationEmail
     mail-subject: "Validación de cuenta"
     properties:
-        mail:
-            smtp:
-            auth: true
-            starttls:
-                enable: true
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 server:
   port: ${PORT:0}
@@ -47,4 +47,3 @@ logging:
     org:
       springframework:
         security: DEBUG
-

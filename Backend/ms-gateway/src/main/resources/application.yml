@@ -27,17 +27,23 @@ spring:
 
   security:
     oauth2:
-      client:
-        provider:
-          keycloak:
-            user-name-attribute: preferred_username
-            issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
-        registration:
-          keycloak:
-            client-id: ${KEYCLOAK_CLIENT_ID:LaDuquesa}
-            client-secret: ${KEYCLOAK_CLIENT_SECRET:BZnbBjaWjsAaUxNYZzv2ZKhokWyhxzqs}
-            redirect-uri: '{baseUrl}/login/oauth2/code/keycloak'
-            scope: openid
+
+      # As Client
+
+      #client:
+      #  provider:
+      #    keycloak:
+      #      user-name-attribute: preferred_username
+      #      issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
+      #  registration:
+      #    keycloak:
+      #      client-id: ${KEYCLOAK_CLIENT_ID:LaDuquesa}
+      #      client-secret: ${KEYCLOAK_CLIENT_SECRET:0YSqadlisrDFeWuXWMsz12mPWe6PIsJ7}
+      #      redirect-uri: '{baseUrl}/login/oauth2/code/keycloak'
+      #      scope: openid
+      resourceserver:
+        jwt:
+          issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
 
   cloud:
     gateway:
@@ -57,6 +63,7 @@ spring:
       default-filters:
         - LogFilter
         - TokenRelay
+        - TokenFilter
       routes:
         - id: ms-java
           uri: lb://ms-java
@@ -76,6 +83,7 @@ spring:
             - Path=/users/**
           filters:
             - StripPrefix=1
+
 logging:
   level:
     org.springframework.security: DEBUG

@@ -1,6 +1,7 @@
 package com.dh.msusers.infrastructure.mail;
 
 import com.dh.msusers.domain.entities.User;
+import com.dh.msusers.exceptions.RestException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -8,11 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
-
-import java.util.concurrent.CompletableFuture;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -25,7 +23,7 @@ public class MailSenderService implements IEmailService {
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine templateEngine;
 
-    @Value("${spring.mail.server-mail}")
+    @Value("${spring.mail.username}")
     private String serverEmail;
 
     @Value("${spring.mail.link.verify}")
@@ -39,30 +37,29 @@ public class MailSenderService implements IEmailService {
 
     @Override
     public void send(User user) {
-        CompletableFuture.runAsync(() -> {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper;
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper;
 
-            try {
-                helper = new MimeMessageHelper(message, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
-                helper.setFrom(serverEmail);
-                helper.setTo(user.getEmail());
-                Context context = new Context();
+        try {
+            helper = new MimeMessageHelper(message, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
+            helper.setFrom(serverEmail);
+            helper.setTo(user.getEmail());
+            Context context = new Context();
 
-                context.setVariable("first_name", user.getFirstName());
-                context.setVariable("last_name", user.getLastName());
-                context.setVariable("link", verifyLink + user.getId());
+            context.setVariable("first_name", user.getFirstName());
+            context.setVariable("last_name", user.getLastName());
+            context.setVariable("link", verifyLink + "?code=" + user.getVerificationCode());
 
-                String html = templateEngine.process(mailTemplate, context);
+            String html = templateEngine.process(mailTemplate, context);
 
-                helper.setText(html, true);
-                helper.setSubject(mailSubject);
+            helper.setText(html, true);
+            helper.setSubject(mailSubject);
 
-                mailSender.send(message);
+            mailSender.send(message);
 
-            } catch (MessagingException e) {
-                throw new ResponseStatusException(INTERNAL_SERVER_ERROR, e.getMessage());
-            }
-        });
+        } catch (MessagingException e) {
+            throw new RestException(INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+
     }
 }
