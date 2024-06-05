@@ -21,6 +21,8 @@ function Navbar () {
 
   const [navMobile, setNavMobile] = useState(false)
 
+  const liStyle = 'hover:text-[#CE76A4] mr-6  flex'
+
   const menuItems = [
     {
       icon: <TbTruckDelivery size={25} className="mr-4" />,
@@ -124,17 +126,17 @@ function Navbar () {
       <article className="hidden sm:hidden md:hidden lg:block xl:block 2xl:block mt-1">
         <ul className="flex text-black font-semibold">
           <Link to={'/'}>
-            <li className="mr-16">Inicio</li>
+            <li className={liStyle}>Inicio</li>
           </Link>
           <Link to={'/tienda'}>
-            <li className="mr-16">Productos</li>
+            <li className={liStyle}>Productos</li>
           </Link>
           <Link to={'/'}>
-            <li className="mr-16">Nuestras sedes</li>
+            <li className={liStyle}>Nuestras sedes</li>
           </Link>
           <Link to={'/carrito-de-compras'}>
-            <li className="mr-16 flex">
-              Carrito <CiShoppingCart className="size-6 ml-1" />
+            <li className={liStyle}>
+              Carrito <CiShoppingCart className="size-6 ml-1 " />
             </li>
           </Link>
         </ul>

@@ -154,7 +154,7 @@ function LogIn () {
           <Link to="#" className="">
             ¿Olvidé mi contraseña?
           </Link>
-          <Link to="#" className="font-bold">
+          <Link to="/register" className="font-bold">
             Registrarse
           </Link>
         </div>
