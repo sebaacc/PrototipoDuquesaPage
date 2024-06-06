@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 body {
-  font-family: 'Raleway';
+  font-family: 'Raleway', '-apple-system', 'Roboto', 'Arial', 'sans-serif';
   background-color: #ffffff;
   box-sizing: border-box;
   color: black;
