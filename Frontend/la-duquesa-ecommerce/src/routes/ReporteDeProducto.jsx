@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { MdOutlineEdit } from 'react-icons/md'
 // import axios from 'axios'
 import Navbar from '../components/Navbar'
 
@@ -45,18 +44,29 @@ function ReporteDeProducto () {
       <Navbar />
       <div className="px-4 container max-w-6xl mx-auto py-4">
         <div className="grid max-sm:justify-center gap-4">
-          <h1 className="text-3xl font-bold">Productos</h1>
+          <h1 className="text-3xl font-bold">Reporte de Producto</h1>
           <h4>
-            Aquí puedes generar reportes sobre los productos, las ventas en los
-            últimos tiempos y el stock disponible. Además puedes modificar o
-            eliminar un producto en específico.
+            Aquí puedes encontrar reportes sobre las ventas en los últimos
+            tiempos y la popularidad de tus productos.
           </h4>
+        </div>
+        <div className="mt-10 flex gap-3 flex-wrap">
+          <h4 className="text-lg font-medium">Seleccione un filtro</h4>
+          <select
+            id="small"
+            className="block p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 h-10 min-w-[200px] "
+          >
+            <option value="vendidos">Productos más vendidos</option>
+            <option value="añadidos">Productos más agregados al carrito</option>
+          </select>
+          <button className="px-4 py-2 bg-[#BD6292] text-white font-semibold rounded hover:bg-[#CE76A4] h-10  min-w-[200px] ">
+            Descargar Reporte
+          </button>
         </div>
         <div className="relative overflow-x-auto mt-10 mb-10">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead className="text-xs text-white uppercase bg-gradient-to-r from-[#BD6292] to-violet-900 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th></th>
                 <th scope="col" className="px-6 py-3">
                   Nombre de Producto
                 </th>
@@ -77,9 +87,6 @@ function ReporteDeProducto () {
                   key={index}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 >
-                  <td>
-                    <MdOutlineEdit className="text-[#BD6292] size-5" />
-                  </td>
                   <td
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -99,23 +106,6 @@ function ReporteDeProducto () {
               ))}
             </tbody>
           </table>
-        </div>
-        <div className="grid max-sm:justify-center">
-          <h3 className="text-xl font-normal">Generar reporte de ventas</h3>
-        </div>
-        <div className="mt-4 flex justify-around sm:justify-start sm:gap-8">
-          <select
-            id="small"
-            className="block w-1/2 p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50  h-10"
-          >
-            <option value="Historico">Histórico</option>
-            <option value="Actual">Mes actual</option>
-            <option value="Anterior">Último mes</option>
-            <option value="SeisMeses">Últimos 6 meses</option>
-          </select>
-          <button className="px-4 py-2 bg-[#BD6292] text-white rounded hover:bg-[#CE76A4] h-10 ">
-            Generar Informe
-          </button>
         </div>
       </div>
       <Footer />
