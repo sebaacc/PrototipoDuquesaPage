@@ -46,9 +46,9 @@ const ImageGallery = ({ images }) => {
         modules={[Pagination, Scrollbar, A11y]}
         spaceBetween={10}
         slidesPerView={4}
-        pagination={{ clickable: true, style: { color: 'white' } }}
-        scrollbar={{ draggable: false }}
-        className=" max-sm:h-[8rem] md:h-[10rem] font-black"
+        pagination={{ clickable: true }}
+        scrollbar={{ draggable: true }}
+        className="custom-swiper "
         style={{
           '--swiper-pagination-color': '#BD6292',
           '--swiper-pagination-bullet-size': '10px'

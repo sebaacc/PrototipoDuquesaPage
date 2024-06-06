@@ -21,6 +21,8 @@ function Navbar () {
 
   const [navMobile, setNavMobile] = useState(false)
 
+  const liStyle = 'hover:text-[#CE76A4] mr-6  flex'
+
   const menuItems = [
     {
       icon: <TbTruckDelivery size={25} className="mr-4" />,
@@ -83,7 +85,7 @@ function Navbar () {
           <h2 className="text-2xl p-4">
             <span className="font-bold text-[#BD6292]">Secciones</span>
           </h2>
-          <navMobile>
+          <div>
             <ul className="flex flex-col p-4 text-black gap-7 font-medium">
               <Link to={'/'}>
                 <li className="text-xl flex cursor-pointer  w-[80%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1]">
@@ -102,11 +104,11 @@ function Navbar () {
               </Link>
               <Link to={'/carrito-de-compras'}>
                 <li className="text-xl flex cursor-pointer  w-[80%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1]">
-                  Carrito <CiShoppingCart className='size-6 ml-1'/>
+                  Carrito <CiShoppingCart className="size-6 ml-1" />
                 </li>
               </Link>
             </ul>
-          </navMobile>
+          </div>
         </div>
       </div>
       {/* Rutas o vistas del sitio */}
@@ -124,16 +126,18 @@ function Navbar () {
       <article className="hidden sm:hidden md:hidden lg:block xl:block 2xl:block mt-1">
         <ul className="flex text-black font-semibold">
           <Link to={'/'}>
-            <li className="mr-16">Inicio</li>
+            <li className={liStyle}>Inicio</li>
           </Link>
           <Link to={'/tienda'}>
-            <li className="mr-16">Productos</li>
+            <li className={liStyle}>Productos</li>
           </Link>
           <Link to={'/'}>
-            <li className="mr-16">Nuestras sedes</li>
+            <li className={liStyle}>Nuestras sedes</li>
           </Link>
           <Link to={'/carrito-de-compras'}>
-            <li className="mr-16 flex">Carrito <CiShoppingCart className='size-6 ml-1'/></li>
+            <li className={liStyle}>
+              Carrito <CiShoppingCart className="size-6 ml-1 " />
+            </li>
           </Link>
         </ul>
       </article>
