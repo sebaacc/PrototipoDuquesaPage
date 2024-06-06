@@ -1,9 +1,11 @@
 package services
 
 import (
+	"mime/multipart"
+
+	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/dto"
 	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"mime/multipart"
 )
 
 type ProductService interface {
@@ -16,4 +18,5 @@ type ProductService interface {
 	IsAmountAvailable(amount uint64, id primitive.ObjectID, buying bool) (bool, error)
 	GetMultipleProductsWithId(ids []primitive.ObjectID) ([]*models.Product, error)
     UpdateAvailableAmount(amount uint64, id primitive.ObjectID) error
+	GetMultipleProductDtosWithId(ids []primitive.ObjectID) ([]*dto.ProductDto, error)
 }

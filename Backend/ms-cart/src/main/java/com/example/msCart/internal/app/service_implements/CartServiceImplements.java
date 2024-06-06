@@ -3,6 +3,7 @@ package com.example.msCart.internal.app.service_implements;
 import com.example.msCart.internal.app.repositories_implements.ICartRepository;
 import com.example.msCart.internal.domain.models.Cart;
 
+import com.example.msCart.internal.domain.models.MostAddedProduct;
 import com.example.msCart.internal.domain.models.Product;
 import com.example.msCart.internal.domain.services.ICartService;
 import com.example.msCart.internal.infrastructure.feign.ProductClient;
@@ -41,7 +42,7 @@ import java.util.Optional;
         // Convierte la lista de IDs en una cadena de IDs separados por comas
         String idsString = String.join(",", productIdsList);
 
-        // Llama al Feign Client con el string de IDs
+        // Llamamos al método de products que recibe multiples ids a través de Fegin
         List<Product> products = productClient.findMultipleProducts(idsString);
 
         return products;
@@ -88,10 +89,52 @@ import java.util.Optional;
 
 
     @Override
+    @Transactional
     public void removeProductFromAllCarts(String productId)
     {
         cartRepository.deleteByProduct(productId);
     }
+
+
+    @Override
+    public List<MostAddedProduct> findMostAddedProducts(Integer limit) {
+        List<Object[]> mostWantedWithoutProductInfo = cartRepository.findMostAddedProducts(limit);
+
+        List<String> productIdsList = new ArrayList<>();
+
+        for (Object[] result : mostWantedWithoutProductInfo) {
+            String productId = (String) result[0];
+            productIdsList.add(productId);
+        }
+
+        // Convierte la lista de IDs en una cadena de IDs separados por comas
+        String idsString = String.join(",", productIdsList);
+
+        List<MostAddedProduct> products = productClient.findMultipleProductsDto(idsString);
+        System.out.println("Products: ");
+        System.out.println(products);
+
+        for (MostAddedProduct product : products) {
+            // Busca el objeto correspondiente en mostWantedWithoutProductInfo
+            for (Object[] result : mostWantedWithoutProductInfo) {
+                String productId = (String) result[0];
+                Long totalQuantity = ((Number) result[1]).longValue();
+
+                if (productId.equals(product.getId())) {
+                    product.setTotalQuantity(totalQuantity);
+                    break; // Salimos del bucle al encontrarlo
+                }
+            }
+        }
+
+        //Ordenamos la lista de product por totalQuantity
+        products.sort((p1, p2) -> p2.getTotalQuantity().compareTo(p1.getTotalQuantity()));
+
+
+        return products;
+    }
+
+
 
 
 }

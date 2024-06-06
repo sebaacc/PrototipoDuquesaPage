@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/dto"
 	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -126,4 +127,47 @@ func (r *MongoProductRepository) GetByIDs(ids []primitive.ObjectID) ([]*models.P
 
     return products, nil
 }
+
+
+func (r *MongoProductRepository) GetDtosByIDs(ids []primitive.ObjectID) ([]*dto.ProductDto, error) {
+    var productDtos []*dto.ProductDto
+
+    projection := bson.M{
+        "_id":      1,
+        "name":     1,
+        "price":    1,
+        "imageURLs": 1,
+    }
+
+    cursor, err := r.collection.Find(context.TODO(), bson.M{"_id": bson.M{"$in": ids}}, options.Find().SetProjection(projection))
+    if err != nil {
+        return nil, err
+    }
+    defer cursor.Close(context.TODO())
+
+    for cursor.Next(context.TODO()) {
+        var product models.Product
+        if err = cursor.Decode(&product); err != nil {
+            return nil, err
+        }
+
+        productDto := &dto.ProductDto{
+            ID:       product.ID,
+            Name:     product.Name,
+            Price:    product.Price,
+            ImageURL: "",
+        }
+        if len(product.ImageURLs) > 0 {
+            productDto.ImageURL = product.ImageURLs[0]
+        }
+        productDtos = append(productDtos, productDto)
+    }
+
+    if err = cursor.Err(); err != nil {
+        return nil, err
+    }
+
+    return productDtos, nil
+}
+
 

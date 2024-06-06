@@ -262,6 +262,40 @@ func (h *ProductHandler) GetMultipleProducts() gin.HandlerFunc {
 }
 
 
+// GetMultipleProductDtosWithId handles the retrieval of multiple product DTOs by their IDs
+func (h *ProductHandler) GetMultipleProductDtosWithId() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        ids := c.Query("ids")
+        if ids == "" {
+            web.Failure(c, http.StatusBadRequest, errors.New("La lista de IDs es requerida"))
+            return
+        }
+
+        idsList := strings.Split(ids, ",")
+        objectIDs := make([]primitive.ObjectID, 0, len(idsList))
+
+        for _, id := range idsList {
+            objectID, err := primitive.ObjectIDFromHex(id)
+            if err != nil {
+                web.Failure(c, http.StatusBadRequest, errors.New("ID inválido: "+id))
+                return
+            }
+            objectIDs = append(objectIDs, objectID)
+        }
+
+        productDtos, err := h.s.GetMultipleProductDtosWithId(objectIDs)
+        if err != nil {
+            web.Failure(c, http.StatusInternalServerError, err)
+            return
+        }
+
+        web.Success(c, http.StatusOK, productDtos)
+    }
+}
+
+
+
+
 func (h *ProductHandler) UpdateAvailableAmount() gin.HandlerFunc {
     return func(c *gin.Context) {
         idParam := c.Param("id")

@@ -2,6 +2,7 @@ package com.example.msCart.internal.infrastructure.handlers;
 
 
 import com.example.msCart.internal.domain.models.Cart;
+import com.example.msCart.internal.domain.models.MostAddedProduct;
 import com.example.msCart.internal.domain.models.Product;
 import com.example.msCart.internal.domain.services.ICartService;
 import com.example.msCart.internal.infrastructure.feign.ProductClient;
@@ -29,6 +30,12 @@ public class CartController {
         public ResponseEntity<List<Product>> findCartProducts(@PathVariable String userId)
         {
            return ResponseEntity.ok(cartService.getAllProductsInCart(userId));
+        }
+
+        @GetMapping("/findMostAddedProducts/{limit}")
+        public ResponseEntity<List<MostAddedProduct>> findMostAddedProducts(@PathVariable Integer limit)
+        {
+                return ResponseEntity.ok(cartService.findMostAddedProducts(limit));
         }
 
         @PostMapping("/addProductToCart")

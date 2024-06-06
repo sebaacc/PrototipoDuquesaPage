@@ -1,6 +1,7 @@
 package com.example.msCart.internal.domain.services;
 
 import com.example.msCart.internal.domain.models.Cart;
+import com.example.msCart.internal.domain.models.MostAddedProduct;
 import com.example.msCart.internal.domain.models.Product;
 import com.example.msCart.internal.utils.exceptions.BadRequestException;
 
@@ -22,6 +23,8 @@ public interface ICartService {
     void clearCart(String userId);
 
     public void removeProductFromAllCarts(String productId);
+
+    List<MostAddedProduct> findMostAddedProducts(Integer limit);
 
     // Método para calcular el total del carrito
     //double calculateTotalPrice(Long cartId);

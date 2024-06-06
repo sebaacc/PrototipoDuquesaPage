@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/dto"
 	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -16,4 +17,5 @@ type ProductRepository interface {
     GetPaginatedProductsWithFilters(page, limit int64, name string, minPrice, maxPrice float64, subCategoryID primitive.ObjectID) ([]models.Product, error)
     BuildFilters(name string, minPrice, maxPrice float64, subCategoryID primitive.ObjectID) bson.M
     GetByIDs(ids []primitive.ObjectID) ([]*models.Product, error)
+    GetDtosByIDs(ids []primitive.ObjectID) ([]*dto.ProductDto, error)
 }

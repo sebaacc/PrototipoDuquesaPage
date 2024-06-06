@@ -1,9 +1,9 @@
 package com.example.msCart.internal.infrastructure.feign;
 
+import com.example.msCart.internal.domain.models.MostAddedProduct;
 import com.example.msCart.internal.domain.models.Product;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +17,9 @@ public interface ProductClient {
 
     @GetMapping("/product/findMultipleProducts")
     List<Product> findMultipleProducts(@RequestParam("ids") String ids);
+
+    @GetMapping("/product/findMultipleProductsDto")
+    List<MostAddedProduct> findMultipleProductsDto(@RequestParam("ids") String ids);
 
 
 
