@@ -24,127 +24,147 @@ const pastries = [
     title: 'Pastel de Chocolate',
     description: 'Pastel de chocolate decadente con rico glaseado',
     type: 'Pastel',
-    image: pastelChocolate
+    image: pastelChocolate,
+    price: 20000 // COP
   },
   {
     title: 'Tarta de Fresas',
     description: 'Tarta ligera y esponjosa con fresas frescas',
     type: 'Pastel',
-    image: tortaFresa
+    image: tortaFresa,
+    price: 25000 // COP
   },
   {
     title: 'Galletas de Mantequilla de Maní',
     description:
       'Galletas de mantequilla de maní masticables con un toque de sal',
     type: 'Galleta',
-    image: galletaMani
+    image: galletaMani,
+    price: 8000 // COP
   },
   {
     title: 'Tarta de Manzana',
     description:
       'Tarta de manzana clásica hecha en casa con una corteza hojaldrada',
     type: 'Tarta',
-    image: tartaManzana
+    image: tartaManzana,
+    price: 22000 // COP
   },
   {
     title: 'Croissant',
     description: 'Croissant estilo francés, mantecoso y hojaldrado',
     type: 'Pastelería',
-    image: croissant
+    image: croissant,
+    price: 7000 // COP
   },
   {
     title: 'Tarta de Limón',
     description:
       'Tarta de limón con una corteza crujiente de galleta de mantequilla',
     type: 'Pastelería',
-    image: tartaLimon
+    image: tartaLimon,
+    price: 21000 // COP
   },
   {
     title: 'Galletas con Chispas de Chocolate',
     description: 'Galletas suaves y masticables con chispas de chocolate',
     type: 'Galleta',
-    image: galletaChocolate
+    image: galletaChocolate,
+    price: 9000 // COP
   },
   {
     title: 'Pastel de Terciopelo Rojo',
     description:
       'Pastel de terciopelo rojo húmedo y rico con glaseado de queso crema',
     type: 'Pastel',
-    image: pastelTercipelo
+    image: pastelTercipelo,
+    price: 24000 // COP
   },
   {
     title: 'Tarta de Arándanos',
     description: 'Tarta de arándanos jugosa con una corteza hojaldrada',
     type: 'Tarta',
-    image: tartaArandanos
+    image: tartaArandanos,
+    price: 23000 // COP
   },
   {
     title: 'Eclair de Vainilla',
     description:
       'Eclair relleno de crema de vainilla y cubierto con glaseado de chocolate',
     type: 'Pastelería',
-    image: eclairVainilla
+    image: eclairVainilla,
+    price: 12000 // COP
   },
   {
     title: 'Macarons de Frambuesa',
     description: 'Macarons ligeros y crujientes con relleno de frambuesa',
     type: 'Pastelería',
-    image: macaronsFrambuesa
+    image: macaronsFrambuesa,
+    price: 15000 // COP
   },
   {
     title: 'Muffin de Arándanos',
     description: 'Muffin esponjoso con arándanos frescos',
     type: 'Pastelería',
-    image: muffinsArandanos
+    image: muffinsArandanos,
+    price: 10000 // COP
   },
   {
     title: 'Tarta de Queso',
     description: 'Tarta de queso cremosa con base de galleta graham',
     type: 'Tarta',
-    image: tartaQueso
+    image: tartaQueso,
+    price: 27000 // COP
   },
   {
     title: 'Pan de Plátano',
     description: 'Pan de plátano húmedo con nueces',
     type: 'Pastelería',
-    image: panPlatano
+    image: panPlatano,
+    price: 12000 // COP
   },
   {
     title: 'Pastel de Zanahoria',
     description: 'Pastel de zanahoria húmedo con glaseado de queso crema',
     type: 'Pastel',
-    image: pastelZanahoria
+    image: pastelZanahoria,
+    price: 22000 // COP
   },
   {
     title: 'Galletas de Avena',
     description: 'Galletas crujientes de avena con pasas',
     type: 'Galleta',
-    image: galletaAvena
+    image: galletaAvena,
+    price: 8000 // COP
   },
   {
     title: 'Tarta de Moras',
     description: 'Tarta de moras frescas con corteza dorada',
     type: 'Tarta',
-    image: tartaMora
+    image: tartaMora,
+    price: 23000 // COP
   },
   {
     title: 'Profiteroles',
     description:
       'Bolas de masa rellenas de crema pastelera y cubiertas con chocolate',
     type: 'Pastelería',
-    image: profiteroles
+    image: profiteroles,
+    price: 15000 // COP
   },
   {
     title: 'Galletas de Jengibre',
     description: 'Galletas de jengibre especiadas y crujientes',
     type: 'Galleta',
-    image: galletaJenjibre
+    image: galletaJenjibre,
+    price: 8500 // COP
   },
   {
     title: 'Tarta de Durazno',
     description: 'Tarta de durazno jugosa con corteza hojaldrada',
     type: 'Tarta',
-    image: tartaDurzano
+    image: tartaDurzano,
+    price: 23000 // COP
   }
 ]
 

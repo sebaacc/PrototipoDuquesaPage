@@ -1,3 +1,5 @@
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import brioche from '../img/cake_1-removebg-preview 1.png'
 import cinnamon from '../img/Egg___Bacon-removebg-preview 1.png'
 import galletas from '../img/carrot_1-removebg-preview 1.png'
@@ -5,17 +7,21 @@ import croissant from '../img/Croissant_Designed_by_FreePik.png'
 import torta from '../img/torta_designed_by_freepik.png'
 import baguette from '../img/Baguette_designed_by_pikkovia.png'
 import { Scrollbar, A11y } from 'swiper/modules'
-
 import { Swiper, SwiperSlide } from 'swiper/react'
-
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 
-// import pudin from '../img/burger 1.png'
-
 function Main () {
+  const [searchTerm, setSearchTerm] = useState('')
+  const navigate = useNavigate()
+
+  const handleSearch = (event) => {
+    event.preventDefault()
+    navigate(`/tienda?search=${searchTerm}`)
+  }
+
   return (
     <main>
       <header>
@@ -24,16 +30,23 @@ function Main () {
         </h1>
       </header>
       <div className="m-10 md:flex justify-center">
-        <input
-          className="border p-4 rounded-lg w-[330px] h-[80px] bg-[#D9D9D9] text-black font-medium sm:w-[560px] md:w-[600px] lg:w-[630px] xl:w-[1000px]"
-          type="text"
-          placeholder="Busca un producto..."
-          id="search-product"
-        />
+        <form onSubmit={handleSearch}>
+          <input
+            className="border p-4 rounded-lg w-[330px] h-[80px] bg-[#D9D9D9] text-black font-medium sm:w-[560px] md:w-[600px] lg:w-[630px] xl:w-[1000px]"
+            type="text"
+            placeholder="Busca un producto..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            id="search-product"
+          />
+          <button type="submit" className="hidden">
+            Buscar
+          </button>
+        </form>
       </div>
-
       <section className="flex items-center justify-center">
         <div className="hidden md:flex flex-wrap justify-center">
+          {/* Aquí van los artículos */}
           <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
             <img
               className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
@@ -95,7 +108,6 @@ function Main () {
             </p>
           </article>
         </div>
-
         <div className="block md:hidden w-[100%] m-auto mb-20">
           <Swiper
             modules={[Scrollbar, A11y]}
