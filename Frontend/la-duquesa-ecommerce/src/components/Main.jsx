@@ -1,6 +1,3 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { FaSearch } from 'react-icons/fa'
 import brioche from '../img/cake_1-removebg-preview 1.png'
 import cinnamon from '../img/Egg___Bacon-removebg-preview 1.png'
 import galletas from '../img/carrot_1-removebg-preview 1.png'
@@ -13,16 +10,9 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
+import SearchProduct from './SearchProduct'
 
 function Main () {
-  const [searchTerm, setSearchTerm] = useState('')
-  const navigate = useNavigate()
-
-  const handleSearch = (event) => {
-    event.preventDefault()
-    navigate(`/tienda?search=${searchTerm}`)
-  }
-
   return (
     <main>
       <header>
@@ -30,24 +20,7 @@ function Main () {
           ¿Qué te gustaría ordenar esta vez?
         </h1>
       </header>
-      <div className="m-10 md:flex justify-center">
-        <form onSubmit={handleSearch} className="relative w-full max-w-4xl">
-          <input
-            className="border p-4 rounded-lg w-full h-[80px] bg-[#D9D9D9] text-black font-medium pl-12"
-            type="text"
-            placeholder="Busca un producto..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            id="search-product"
-          />
-          <button
-            type="submit"
-            className="absolute left-4 top-1/2 transform -translate-y-1/2"
-          >
-            <FaSearch className="text-black" />
-          </button>
-        </form>
-      </div>
+      <SearchProduct />
       <section className="flex items-center justify-center">
         <div className="hidden md:flex flex-wrap justify-center">
           {/* Aquí van los artículos */}
