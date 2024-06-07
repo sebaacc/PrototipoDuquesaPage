@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import ImageGallery from '../components/ImageGallery'
 import ScrollToTop from '../components/ScrollToTop'
 import Sugeridos from '../components/Sugeridos'
+import SearchProduct from '../components/SearchProduct'
 
 // const Objeto =[
 //   {
@@ -21,28 +22,13 @@ import Sugeridos from '../components/Sugeridos'
 
 const Detalle = () => {
   // const [image, setImage] = useState(1)
-  const images = [
-    chocolate,
-    brownie,
-    chocolate,
-    brownie,
-    chocolate,
-    brownie
-  ]
+  const images = [chocolate, brownie, chocolate, brownie, chocolate, brownie]
   return (
     <>
       <div>
-        <ScrollToTop/>
+        <ScrollToTop />
         <Navbar />
-
-        <div className="m-10 md:flex justify-center">
-          <input
-            className="border p-3 rounded-lg w-[330px] h-[60px] bg-[#D9D9D9] text-black font-medium sm:w-[560px] md:w-[600px] lg:w-[630px] xl:w-[1000px]"
-            type="text"
-            placeholder="Busca un producto..."
-            id="search-product"
-          />
-        </div>
+        <SearchProduct />
         <div className="bg-white shadow-sm top-0">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1 md:py-4">
             <div className="flex items-center justify-between md:justify-start">
