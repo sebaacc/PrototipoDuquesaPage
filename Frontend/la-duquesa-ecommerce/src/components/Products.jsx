@@ -8,7 +8,9 @@ function Products () {
     <div className="mb-12 lg:flex flex-col justify-center xl:p-16">
       <span className="flex ml-8 mt-3 items-center">
         <h3 className="mr-2 font-black text-2xl">Productos populares</h3>
-        <p className="ml-12 font-bold text-[#BD6292]">Ver todos</p>
+        <Link to={'/tienda'}>
+          <p className="ml-12 font-bold text-[#BD6292 hover:text-[#BD6292]">Ver todos</p>
+        </Link>
       </span>
       <section className="flex ml-10 mt-8 justify-around">
         <article className="mr-10">
