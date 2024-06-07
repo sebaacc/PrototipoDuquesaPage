@@ -1,6 +1,6 @@
 package com.dh.msusers.infrastructure.controllers;
 
-import com.dh.msusers.application.utils.constants.Endpoints;
+import com.dh.msusers.domain.entities.utils.constants.Endpoints;
 import com.dh.msusers.domain.entities.TokenRequest;
 import com.dh.msusers.domain.entities.TokenResponse;
 import com.dh.msusers.domain.entities.User;
