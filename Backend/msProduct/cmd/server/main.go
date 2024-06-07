@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
+	//"github.com/google/uuid"
 	"github.com/spf13/viper"
 	repositories_implement "gitlab.com/eescarria/ecommerce-equipo4.git/internal/app/repositories_implements"
 	services_implement "gitlab.com/eescarria/ecommerce-equipo4.git/internal/app/service_implements"
@@ -42,7 +42,8 @@ func main() {
 
 	//Extraemos el nombre del ms del archivo yml
 	appName := vp.GetString("instance.app")
-	appId := uuid.New().String()
+	//appId := "msproduct:" + uuid.New().String()
+	appId := "localhost:msproduct:0"
 
 	var port string
 	var ln net.Listener
