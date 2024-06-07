@@ -1,7 +1,7 @@
 instance:
   hostName: "localhost"
   app: "MSPRODUCT"
-  ipAddr: "10.0.0.10"
+  ipAddr: "192.168.56.1"
   status: "UP"
   port:
   #Lo comentamos ya que estamos generando un puerto automáticamente
@@ -9,7 +9,7 @@ instance:
     enabled: "true"
   securePort:
     number: 8443
-    enabled: "true"
+    enabled: "false"
   #Lo comentamos ya que estamos generando un puerto automáticamente
   #healthCheckUrl: "http://localhost:5090/healthcheck"
   #statusPageUrl: "http://localhost:5090/status"
