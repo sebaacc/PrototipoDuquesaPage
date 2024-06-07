@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"MsPayP/internal/domain/models"
-	"MsPayP/internal/domain/services"
-	"MsPayP/pkg/web"
+	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/models"
+	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/services"
+	"gitlab.com/eescarria/ecommerce-equipo4.git/pkg/web"
 	"errors"
 	"net/http"
 	"github.com/gin-gonic/gin"

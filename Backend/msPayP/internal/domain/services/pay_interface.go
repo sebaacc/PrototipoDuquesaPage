@@ -1,7 +1,7 @@
 package services
 
 import (
-	"MsPayP/internal/domain/models"
+	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/models"
 	"context"
 )
 

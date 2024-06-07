@@ -1,9 +1,9 @@
 package services_implement
 
 import (
-	"MsPayP/internal/domain/models"
-	"MsPayP/internal/domain/repositories"
-	"MsPayP/internal/domain/services"
+	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/models"
+	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/repositories"
+	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/services"
 )
 
 type paymentMethodService struct {

@@ -1,10 +1,8 @@
 package repositories_implement
 
 import (
-	"MsPayP/internal/domain/models"
+	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/models"
 	"context"
-
-	//"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

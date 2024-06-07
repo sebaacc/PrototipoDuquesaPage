@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"MsPayP/internal/domain/services"
-	"MsPayP/internal/insfraestructure/handlers"
+	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/services"
+	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/insfraestructure/handlers"
 	"github.com/gin-gonic/gin"
 )
 

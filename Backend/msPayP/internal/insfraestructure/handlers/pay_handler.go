@@ -4,8 +4,8 @@ import (
     
     "net/http"
     "github.com/gin-gonic/gin"
-    "MsPayP/internal/domain/models"
-    "MsPayP/internal/domain/services"
+    "gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/models"
+    "gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/services"
 )
 
 type PayHandler struct {

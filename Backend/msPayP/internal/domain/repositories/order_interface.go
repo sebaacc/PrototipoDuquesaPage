@@ -1,10 +1,7 @@
 package repositories
 
 import (
-	//"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/models"
-
-	"MsPayP/internal/domain/models"
-
+	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
