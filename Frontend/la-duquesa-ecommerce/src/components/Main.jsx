@@ -11,6 +11,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import SearchProduct from './SearchProduct'
+import { Link } from 'react-router-dom'
 
 function Main () {
   return (
@@ -23,67 +24,78 @@ function Main () {
       <SearchProduct />
       <section className="flex items-center justify-center">
         <div className="hidden md:flex flex-wrap justify-center">
-          {/* Aquí van los artículos */}
-          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
-            <img
-              className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
-              src={brioche}
-              alt="Brioche"
-            />
-            <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
-              Brioche
-            </p>
-          </article>
-          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
-            <img
-              className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
-              src={cinnamon}
-              alt="Cinnamon"
-            />
-            <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
-              Cinnamon
-            </p>
-          </article>
-          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
-            <img
-              className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
-              src={galletas}
-              alt="Galletas"
-            />
-            <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
-              Galletas
-            </p>
-          </article>
-          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
-            <img
-              className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
-              src={croissant}
-              alt="Croissant"
-            />
-            <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
-              Croissant
-            </p>
-          </article>
-          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
-            <img
-              className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
-              src={torta}
-              alt="Torta Fría"
-            />
-            <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
-              Torta Fría
-            </p>
-          </article>
-          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
-            <img
-              className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
-              src={baguette}
-              alt="Baguette"
-            />
-            <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
-              Baguette
-            </p>
-          </article>
+          <Link to={'/tienda?search=brioche'}>
+            <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
+              <img
+                className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
+                src={brioche}
+                alt="Brioche"
+              />
+              <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
+                Brioche
+              </p>
+            </article>
+          </Link>
+          <Link to={'/tienda?search=cinnamon'}>
+            <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
+              <img
+                className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
+                src={cinnamon}
+                alt="Cinnamon"
+              />
+              <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
+                Cinnamon
+              </p>
+            </article>
+          </Link>
+          <Link to={'/tienda?search=galletas'}>
+            <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
+              <img
+                className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
+                src={galletas}
+                alt="Galletas"
+              />
+              <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
+                Galletas
+              </p>
+            </article>
+          </Link>
+          <Link to={'/tienda?search=Croissant'}>
+            <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
+              <img
+                className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
+                src={croissant}
+                alt="Croissant"
+              />
+              <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
+                Croissant
+              </p>
+            </article>
+          </Link>
+          <Link to={'/tienda?search=Pastel'}>
+            <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
+              <img
+                className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
+                src={torta}
+                alt="Torta Fría"
+              />
+              <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
+                Torta Fría
+              </p>
+            </article>
+          </Link>
+          <Link to={'/tienda?search=baguette'}>
+            <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition">
+              <img
+                className="hover:bg-white rounded-full w-[80px] h-[80px] transition"
+                src={baguette}
+                alt="Baguette"
+              />
+              <p className="flex justify-center font-bold text-[#7B7B7B] group-hover:text-[#e6e6e6]">
+                Baguette
+              </p>
+            </article>
+          </Link>
         </div>
         <div className="block md:hidden w-[100%] m-auto mb-20">
           <Swiper
