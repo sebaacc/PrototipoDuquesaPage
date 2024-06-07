@@ -276,9 +276,9 @@ func buildBody(appName string, appId string, port int, status string) *AppRegist
 	healthCheckUrl := viper.GetString("instance.healthCheckUrl")
 	*/
 
-	homePageUrl := fmt.Sprintf("http://localhost:%d/healthcheck", port)
+	homePageUrl := fmt.Sprintf("http://localhost:%d/", port)
 	statusPageUrl := fmt.Sprintf("http://localhost:%d/status", port)
-	healthCheckUrl := fmt.Sprintf("http://localhost:%d", port)
+	healthCheckUrl := fmt.Sprintf("http://localhost:%d/healthcheck", port)
 	
 
 	dataCenterInfo := DataCenterInfo{
@@ -292,7 +292,7 @@ func buildBody(appName string, appId string, port int, status string) *AppRegist
 	}
 
 	securePort := Port{
-		Port:    viper.GetInt("instance.securePort.$"),
+		Port:    viper.GetInt("instance.securePort.number"),
 		Enabled: viper.GetString("instance.securePort.enabled"),
 	}
 
@@ -300,8 +300,8 @@ func buildBody(appName string, appId string, port int, status string) *AppRegist
 		InstanceId:       appId,
 		HostName:         hostname,
 		App:              appName,
-		VipAddress:       "",
-		SecureVipAddress: "",
+		VipAddress:       "msproduct",
+		SecureVipAddress: "msproduct",
 		IpAddr:           viper.GetString("instance.ipAddr"),
 		Status:           status,
 		Port:             basePort,

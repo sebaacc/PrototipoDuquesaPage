@@ -60,6 +60,8 @@ func (s *categoryService) CreateCategory(category *models.Category, file *multip
 
 
 func (s *categoryService) GetCategoryByID(id primitive.ObjectID) (*models.Category, error) {
+    fmt.Println("holaaaaa")
+    fmt.Println(s.categoryRepo.GetByID(id))
     return s.categoryRepo.GetByID(id)
 }
 

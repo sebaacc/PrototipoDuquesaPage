@@ -1,6 +1,9 @@
 package com.example.msCart.internal.domain.services;
 
 import com.example.msCart.internal.domain.models.Cart;
+import com.example.msCart.internal.domain.models.MostAddedProduct;
+import com.example.msCart.internal.domain.models.Product;
+import com.example.msCart.internal.utils.exceptions.BadRequestException;
 
 
 import java.util.List;
@@ -8,16 +11,20 @@ import java.util.List;
 public interface ICartService {
 
     // Método para ver todos los productos que tiene el carrito
-   // List<Product> getAllProductsInCart(Long cartId);
+   List<Product> getAllProductsInCart(String clientId);
 
     // Método para agregar un producto a un carrito
-    Cart addProductToCart(Long cartId, Long productId, Integer quantity);
+    void addProductToCart(Cart cart) throws BadRequestException;
 
     // Método para eliminar un producto de un carrito
-    String removeProductFromCart(Long cartId, Long productId);
+    void removeProductFromCart(String userId, String productId);
 
     // Método para vaciar un carrito
-   // Cart clearCart(Long cartId);
+    void clearCart(String userId);
+
+    public void removeProductFromAllCarts(String productId);
+
+    List<MostAddedProduct> findMostAddedProducts(Integer limit);
 
     // Método para calcular el total del carrito
     //double calculateTotalPrice(Long cartId);
