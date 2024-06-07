@@ -1,9 +1,9 @@
-// Tienda.jsx
 import React, { useState, useCallback, useMemo, Suspense, lazy } from 'react'
 import { useLocation } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { CiShoppingCart } from 'react-icons/ci'
+import { IoMdClose } from 'react-icons/io' // Import the close icon
 import LazyLoad from 'react-lazyload'
 import pastries from '../data/pastries'
 
@@ -53,6 +53,12 @@ const Tienda = () => {
     setCurrentPage(1)
   }, [])
 
+  const clearSearch = useCallback(() => {
+    setSearchTerm('')
+    setFilter('Todos')
+    setCurrentPage(1)
+  }, [])
+
   const filteredPastries = useMemo(() => {
     return pastries
       .filter((pastry) => (filter === 'Todos' ? true : pastry.type === filter))
@@ -93,7 +99,7 @@ const Tienda = () => {
             )}
           </div>
         </div>
-        <div className="mb-4">
+        <div className="relative mb-4">
           <label className="block text-gray-700 font-bold mb-2">
             Buscar:
             <input
@@ -103,6 +109,14 @@ const Tienda = () => {
               onChange={handleSearchChange}
               className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
+            {searchTerm && (
+              <button
+                onClick={clearSearch}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+              >
+                <IoMdClose size={20} className='mt-6'/>
+              </button>
+            )}
           </label>
         </div>
         <div className="mb-4">
