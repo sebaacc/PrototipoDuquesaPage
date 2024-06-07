@@ -65,7 +65,7 @@ function ReporteDeProducto () {
         </div>
         <div className="relative overflow-x-auto mt-10 mb-10">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-white uppercase bg-gradient-to-r from-[#BD6292] to-violet-900 dark:bg-gray-700 dark:text-gray-400">
+            <thead className="text-xs text-white uppercase bg-gradient-to-r from-[#9a5078] to-[#e285c3] dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3">
                   Nombre de Producto
