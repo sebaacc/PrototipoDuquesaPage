@@ -1,7 +1,9 @@
-import { useState, useCallback, useMemo, Suspense, lazy } from 'react'
+import React, { useState, useCallback, useMemo, Suspense, lazy } from 'react'
+import { useLocation } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { CiShoppingCart } from 'react-icons/ci'
+import { IoMdClose } from 'react-icons/io' // Import the close icon
 import LazyLoad from 'react-lazyload'
 import pastries from '../data/pastries'
 
@@ -9,12 +11,16 @@ const FilterButton = lazy(() => import('../components/FilterButton'))
 const PastryModal = lazy(() => import('../components/PastryModal'))
 
 const Tienda = () => {
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const initialSearchTerm = queryParams.get('search') || ''
+
   const [filter, setFilter] = useState('Todos')
   const [selectedPastry, setSelectedPastry] = useState(null)
   const [itemsPerPage, setItemsPerPage] = useState(6)
   const [currentPage, setCurrentPage] = useState(1)
   const [cart, setCart] = useState([])
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm)
 
   const handleFilterChange = useCallback((newFilter) => {
     setFilter(newFilter)
@@ -47,10 +53,18 @@ const Tienda = () => {
     setCurrentPage(1)
   }, [])
 
+  const clearSearch = useCallback(() => {
+    setSearchTerm('')
+    setFilter('Todos')
+    setCurrentPage(1)
+  }, [])
+
   const filteredPastries = useMemo(() => {
     return pastries
       .filter((pastry) => (filter === 'Todos' ? true : pastry.type === filter))
-      .filter((pastry) => pastry.title.toLowerCase().includes(searchTerm.toLowerCase()))
+      .filter((pastry) =>
+        pastry.title.toLowerCase().includes(searchTerm.toLowerCase())
+      )
   }, [filter, searchTerm])
 
   const totalItems = filteredPastries.length
@@ -66,22 +80,26 @@ const Tienda = () => {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
           <div className="grid gap-4">
             <h1 className="text-3xl font-bold">Nuestros productos</h1>
-            <p className="text-black">Explora nuestras deliciosas pastelerías</p>
+            <p className="text-black">
+              Explora nuestras deliciosas pastelerías
+            </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
-            {['Todos', 'Pastel', 'Galleta', 'Tarta', 'Pastelería'].map((type) => (
-              <Suspense fallback={<div>Cargando...</div>} key={type}>
-                <FilterButton
-                  filter={type}
-                  currentFilter={filter}
-                  onClick={handleFilterChange}
-                />
-              </Suspense>
-            ))}
+            {['Todos', 'Pastel', 'Galleta', 'Tarta', 'Pastelería'].map(
+              (type) => (
+                <Suspense fallback={<div>Cargando...</div>} key={type}>
+                  <FilterButton
+                    filter={type}
+                    currentFilter={filter}
+                    onClick={handleFilterChange}
+                  />
+                </Suspense>
+              )
+            )}
           </div>
         </div>
-        <div className="mb-4">
+        <div className="relative mb-4">
           <label className="block text-gray-700 font-bold mb-2">
             Buscar:
             <input
@@ -91,6 +109,14 @@ const Tienda = () => {
               onChange={handleSearchChange}
               className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
+            {searchTerm && (
+              <button
+                onClick={clearSearch}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+              >
+                <IoMdClose size={20} className='mt-6'/>
+              </button>
+            )}
           </label>
         </div>
         <div className="mb-4">
@@ -123,6 +149,10 @@ const Tienda = () => {
               </LazyLoad>
               <h2 className="text-xl font-semibold mb-2">{pastry.title}</h2>
               <p className="text-gray-600 mb-2">{pastry.description}</p>
+              <p className="text-gray-800 font-bold mb-2">
+                ${pastry.price.toLocaleString()}
+              </p>{' '}
+              {/* Mostrar el precio */}
               <div className="flex justify-between items-center">
                 <p className="text-gray-800 font-bold">{pastry.type}</p>
                 <button
@@ -139,28 +169,30 @@ const Tienda = () => {
             </div>
           ))}
         </div>
-        <div className="mt-4 flex justify-between items-center">
-          <div className="flex gap-2">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => handlePageChange(page)}
-                className={`px-4 py-2 rounded-lg shadow-md ${
-                  page === currentPage ? 'bg-[#BD6292] text-white' : 'bg-gray-200 text-gray-700'
-                }`}
-              >
-                {page}
-              </button>
-            ))}
-          </div>
+        <div className="flex justify-center mt-8">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => handlePageChange(index + 1)}
+              className={`px-4 py-2 mx-1 rounded ${
+                currentPage === index + 1
+                  ? 'bg-[#BD6292] text-white'
+                  : 'bg-gray-200 text-gray-800'
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
         </div>
-        {selectedPastry && (
-          <Suspense fallback={<div>Cargando...</div>}>
-            <PastryModal pastry={selectedPastry} closeModal={closeModal} />
-          </Suspense>
-        )}
       </div>
+
       <Footer />
+
+      {selectedPastry && (
+        <Suspense fallback={<div>Cargando...</div>}>
+          <PastryModal pastry={selectedPastry} onClose={closeModal} />
+        </Suspense>
+      )}
     </section>
   )
 }
