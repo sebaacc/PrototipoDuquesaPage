@@ -18,6 +18,9 @@ import tartaManzana from '../img/productos/tarta-manzana.jpg'
 import eclairVainilla from '../img/productos/eclair-vainilla.jpg'
 import profiteroles from '../img/productos/profiteroles.jpg'
 import pastelChocolate from '../img/productos/pastel-cocolate.jpg'
+import cinnamon from '../img/productos/cinnamon.jpg'
+import brioche from '../img/productos/brioche.png'
+import baguette from '../img/productos/baguette.png'
 
 const pastries = [
   {
@@ -165,6 +168,28 @@ const pastries = [
     type: 'Tarta',
     image: tartaDurzano,
     price: 23000 // COP
+  },
+  {
+    title: 'baguette',
+    description:
+      'Baguette crujiente pan francés de corteza dorada y miga esponjosa.',
+    type: 'Pastelería',
+    image: baguette,
+    price: 22000 // COP
+  },
+  {
+    title: 'brioche',
+    description: 'Brioche exquisito con esencia de almendra y levadura fresca',
+    type: 'Pastelería',
+    image: brioche,
+    price: 12000 // COP
+  },
+  {
+    title: 'cinnamon',
+    description: 'Canela pura: Delicioso condimento para postres, cafés y más.',
+    type: 'Pastelería',
+    image: cinnamon,
+    price: 10000 // COP
   }
 ]
 
