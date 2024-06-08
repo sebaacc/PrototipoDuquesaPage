@@ -21,6 +21,7 @@ import pastelChocolate from '../img/productos/pastel-cocolate.jpg'
 import cinnamon from '../img/productos/cinnamon.jpg'
 import brioche from '../img/productos/brioche.png'
 import baguette from '../img/productos/baguette.png'
+import cinnamonRoll from '../img/productos/RollCanela-lucasguizo-pexels.jpg'
 
 const pastries = [
   {
@@ -170,7 +171,7 @@ const pastries = [
     price: 23000 // COP
   },
   {
-    title: 'baguette',
+    title: 'Baguette',
     description:
       'Baguette crujiente pan francés de corteza dorada y miga esponjosa.',
     type: 'Pastelería',
@@ -178,18 +179,27 @@ const pastries = [
     price: 22000 // COP
   },
   {
-    title: 'brioche',
+    title: 'Brioche',
     description: 'Brioche exquisito con esencia de almendra y levadura fresca',
     type: 'Pastelería',
     image: brioche,
     price: 12000 // COP
   },
   {
-    title: 'cinnamon',
-    description: 'Canela pura: Delicioso condimento para postres, cafés y más.',
+    title: 'Cinnamon Roll',
+    description:
+      'Delicioso y esponjoso pastelito de masa de canela, relleno de azúcar morena y canela.',
+    type: 'Pastelería',
+    image: cinnamonRoll,
+    price: 10000 // COP
+  },
+  {
+    title: 'Cinnamon',
+    description:
+      'Canela pura: Delicioso condimento para postres, cafés y más. La unidad equivale a 100g.',
     type: 'Pastelería',
     image: cinnamon,
-    price: 10000 // COP
+    price: 8000 // COP
   }
 ]
 
