@@ -34,7 +34,8 @@ const pastries = [
     price: 20000, // COP
     stock: 50,
     sold: 120,
-    code: 'PC001'
+    code: 'PC001',
+    addedToCart: 50 // Veces añadido al carrito
   },
   {
     id: 2,
@@ -46,7 +47,8 @@ const pastries = [
     price: 25000, // COP
     stock: 30,
     sold: 85,
-    code: 'TF002'
+    code: 'TF002',
+    addedToCart: 40 // Veces añadido al carrito
   },
   {
     id: 3,
@@ -59,7 +61,8 @@ const pastries = [
     price: 8000, // COP
     stock: 100,
     sold: 150,
-    code: 'GM003'
+    code: 'GM003',
+    addedToCart: 70 // Veces añadido al carrito
   },
   {
     id: 4,
@@ -72,7 +75,8 @@ const pastries = [
     price: 22000, // COP
     stock: 40,
     sold: 90,
-    code: 'TM004'
+    code: 'TM004',
+    addedToCart: 45 // Veces añadido al carrito
   },
   {
     id: 5,
@@ -84,7 +88,8 @@ const pastries = [
     price: 7000, // COP
     stock: 200,
     sold: 300,
-    code: 'CR005'
+    code: 'CR005',
+    addedToCart: 150 // Veces añadido al carrito
   },
   {
     id: 6,
@@ -97,7 +102,8 @@ const pastries = [
     price: 21000, // COP
     stock: 35,
     sold: 75,
-    code: 'TL006'
+    code: 'TL006',
+    addedToCart: 35 // Veces añadido al carrito
   },
   {
     id: 7,
@@ -109,7 +115,8 @@ const pastries = [
     price: 9000, // COP
     stock: 80,
     sold: 180,
-    code: 'GC007'
+    code: 'GC007',
+    addedToCart: 90 // Veces añadido al carrito
   },
   {
     id: 8,
@@ -122,7 +129,8 @@ const pastries = [
     price: 24000, // COP
     stock: 25,
     sold: 70,
-    code: 'PT008'
+    code: 'PT008',
+    addedToCart: 30 // Veces añadido al carrito
   },
   {
     id: 9,
@@ -134,7 +142,8 @@ const pastries = [
     price: 23000, // COP
     stock: 40,
     sold: 65,
-    code: 'TA009'
+    code: 'TA009',
+    addedToCart: 25 // Veces añadido al carrito
   },
   {
     id: 10,
@@ -147,7 +156,8 @@ const pastries = [
     price: 12000, // COP
     stock: 60,
     sold: 110,
-    code: 'EV010'
+    code: 'EV010',
+    addedToCart: 55 // Veces añadido al carrito
   },
   {
     id: 11,
@@ -159,7 +169,8 @@ const pastries = [
     price: 15000, // COP
     stock: 70,
     sold: 130,
-    code: 'MF011'
+    code: 'MF011',
+    addedToCart: 60 // Veces añadido al carrito
   },
   {
     id: 12,
@@ -171,7 +182,8 @@ const pastries = [
     price: 10000, // COP
     stock: 90,
     sold: 140,
-    code: 'MA012'
+    code: 'MA012',
+    addedToCart: 70 // Veces añadido al carrito
   },
   {
     id: 13,
@@ -183,7 +195,8 @@ const pastries = [
     price: 27000, // COP
     stock: 45,
     sold: 80,
-    code: 'TQ013'
+    code: 'TQ013',
+    addedToCart: 40 // Veces añadido al carrito
   },
   {
     id: 14,
@@ -195,7 +208,8 @@ const pastries = [
     price: 12000, // COP
     stock: 75,
     sold: 160,
-    code: 'PP014'
+    code: 'PP014',
+    addedToCart: 80 // Veces añadido al carrito
   },
   {
     id: 15,
@@ -206,120 +220,127 @@ const pastries = [
     image: pastelZanahoria,
     price: 22000, // COP
     stock: 40,
-    sold: 90,
-    code: 'PZ015'
+    sold: 100,
+    code: 'PZ015',
+    addedToCart: 50 // Veces añadido al carrito
   },
   {
     id: 16,
     title: 'Galletas de Avena',
-    description: 'Galletas crujientes de avena con pasas',
+    description: 'Galletas de avena saludables con pasas',
     type: 'Galleta',
     subtipo: 'Avena',
     image: galletaAvena,
-    price: 8000, // COP
+    price: 8500, // COP
     stock: 110,
-    sold: 170,
-    code: 'GA016'
+    sold: 130,
+    code: 'GA016',
+    addedToCart: 60 // Veces añadido al carrito
   },
   {
     id: 17,
-    title: 'Tarta de Moras',
-    description: 'Tarta de moras frescas con corteza dorada',
-    type: 'Tarta',
-    subtipo: 'Frutas',
-    image: tartaMora,
-    price: 23000, // COP
-    stock: 50,
-    sold: 95,
-    code: 'TM017'
+    title: 'Galletas de Jengibre',
+    description: 'Galletas de jengibre especiadas con un toque de melaza',
+    type: 'Galleta',
+    subtipo: 'Jengibre',
+    image: galletaJenjibre,
+    price: 8500, // COP
+    stock: 90,
+    sold: 120,
+    code: 'GJ017',
+    addedToCart: 50 // Veces añadido al carrito
   },
   {
     id: 18,
     title: 'Profiteroles',
     description:
-      'Bolas de masa rellenas de crema pastelera y cubiertas con chocolate',
+      'Profiteroles rellenos de crema y cubiertos con glaseado de chocolate',
     type: 'Pastelería',
     subtipo: 'Hojaldre',
     image: profiteroles,
-    price: 15000, // COP
-    stock: 55,
+    price: 13000, // COP
+    stock: 50,
     sold: 100,
-    code: 'PR018'
+    code: 'PR018',
+    addedToCart: 45 // Veces añadido al carrito
   },
   {
     id: 19,
-    title: 'Galletas de Jengibre',
-    description: 'Galletas de jengibre especiadas y crujientes',
-    type: 'Galleta',
-    subtipo: 'Especias',
-    image: galletaJenjibre,
-    price: 8500, // COP
-    stock: 95,
-    sold: 155,
-    code: 'GJ019'
+    title: 'Tarta de Moras',
+    description: 'Tarta de moras frescas con una corteza hojaldrada',
+    type: 'Tarta',
+    subtipo: 'Frutas',
+    image: tartaMora,
+    price: 22000, // COP
+    stock: 35,
+    sold: 70,
+    code: 'TM019',
+    addedToCart: 30 // Veces añadido al carrito
   },
   {
     id: 20,
     title: 'Tarta de Durazno',
-    description: 'Tarta de durazno jugosa con corteza hojaldrada',
+    description: 'Tarta de durazno jugosa con una corteza hojaldrada',
     type: 'Tarta',
     subtipo: 'Frutas',
     image: tartaDurzano,
-    price: 23000, // COP
+    price: 21000, // COP
     stock: 40,
-    sold: 85,
-    code: 'TD020'
+    sold: 65,
+    code: 'TD020',
+    addedToCart: 25 // Veces añadido al carrito
   },
   {
     id: 21,
-    title: 'Baguette',
-    description:
-      'Baguette crujiente pan francés de corteza dorada y miga esponjosa.',
+    title: 'Cinnamon Roll',
+    description: 'Rollos de canela suaves y pegajosos con glaseado',
     type: 'Pastelería',
-    subtipo: 'Pan',
-    image: baguette,
-    price: 22000, // COP
-    stock: 60,
-    sold: 100,
-    code: 'BG021'
+    subtipo: 'Canela',
+    image: cinnamonRoll,
+    price: 14000, // COP
+    stock: 55,
+    sold: 90,
+    code: 'CR021',
+    addedToCart: 40 // Veces añadido al carrito
   },
   {
     id: 22,
     title: 'Brioche',
-    description: 'Brioche exquisito con esencia de almendra y levadura fresca',
+    description: 'Pan brioche suave y mantecoso',
     type: 'Pastelería',
     subtipo: 'Pan',
     image: brioche,
-    price: 12000, // COP
+    price: 10000, // COP
     stock: 70,
     sold: 110,
-    code: 'BR022'
+    code: 'BR022',
+    addedToCart: 50 // Veces añadido al carrito
   },
   {
     id: 23,
-    title: 'Cinnamon Roll',
-    description:
-      'Delicioso y esponjoso pastelito de masa de canela, relleno de azúcar morena y canela.',
+    title: 'Baguette',
+    description: 'Baguette crujiente y dorada',
     type: 'Pastelería',
-    subtipo: 'Hojaldre',
-    image: cinnamonRoll,
-    price: 10000, // COP
-    stock: 80,
-    sold: 120,
-    code: 'CR023'
+    subtipo: 'Pan',
+    image: baguette,
+    price: 8000, // COP
+    stock: 100,
+    sold: 140,
+    code: 'BG023',
+    addedToCart: 60 // Veces añadido al carrito
   },
   {
     id: 24,
     title: 'Cinnamon',
-    description:
-      'Canela pura: Delicioso condimento para postres, cafés y más. La unidad equivale a 100g.',
-    type: 'Pastelería',
-    subtipo: 'Condimento',
+    description: 'Deliciously soft cinnamon rolls with a sweet glaze',
+    type: 'Pastry',
+    subtipo: 'Sweet',
     image: cinnamon,
-    price: 8000, // COP
-    stock: 150,
-    sold: 200,
-    code: 'CN024'
+    price: 10000, // COP
+    stock: 50,
+    sold: 90,
+    code: 'CIN024',
+    addedToCart: 30 // Veces añadido al carrito
   }
 ]
 

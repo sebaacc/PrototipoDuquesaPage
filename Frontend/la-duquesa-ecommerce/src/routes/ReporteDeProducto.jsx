@@ -8,27 +8,30 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import pastries from '../data/pastries.js'
-import { priceFormatter } from '../utils/PriceFormatter'
+
+import ProductsTable from '../components/ProductsTable.jsx'
 
 const productosList = pastries
 
 function ReporteDeProducto () {
   const [productos, setProductos] = useState(productosList)
   const [filtro, setfiltro] = useState('')
-  console.log(productos)
-  // useEffect(() => {
-  //   axios
-  //     .get('TU_API_URL_AQUI')
-  //     .then((response) => {
-  //       setProductos(response.data)
-  //     })
-  //     .catch((error) => {
-  //       console.error('Hubo un error al obtener los datos:', error)
-  //     })
-  // }, [])
 
   const handleChange = (event) => {
     setfiltro(event.target.value)
+    handleFilter()
+  }
+
+  const handleFilter = () => {
+    if (filtro === 'vendidos') {
+      setProductos(
+        productos.sort((a, b) => parseFloat(b.price) - parseFloat(a.price))
+      )
+    } else if (filtro === 'agregados') {
+      setProductos(
+        productos.sort((a, b) => parseFloat(b.sold) - parseFloat(a.sold))
+      )
+    }
   }
 
   return (
@@ -75,50 +78,7 @@ function ReporteDeProducto () {
           </button>
         </div>
         <div className="relative overflow-x-auto mt-10 mb-10">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-            <thead className="text-xs text-white uppercase bg-gradient-to-l from-[#e077af] to-[#fe99cf]">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  title de Producto
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  price
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Cantidad en Stock
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Cantidad Vendida
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {productos.map((producto, index) => (
-                <tr
-                  key={index}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <td
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    {producto.title}
-                  </td>
-                  <td className="px-6 py-4">
-                    {'$' + priceFormatter(producto.price)}
-                  </td>
-                  <td
-                    className={`px-6 py-4 ${
-                      producto.stock === 0 ? 'text-red-500' : ''
-                    }`}
-                  >
-                    {producto.stock}
-                  </td>
-                  <td className="px-6 py-4">{producto.sold}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <ProductsTable productos={productos} />
         </div>
       </div>
       <Footer />
