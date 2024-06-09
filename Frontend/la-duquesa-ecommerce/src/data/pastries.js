@@ -293,7 +293,7 @@ const pastries = [
   {
     id: 21,
     title: 'Cinnamon Roll',
-    description: 'Rollos de canela suaves y pegajosos con glaseado',
+    description: 'Rollos de canela suaves y esponjosos con glaseado',
     type: 'Pastelería',
     subtipo: 'Canela',
     image: cinnamonRoll,
@@ -332,9 +332,9 @@ const pastries = [
   {
     id: 24,
     title: 'Cinnamon',
-    description: 'Deliciously soft cinnamon rolls with a sweet glaze',
-    type: 'Pastry',
-    subtipo: 'Sweet',
+    description: 'Canela 100% pura de alta calidad para tus comidas.',
+    type: 'Pastelería',
+    subtipo: 'Dulce',
     image: cinnamon,
     price: 10000, // COP
     stock: 50,
