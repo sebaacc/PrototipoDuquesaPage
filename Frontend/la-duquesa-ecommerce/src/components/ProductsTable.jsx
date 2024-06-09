@@ -7,9 +7,7 @@ const ProductsTable = ({ productos }) => {
       <table className="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead className="text-xs text-white uppercase bg-gradient-to-l from-[#e077af] to-[#fe99cf]">
           <tr>
-            <th scope="col" className="px-6 py-3 w-min">
-              número
-            </th>
+            <th scope="col" className="px-6 py-3 w-min"></th>
             <th scope="col" className="px-6 py-3 w-1/5">
               Nombre de Producto
             </th>
@@ -17,13 +15,13 @@ const ProductsTable = ({ productos }) => {
               precio
             </th>
             <th scope="col" className="px-6 py-3 w-1/5">
-              Cantidad en Stock
+              En Stock
             </th>
             <th scope="col" className="px-6 py-3 w-1/5">
-              Cantidad Vendida
+              Vendidos
             </th>
             <th scope="col" className="px-6 py-3 w-1/5">
-              Cantidad de veces añadido al carrito
+              añadido al carrito
             </th>
             <th scope="col" className="px-6 py-3 w-1/5">
               Categoría y subcategoría
