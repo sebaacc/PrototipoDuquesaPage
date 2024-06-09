@@ -2,7 +2,7 @@ import SearchProduct from './SearchProduct'
 import HomeCategories from './HomeCategories'
 import MobileHomeCategories from './MobileHomeCategories'
 
-function Main () {
+function Principal () {
   return (
     <main>
       <header>
@@ -12,7 +12,7 @@ function Main () {
       </header>
       <SearchProduct />
       <section className="flex items-center justify-center">
-        <div className="hidden md:flex flex-wrap justify-center">
+        <div className="hidden md:flex justify-center">
           <HomeCategories />
         </div>
         <div className="block md:hidden w-[100%] m-auto mb-20">
@@ -23,4 +23,4 @@ function Main () {
   )
 }
 
-export default Main
+export default Principal

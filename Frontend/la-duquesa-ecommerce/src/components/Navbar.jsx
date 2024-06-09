@@ -21,7 +21,7 @@ function Navbar () {
 
   const [navMobile, setNavMobile] = useState(false)
 
-  const liStyle = 'hover:text-[#CE76A4] mr-6  flex'
+  const liStyle = 'hover:text-[#CE76A4] mr-6 flex'
 
   const menuItems = [
     {
@@ -186,7 +186,7 @@ function Navbar () {
                 return (
                   <div key={index} className=" py-4">
                     <Link to={route}>
-                      <li className="text-xl flex cursor-pointer  w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1]">
+                      <li className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300">
                         {icon} {text}
                       </li>
                     </Link>
