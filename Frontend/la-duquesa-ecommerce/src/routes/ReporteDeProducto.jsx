@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-// import axios from 'axios'
+import { useState } from 'react'
 import Navbar from '../components/Navbar'
 
 import Footer from '../components/Footer'
@@ -15,23 +14,26 @@ const productosList = pastries
 
 function ReporteDeProducto () {
   const [productos, setProductos] = useState(productosList)
-  const [filtro, setfiltro] = useState('')
+  const [filtro, setFiltro] = useState('')
 
   const handleChange = (event) => {
-    setfiltro(event.target.value)
-    handleFilter()
+    const selectedFilter = event.target.value
+    setFiltro(selectedFilter)
+    handleFilter(selectedFilter)
   }
 
-  const handleFilter = () => {
-    if (filtro === 'vendidos') {
-      setProductos(
-        productos.sort((a, b) => parseFloat(b.price) - parseFloat(a.price))
-      )
-    } else if (filtro === 'agregados') {
-      setProductos(
-        productos.sort((a, b) => parseFloat(b.sold) - parseFloat(a.sold))
+  const handleFilter = (val) => {
+    const sortedProducts = [...productosList]
+
+    if (val === 'vendidos') {
+      sortedProducts.sort((a, b) => parseFloat(b.sold) - parseFloat(a.sold))
+    }
+    if (val === 'agregados') {
+      sortedProducts.sort(
+        (a, b) => parseFloat(b.addedToCart) - parseFloat(a.addedToCart)
       )
     }
+    setProductos(sortedProducts)
   }
 
   return (

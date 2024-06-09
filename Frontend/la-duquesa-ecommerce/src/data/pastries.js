@@ -89,7 +89,7 @@ const pastries = [
     stock: 200,
     sold: 300,
     code: 'CR005',
-    addedToCart: 150 // Veces añadido al carrito
+    addedToCart: 100 // Veces añadido al carrito
   },
   {
     id: 6,
@@ -116,7 +116,7 @@ const pastries = [
     stock: 80,
     sold: 180,
     code: 'GC007',
-    addedToCart: 90 // Veces añadido al carrito
+    addedToCart: 150 // Veces añadido al carrito
   },
   {
     id: 8,
