@@ -2,7 +2,7 @@ import SearchProduct from './SearchProduct'
 import HomeCategories from './HomeCategories'
 import MobileHomeCategories from './MobileHomeCategories'
 
-function Main () {
+function Principal () {
   return (
     <main>
       <header>
@@ -23,4 +23,4 @@ function Main () {
   )
 }
 
-export default Main
+export default Principal
