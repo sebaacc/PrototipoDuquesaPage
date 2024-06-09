@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import pastries from '../data/pastries.js'
+import { priceFormatter } from '../utils/PriceFormatter'
 
 const productosList = pastries
 
@@ -61,13 +62,13 @@ function ReporteDeProducto () {
               onChange={handleChange}
               label="filtro"
             >
-              <MenuItem value={'solds'}>Productos más solds</MenuItem>
+              <MenuItem value={'vendidos'}>Productos más vendidos</MenuItem>
               <MenuItem value={'agregados'}>
                 Productos más agregados al carrito
               </MenuItem>
             </Select>
           </FormControl>
-          <button className="relative inline-flex items-center justify-center h-10 p-1 overflow-hidden text-md font-medium text-gray-900 rounded-lg group bg-gradient-to-bl from-[#97a9ff] to-[#e077af] focus:outline-none focus:ring-purple-200 self-end transition duration-150 transform hover:-translate-y-1 active:translate-y-0">
+          <button className="relative inline-flex items-center justify-center h-10 p-0.5 overflow-hidden text-md font-medium text-gray-900 rounded-lg group bg-gradient-to-bl from-[#97a9ff] to-[#e077af] focus:outline-none focus:ring-purple-200 self-end transition duration-150 transform hover:-translate-y-1 active:translate-y-0">
             <span className="font-semibold relative px-5 h-full content-center transition-all ease-in duration-75 group-hover:text-white bg-white rounded-md group-hover:bg-opacity-0">
               Descargar Reporte
             </span>
@@ -103,7 +104,9 @@ function ReporteDeProducto () {
                   >
                     {producto.title}
                   </td>
-                  <td className="px-6 py-4">{producto.price}</td>
+                  <td className="px-6 py-4">
+                    {'$' + priceFormatter(producto.price)}
+                  </td>
                   <td
                     className={`px-6 py-4 ${
                       producto.stock === 0 ? 'text-red-500' : ''
