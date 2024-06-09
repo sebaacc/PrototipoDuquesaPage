@@ -51,7 +51,7 @@ const ProductsTable = ({ productos }) => {
               </td>
               <td
                 className={`px-6 py-4 ${
-                  producto.stock === 0 ? 'text-red-500' : ''
+                  producto.stock <= 20 ? 'text-red-500 font-bold bg-[#bd629326]' : ''
                 }`}
               >
                 {producto.stock}

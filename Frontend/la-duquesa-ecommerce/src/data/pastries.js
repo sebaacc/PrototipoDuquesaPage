@@ -59,7 +59,7 @@ const pastries = [
     subtipo: 'Mantequilla',
     image: galletaMani,
     price: 8000, // COP
-    stock: 100,
+    stock: 5,
     sold: 150,
     code: 'GM003',
     addedToCart: 70 // Veces añadido al carrito
@@ -324,7 +324,7 @@ const pastries = [
     subtipo: 'Pan',
     image: baguette,
     price: 8000, // COP
-    stock: 100,
+    stock: 20,
     sold: 140,
     code: 'BG023',
     addedToCart: 60 // Veces añadido al carrito

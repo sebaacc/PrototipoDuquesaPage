@@ -6,7 +6,7 @@ function Principal () {
   return (
     <main>
       <header>
-        <h1 className="text-4xl font-black pl-9 pr-9 sm:text-center">
+        <h1 className="text-4xl font-black pl-9 pr-9 text-center">
           ¿Qué te gustaría ordenar esta vez?
         </h1>
       </header>
