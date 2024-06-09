@@ -7,32 +7,14 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
+import pastries from '../data/pastries.js'
 
-const productosIniciales = [
-  {
-    nombre: 'Torta de chocolate',
-    precio: '$14.000',
-    stock: 10,
-    vendido: 5
-  },
-  {
-    nombre: 'Croissant',
-    precio: '$3.800',
-    stock: 3,
-    vendido: 8
-  },
-  {
-    nombre: 'Cupcake de Naranja con crocante',
-    precio: '$5.000',
-    stock: 0,
-    vendido: 20
-  }
-]
+const productosList = pastries
 
 function ReporteDeProducto () {
-  const [productos, setProductos] = useState(productosIniciales)
+  const [productos, setProductos] = useState(productosList)
   const [filtro, setfiltro] = useState('')
-
+  console.log(productos)
   // useEffect(() => {
   //   axios
   //     .get('TU_API_URL_AQUI')
@@ -79,7 +61,7 @@ function ReporteDeProducto () {
               onChange={handleChange}
               label="filtro"
             >
-              <MenuItem value={'vendidos'}>Productos más vendidos</MenuItem>
+              <MenuItem value={'solds'}>Productos más solds</MenuItem>
               <MenuItem value={'agregados'}>
                 Productos más agregados al carrito
               </MenuItem>
@@ -96,10 +78,10 @@ function ReporteDeProducto () {
             <thead className="text-xs text-white uppercase bg-gradient-to-l from-[#e077af] to-[#fe99cf]">
               <tr>
                 <th scope="col" className="px-6 py-3">
-                  Nombre de Producto
+                  title de Producto
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Precio
+                  price
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Cantidad en Stock
@@ -119,9 +101,9 @@ function ReporteDeProducto () {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    {producto.nombre}
+                    {producto.title}
                   </td>
-                  <td className="px-6 py-4">{producto.precio}</td>
+                  <td className="px-6 py-4">{producto.price}</td>
                   <td
                     className={`px-6 py-4 ${
                       producto.stock === 0 ? 'text-red-500' : ''
@@ -129,7 +111,7 @@ function ReporteDeProducto () {
                   >
                     {producto.stock}
                   </td>
-                  <td className="px-6 py-4">{producto.vendido}</td>
+                  <td className="px-6 py-4">{producto.sold}</td>
                 </tr>
               ))}
             </tbody>
