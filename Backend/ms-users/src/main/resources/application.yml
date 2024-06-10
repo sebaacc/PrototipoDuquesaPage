@@ -40,7 +40,7 @@ keycloak:
   realm: LaDuquesa
   serverUrl: http://${KEYCLOK_HOST:localhost}:${KEYCLOK_PORT:8080}
   clientId: LaDuquesa
-  clientSecret: BZnbBjaWjsAaUxNYZzv2ZKhokWyhxzqs
+  clientSecret: 123456789
 
 logging:
   level:
