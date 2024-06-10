@@ -41,7 +41,30 @@ function ReporteDeProducto () {
     const companyName = 'La Duquesa Bakery'
     const filterUsed = filtro
 
-    if (format === 'pdf') {
+    if (format === 'xlsx') {
+      // const ws = XLSX.utils.json_to_sheet([])
+      // XLSX.utils.sheet_add_aoa(ws, [[companyName]], { origin: 'A1' })
+      // XLSX.utils.sheet_add_aoa(ws, [[`Fecha de descarga: ${currentDate}`]], {
+      //   origin: 'A2'
+      // })
+      // XLSX.utils.sheet_add_aoa(ws, [[`Filtro utilizado: ${filterUsed}`]], {
+      //   origin: 'A3'
+      // })
+
+      // // Añadir encabezados de columna en A5
+      // XLSX.utils.sheet_add_aoa(ws, [Object.keys(productos[0])], { origin: 'A5' })
+
+      // // Añadir los datos de productos a partir de la fila 6
+      // productos.forEach((producto, index) => {
+      //   XLSX.utils.sheet_add_aoa(ws, [Object.values(producto)], {
+      //     origin: `A${index + 6}`
+      //   })
+      // })
+
+      // const wb = XLSX.utils.book_new()
+      // XLSX.utils.book_append_sheet(wb, ws, 'Reporte de Productos')
+      // XLSX.writeFile(wb, `Reporte_Productos_${currentDate}.xlsx`)
+    } else if (format === 'pdf') {
       const doc = new jsPDF()
       doc.text(companyName, 10, 10)
       doc.text(`Fecha de descarga: ${currentDate}`, 10, 20)
