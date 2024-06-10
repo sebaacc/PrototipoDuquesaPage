@@ -7,8 +7,8 @@ import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import pastries from '../data/pastries.js'
 import ProductsTable from '../components/ProductsTable.jsx'
-import jsPDF from 'jspdf'
-import autoTable from 'jspdf-autotable'
+import ExcelButton from '../components/ExcelButton.jsx'
+import PDFButton from '../components/PDFButton.jsx'
 
 const productosList = pastries
 
@@ -34,66 +34,6 @@ function ReporteDeProducto () {
       )
     }
     setProductos(sortedProducts)
-  }
-
-  const handleDownload = (format) => {
-    const currentDate = new Date().toLocaleDateString()
-    const companyName = 'La Duquesa Bakery'
-    const filterUsed = filtro
-
-    if (format === 'xlsx') {
-      // const ws = XLSX.utils.json_to_sheet([])
-      // XLSX.utils.sheet_add_aoa(ws, [[companyName]], { origin: 'A1' })
-      // XLSX.utils.sheet_add_aoa(ws, [[`Fecha de descarga: ${currentDate}`]], {
-      //   origin: 'A2'
-      // })
-      // XLSX.utils.sheet_add_aoa(ws, [[`Filtro utilizado: ${filterUsed}`]], {
-      //   origin: 'A3'
-      // })
-
-      // // Añadir encabezados de columna en A5
-      // XLSX.utils.sheet_add_aoa(ws, [Object.keys(productos[0])], { origin: 'A5' })
-
-      // // Añadir los datos de productos a partir de la fila 6
-      // productos.forEach((producto, index) => {
-      //   XLSX.utils.sheet_add_aoa(ws, [Object.values(producto)], {
-      //     origin: `A${index + 6}`
-      //   })
-      // })
-
-      // const wb = XLSX.utils.book_new()
-      // XLSX.utils.book_append_sheet(wb, ws, 'Reporte de Productos')
-      // XLSX.writeFile(wb, `Reporte_Productos_${currentDate}.xlsx`)
-    } else if (format === 'pdf') {
-      const doc = new jsPDF()
-      doc.text(companyName, 10, 10)
-      doc.text(`Fecha de descarga: ${currentDate}`, 10, 20)
-      doc.text(`Filtro utilizado: ${filterUsed}`, 10, 30)
-      autoTable(doc, {
-        startY: 40,
-        head: [
-          [
-            'Nombre',
-            'Precio',
-            'Stock',
-            'Vendidos',
-            'Agregados al carrito',
-            'Categoría y subcategoría',
-            'Código de producto'
-          ]
-        ],
-        body: productos.map((p) => [
-          p.title,
-          p.price,
-          p.stock,
-          p.sold,
-          p.addedToCart,
-          p.type + p.subtipo,
-          p.code
-        ])
-      })
-      doc.save('reporte_productos.pdf')
-    }
   }
 
   return (
@@ -133,22 +73,8 @@ function ReporteDeProducto () {
               </MenuItem>
             </Select>
           </FormControl>
-          <button
-            onClick={() => handleDownload('xlsx')}
-            className="relative inline-flex items-center justify-center h-10 p-0.5 overflow-hidden text-md font-medium text-gray-900 rounded-lg group bg-gradient-to-bl from-[#97a9ff] to-[#e077af] focus:outline-none focus:ring-purple-200 self-end transition duration-150 transform hover:-translate-y-1 active:translate-y-0"
-          >
-            <span className="font-semibold relative px-5 h-full content-center transition-all ease-in duration-75 group-hover:text-white bg-white rounded-md group-hover:bg-opacity-0">
-              Descargar Reporte (XLSX)
-            </span>
-          </button>
-          <button
-            onClick={() => handleDownload('pdf')}
-            className="relative inline-flex items-center justify-center h-10 p-0.5 overflow-hidden text-md font-medium text-gray-900 rounded-lg group bg-gradient-to-bl from-[#97a9ff] to-[#e077af] focus:outline-none focus:ring-purple-200 self-end transition duration-150 transform hover:-translate-y-1 active:translate-y-0"
-          >
-            <span className="font-semibold relative px-5 h-full content-center transition-all ease-in duration-75 group-hover:text-white bg-white rounded-md group-hover:bg-opacity-0">
-              Descargar Reporte (PDF)
-            </span>
-          </button>
+          <ExcelButton productos={productos} />
+          <PDFButton productos={productos} />
         </div>
         <div className="relative overflow-x-auto mt-10 mb-10">
           <ProductsTable productos={productos} />
