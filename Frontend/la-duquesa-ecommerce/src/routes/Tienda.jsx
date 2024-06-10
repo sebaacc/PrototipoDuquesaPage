@@ -6,6 +6,7 @@ import { CiShoppingCart } from 'react-icons/ci'
 import { IoMdClose } from 'react-icons/io' // Import the close icon
 import LazyLoad from 'react-lazyload'
 import pastries from '../data/pastries'
+import ScrollToTop from '../utils/ScrollToTop' // Cuando se carga la tienda te dirige al inicio de la misma incorporando este componente.
 
 const FilterButton = lazy(() => import('../components/FilterButton'))
 const PastryModal = lazy(() => import('../components/PastryModal'))
@@ -76,6 +77,7 @@ const Tienda = () => {
   return (
     <section className="min-h-screen">
       <Navbar />
+      <ScrollToTop />
       <div className="px-4 container max-w-6xl mx-auto py-4">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
           <div className="grid gap-4">

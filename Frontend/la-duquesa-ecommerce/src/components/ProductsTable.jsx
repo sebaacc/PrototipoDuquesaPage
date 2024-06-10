@@ -7,20 +7,27 @@ const ProductsTable = ({ productos }) => {
       <table className="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead className="text-xs text-white uppercase bg-gradient-to-l from-[#e077af] to-[#fe99cf]">
           <tr>
+            <th scope="col" className="px-6 py-3 w-min"></th>
             <th scope="col" className="px-6 py-3 w-1/5">
-              title de Producto
+              Nombre de Producto
             </th>
             <th scope="col" className="px-6 py-3 w-1/5">
-              price
+              precio
             </th>
             <th scope="col" className="px-6 py-3 w-1/5">
-              Cantidad en Stock
+              En Stock
             </th>
             <th scope="col" className="px-6 py-3 w-1/5">
-              Cantidad Vendida
+              Vendidos
             </th>
             <th scope="col" className="px-6 py-3 w-1/5">
-              Veces añadido al carrito
+              añadido al carrito
+            </th>
+            <th scope="col" className="px-6 py-3 w-1/5">
+              Categoría y subcategoría
+            </th>
+            <th scope="col" className="px-6 py-3 w-1/5">
+              Código de producto
             </th>
           </tr>
         </thead>
@@ -30,9 +37,12 @@ const ProductsTable = ({ productos }) => {
               key={index}
               className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
             >
+              <td scope="row" className="px-6 py-4 font-medium">
+                {index + 1 + '.'}
+              </td>
               <td
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
               >
                 {producto.title}
               </td>
@@ -41,13 +51,18 @@ const ProductsTable = ({ productos }) => {
               </td>
               <td
                 className={`px-6 py-4 ${
-                  producto.stock === 0 ? 'text-red-500' : ''
+                  producto.stock <= 20 ? 'text-red-500 font-bold bg-[#bd629326]' : ''
                 }`}
               >
                 {producto.stock}
               </td>
               <td className="px-6 py-4">{producto.sold}</td>
               <td className="px-6 py-4">{producto.addedToCart}</td>
+              <td className="px-6 py-4">
+                {producto.type + ', '}
+                <span className=" font-semibold">{producto.subtipo}</span>
+              </td>
+              <td className="px-6 py-4">{producto.code}</td>
             </tr>
           ))}
         </tbody>

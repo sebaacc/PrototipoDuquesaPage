@@ -8,27 +8,33 @@ import baguette from '../img/Baguette_designed_by_pikkovia.png'
 const categories = [
   {
     nombre: 'Brioche',
-    src: brioche
+    src: brioche,
+    subtipo: 'brioche'
   },
   {
     nombre: 'Cinnamon',
-    src: cinnamon
+    src: cinnamon,
+    subtipo: 'cinnamon'
   },
   {
     nombre: 'Galletas',
-    src: galletas
+    src: galletas,
+    subtipo: 'galletas'
   },
   {
     nombre: 'Croissant',
-    src: croissant
+    src: croissant,
+    subtipo: 'croissant'
   },
   {
-    nombre: 'Tortas frías',
-    src: torta
+    nombre: 'Pasteles',
+    src: torta,
+    subtipo: 'pastel'
   },
   {
     nombre: 'Baguette',
-    src: baguette
+    src: baguette,
+    subtipo: 'baguette'
   }
 ]
 

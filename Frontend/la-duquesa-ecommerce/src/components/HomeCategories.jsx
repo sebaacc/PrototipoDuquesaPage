@@ -5,8 +5,8 @@ const HomeCategories = () => {
   return (
     <>
       {categories.map((categoria, index) => (
-        <Link key={index} to={`/tienda?search=${categoria.nombre}`}>
-          <article className="group font-medium m-4 h-36 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition duration-300 transform hover:-translate-y-2 active:translate-y-0 w-max">
+        <Link key={index} to={`/tienda?search=${categoria.subtipo}`}>
+          <article className="group font-medium m-4 h-40 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition duration-300 transform hover:-translate-y-2 active:translate-y-0 w-24 text-center">
             <img
               className="group-hover:bg-white rounded-full w-[80px] h-[80px] transition duration-300"
               src={categoria.src}

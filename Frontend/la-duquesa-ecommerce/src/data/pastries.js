@@ -59,7 +59,7 @@ const pastries = [
     subtipo: 'Mantequilla',
     image: galletaMani,
     price: 8000, // COP
-    stock: 100,
+    stock: 5,
     sold: 150,
     code: 'GM003',
     addedToCart: 70 // Veces añadido al carrito
@@ -293,7 +293,7 @@ const pastries = [
   {
     id: 21,
     title: 'Cinnamon Roll',
-    description: 'Rollos de canela suaves y pegajosos con glaseado',
+    description: 'Rollos de canela suaves y esponjosos con glaseado',
     type: 'Pastelería',
     subtipo: 'Canela',
     image: cinnamonRoll,
@@ -324,7 +324,7 @@ const pastries = [
     subtipo: 'Pan',
     image: baguette,
     price: 8000, // COP
-    stock: 100,
+    stock: 20,
     sold: 140,
     code: 'BG023',
     addedToCart: 60 // Veces añadido al carrito
@@ -332,9 +332,9 @@ const pastries = [
   {
     id: 24,
     title: 'Cinnamon',
-    description: 'Deliciously soft cinnamon rolls with a sweet glaze',
-    type: 'Pastry',
-    subtipo: 'Sweet',
+    description: 'Canela 100% pura de alta calidad para tus comidas.',
+    type: 'Pastelería',
+    subtipo: 'Dulce',
     image: cinnamon,
     price: 10000, // COP
     stock: 50,
