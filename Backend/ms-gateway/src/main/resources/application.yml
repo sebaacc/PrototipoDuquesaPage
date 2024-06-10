@@ -57,6 +57,7 @@ spring:
       default-filters:
         - LogFilter
         - TokenRelay
+        - TokenFilter
       routes:
         - id: ms-java
           uri: lb://ms-java
@@ -82,6 +83,7 @@ spring:
             - Path=/users/**
           filters:
             - StripPrefix=1
+
 logging:
   level:
     org.springframework.security: DEBUG

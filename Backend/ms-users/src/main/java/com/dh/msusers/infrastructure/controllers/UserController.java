@@ -35,6 +35,11 @@ public class UserController {
         return ResponseEntity.ok(keycloakService.tokenIntrospect(token));
     }
 
+    @GetMapping(Endpoints.VERIFY)
+    public ResponseEntity<?> verify(@RequestParam String code) {
+        return keycloakService.verify(code);
+    }
+
     @PostMapping
     public ResponseEntity<UserResponse> save(@RequestBody User user) {
         return ResponseEntity.ok(keycloakService.save(user));

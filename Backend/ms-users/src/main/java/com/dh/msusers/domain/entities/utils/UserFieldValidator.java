@@ -1,8 +1,8 @@
 package com.dh.msusers.domain.entities.utils;
 
 import com.dh.msusers.domain.entities.User;
+import com.dh.msusers.exceptions.RestException;
 import lombok.experimental.UtilityClass;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
@@ -23,6 +23,14 @@ public class UserFieldValidator {
 
     public static boolean isValidName(String name) {
         return name.matches("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)$") && name.length() >= 2 && name.length() <= 50;
+    }
+
+    public static boolean isValidNumber(String phoneNumber, int length) {
+        return phoneNumber.matches(String.format("^[0-9]{%d}$", length));
+    }
+
+    public static boolean isValidCoordinate(String coordinate) {
+        return coordinate.matches("^-?\\d{1,3}\\.\\d{7}$");
     }
 
     public static boolean isNullField(User user) {
@@ -49,9 +57,25 @@ public class UserFieldValidator {
         if (nonNull(user.getLastName()) && !isValidName(user.getLastName())) {
             throwInvalidFieldException("lastName", "Invalid name, only allows letters and spaces, must be at least 3 characters long and a maximum of 50.");
         }
+
+        if (nonNull(user.getPhone()) && !isValidNumber(user.getPhone().toString(), 10)) {
+            throwInvalidFieldException("phone", "Invalid phone number, must be 10 digits long.");
+        }
+
+        if (nonNull(user.getDocument()) && !isValidNumber(user.getDocument().toString(), 10)) {
+            throwInvalidFieldException("document", "Invalid document number, must be 10 digits long.");
+        }
+
+        if (nonNull(user.getLocation()) && !isValidCoordinate(user.getLocation().getX() + "") && !isValidCoordinate(user.getLocation().getY() + "")) {
+            throwInvalidFieldException("location", "Invalid location, must be a valid coordinate.");
+        }
+
+        if (nonNull(user.getLocationDetails()) && user.getLocationDetails().length() > 255) {
+            throwInvalidFieldException("locationDetails", "Invalid location details, must be less than 255 characters long.");
+        }
     }
 
     private static void throwInvalidFieldException(String field, String message) {
-        throw new ResponseStatusException(BAD_REQUEST, Map.of(field, message).toString());
+        throw new RestException(BAD_REQUEST, Map.of(field, message).toString());
     }
 }
