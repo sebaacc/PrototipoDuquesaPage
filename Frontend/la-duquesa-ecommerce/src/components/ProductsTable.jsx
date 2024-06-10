@@ -33,10 +33,7 @@ const ProductsTable = ({ productos }) => {
         </thead>
         <tbody>
           {productos.map((producto, index) => (
-            <tr
-              key={index}
-              className="bg-white border-b"
-            >
+            <tr key={index} className="bg-white border-b border-[#464646]">
               <td scope="row" className="px-6 py-4 font-medium">
                 {index + 1 + '.'}
               </td>

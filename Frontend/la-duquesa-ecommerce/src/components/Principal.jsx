@@ -15,7 +15,7 @@ function Principal () {
         <div className="hidden md:flex justify-center">
           <HomeCategories />
         </div>
-        <div className="block md:hidden w-[100%] m-auto mb-20">
+        <div className="block md:hidden w-[85%]  m-auto mb-20">
           <MobileHomeCategories />
         </div>
       </section>
