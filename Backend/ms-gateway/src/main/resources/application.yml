@@ -27,23 +27,17 @@ spring:
 
   security:
     oauth2:
-
-      # As Client
-
-      #client:
-      #  provider:
-      #    keycloak:
-      #      user-name-attribute: preferred_username
-      #      issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
-      #  registration:
-      #    keycloak:
-      #      client-id: ${KEYCLOAK_CLIENT_ID:LaDuquesa}
-      #      client-secret: ${KEYCLOAK_CLIENT_SECRET:0YSqadlisrDFeWuXWMsz12mPWe6PIsJ7}
-      #      redirect-uri: '{baseUrl}/login/oauth2/code/keycloak'
-      #      scope: openid
-      resourceserver:
-        jwt:
-          issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
+      client:
+        provider:
+          keycloak:
+            user-name-attribute: preferred_username
+            issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
+        registration:
+          keycloak:
+            client-id: ${KEYCLOAK_CLIENT_ID:LaDuquesa}
+            client-secret: ${KEYCLOAK_CLIENT_SECRET:lJRb5FJxD9bx052xeyQOUIgH2E11X5dX}
+            redirect-uri: '{baseUrl}/login/oauth2/code/keycloak'
+            scope: openid
 
   cloud:
     gateway:
@@ -71,10 +65,16 @@ spring:
             - Path=/java/**
           filters:
             - StripPrefix=1
-        - id: ms-go
-          uri: lb://ms-go
+        - id: ms-cart
+          uri: lb://ms-cart
           predicates:
-            - Path=/go/**
+            - Path=/cart/**
+          filters:
+            - StripPrefix=1
+        - id: msproduct
+          uri: lb://msproduct
+          predicates:
+            - Path=/product/**
           filters:
             - StripPrefix=1
         - id: ms-users

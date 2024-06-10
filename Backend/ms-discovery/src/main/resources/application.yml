@@ -1,15 +1,36 @@
-spring:
-  application:
-    name: ms-discovery
+#spring:
+#  application:
+#    name: ms-discovery
+
+#server:
+#  port: 8761
+
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    registerWithEureka: false
+#    fetchRegistry: false
+#    serviceUrl:
+#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+
 
 server:
   port: 8761
 
+spring:
+  application:
+    name: ms-discovery
+
 eureka:
-  instance:
-    hostname: localhost
   client:
-    registerWithEureka: false
-    fetchRegistry: false
-    serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    register-with-eureka: false
+    fetch-registry: false
+    registry-fetch-interval-seconds: 5
+    healthcheck:
+      enabled: true
+    service-url:
+      default-zone: http://localhsot:8761/eureka
+  instance:
+    prefer-ip-address: true

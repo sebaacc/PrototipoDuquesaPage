@@ -1,6 +1,6 @@
 package com.dh.msusers.application.service;
 
-import com.dh.msusers.application.utils.UserFieldValidator;
+import com.dh.msusers.domain.entities.utils.UserFieldValidator;
 import com.dh.msusers.domain.entities.TokenResponse;
 import com.dh.msusers.domain.entities.User;
 import com.dh.msusers.domain.entities.UserResponse;
