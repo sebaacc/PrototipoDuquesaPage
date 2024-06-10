@@ -4,7 +4,7 @@ import Sugeridos from './Sugeridos'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import products from '../data/productsData' // Asegúrate de que la ruta sea correcta
+import products from '../data/productsData'
 
 function Products () {
   const settings = {
@@ -13,14 +13,18 @@ function Products () {
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 1800,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
-          infinite: true,
-          dots: true
+          infinite: false,
+          dots: true,
+          autoplay: true,
+          autoplaySpeed: 900
         }
       },
       {
@@ -46,12 +50,12 @@ function Products () {
       <section className="ml-10 mt-8">
         <Slider {...settings} className="carousel">
           {products.map((product) => (
-            <article key={product.id} className="p-4">
-              <div className="bg-white p-4 rounded-2xl shadow-lg h-full">
+            <article key={product.id} className="p-4 mb-2">
+              <div className="bg-[#f8f8f8] p-4 rounded-2xl shadow-lg h-full transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
                 <div className="w-full h-48 overflow-hidden rounded-t-2xl">
                   <img src={product.image} alt={product.name} className="object-cover w-full h-full" />
                 </div>
-                <div className="bg-[#D9D9D9] p-6 rounded-b-2xl h-full flex flex-col justify-between">
+                <div className="p-6 rounded-b-2xl h-full flex flex-col justify-between">
                   <div>
                     <p className="font-black">{product.name}</p>
                     <span className="flex mt-2">
