@@ -1,28 +1,22 @@
 import React from 'react'
 import sedes from '../data/sedesData' // Asegúrate de ajustar la ruta según la ubicación del archivo
 import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
 
 const SedeCard = ({ imageSrc, sedeTitle, sedeCityCountry, sedeDescription }) => (
-  <div className="rounded-lg border bg-white shadow-sm">
+  <div className="rounded-lg border bg-white shadow-sm ">
     <div className="relative h-48 overflow-hidden rounded-t-lg">
       <img
         src={imageSrc}
         alt={sedeTitle}
-        className="object-cover"
+        className="object-cover w-full h-full"
         width="384"
         height="192"
-        style={{ aspectRatio: '384 / 192', objectFit: 'cover' }}
       />
     </div>
     <div className="p-4">
       <h3 className="text-lg font-medium">{sedeTitle}</h3>
-      <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-        {sedeCityCountry}
-      </p>
-      <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-        {sedeDescription}
-      </p>
+      <p className="mt-2 text-sm text-gray-500">{sedeCityCountry}</p>
+      <p className="mt-2 text-sm text-gray-500">{sedeDescription}</p>
     </div>
   </div>
 )
@@ -30,13 +24,13 @@ const SedeCard = ({ imageSrc, sedeTitle, sedeCityCountry, sedeDescription }) => 
 const SedesSection = () => (
   <div>
     <Navbar />
-    <section className="w-full pb-8">
+    <section className="w-full p-4">
       <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10">
         <div className="space-y-3">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-            Conoce nuestras principales distribuidoras
+            Conoce nuestras sedes
           </h2>
-          <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
+          <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
             Estamos presentes en diferentes ciudades para brindar un mejor
             servicio a nuestros clientes.
           </p>
@@ -53,7 +47,7 @@ const SedesSection = () => (
           ))}
         </div>
       </div>
-      </section>
+    </section>
   </div>
 )
 

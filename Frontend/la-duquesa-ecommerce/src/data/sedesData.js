@@ -1,6 +1,6 @@
-import medellin from '../img/sedes/medellin.jpg'
+import medellin from '../img/sedes/medellin.png'
 import bogota from '../img/sedes/Bogota.png'
-import cali from '../img/sedes/cali.png'
+import cali from '../img/sedes/cali.jpg'
 import barranquilla from '../img/sedes/barranquilla.png'
 
 const sedes = [
