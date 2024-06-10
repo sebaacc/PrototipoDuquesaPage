@@ -35,7 +35,7 @@ const ProductsTable = ({ productos }) => {
           {productos.map((producto, index) => (
             <tr
               key={index}
-              className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              className="bg-white border-b"
             >
               <td scope="row" className="px-6 py-4 font-medium">
                 {index + 1 + '.'}
@@ -51,7 +51,7 @@ const ProductsTable = ({ productos }) => {
               </td>
               <td
                 className={`px-6 py-4 ${
-                  producto.stock <= 20 ? 'text-red-500 font-bold bg-[#bd629326]' : ''
+                  producto.stock <= 20 ? 'text-red-500 font-bold' : ''
                 }`}
               >
                 {producto.stock}
