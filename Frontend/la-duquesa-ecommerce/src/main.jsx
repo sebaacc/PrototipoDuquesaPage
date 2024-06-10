@@ -14,6 +14,7 @@ import ReporteDeProducto from './routes/ReporteDeProducto.jsx'
 import LogIn from './routes/LogIn.jsx'
 import Pagos from './routes/Pagos.jsx'
 import Register from './routes/Register.jsx'
+import NuestrasSedes from './routes/NuestrasSedes.jsx'
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,11 @@ const router = createBrowserRouter([
   {
     path: 'register',
     element: <Register />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'nuestras-sedes',
+    element: <NuestrasSedes />,
     errorElement: <ErrorPage />
   }
 ])

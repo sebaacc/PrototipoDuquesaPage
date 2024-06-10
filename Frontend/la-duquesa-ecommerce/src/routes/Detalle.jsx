@@ -7,7 +7,7 @@ import Calificacion from '../img/Calificacion.png'
 import chocolate from '../img/choco-chocolate 1.png'
 import { Link } from 'react-router-dom'
 import ImageGallery from '../components/ImageGallery'
-import ScrollToTop from '../components/ScrollToTop'
+import ScrollToTop from '../utils/ScrollToTop'
 import Sugeridos from '../components/Sugeridos'
 import SearchProduct from '../components/SearchProduct'
 
