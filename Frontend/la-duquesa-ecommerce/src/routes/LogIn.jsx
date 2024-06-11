@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../img/lgofondoclaro-removebg-preview 1.png'
+import axios from 'axios'
 
 function LogIn () {
   const [username, setUsername] = useState('')
@@ -28,7 +29,39 @@ function LogIn () {
       newErrors.password = `La contraseña debe tener al menos ${passwordMinLength} caracteres`
     }
 
+    if (newErrors.username === '' && newErrors.password === '') {
+      fetchData()
+    }
+
     setErrors(newErrors)
+  }
+
+  const fetchData = async () => {
+    const values = {
+      username,
+      password
+    }
+
+    try {
+      const token = JSON.parse(localStorage.getItem('token'))
+
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+
+      const response = await axios.post(
+        'http://localhost:8090/users/login',
+        values,
+        config
+      )
+
+      if (response.status === 200) {
+        window.location.href = '/'
+      }
+    } catch (error) {
+      console.error('Error updating user:', error)
+      // setFieldError('email', '¡Ya existe una cuenta con ese correo!');
+    }
   }
 
   return (
@@ -48,7 +81,7 @@ function LogIn () {
               width="1.33em"
               height="1em"
               viewBox="0 0 256 193"
-              className='size-8'
+              className="size-8"
             >
               <path
                 fill="#4285f4"
@@ -76,7 +109,7 @@ function LogIn () {
               width="1em"
               height="1em"
               viewBox="0 0 256 256"
-              className='size-8'
+              className="size-8"
             >
               <path
                 fill="#1877f2"
@@ -92,7 +125,7 @@ function LogIn () {
               width="1em"
               height="1em"
               viewBox="0 0 256 256"
-              className='size-8'
+              className="size-8"
             >
               <g fill="none">
                 <rect width="256" height="256" fill="#fff" rx="60" />

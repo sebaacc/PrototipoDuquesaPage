@@ -61,7 +61,11 @@ function SignUp () {
           </div>
         </Link>
         <div className="text-center">
-          <img src={logo} alt="La Quesa Bakery" className="mx-auto h-24 w-32" />
+          <img
+            src={logo}
+            alt="La Duquesa Bakery"
+            className="mx-auto h-24 w-32"
+          />
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <section className="flex gap-10">
@@ -150,9 +154,7 @@ function SignUp () {
               <p className="text-red-500 text-xs mt-2">{errors.email}</p>
             )}
           </div>
-          <section>
-
-          </section>
+          <section></section>
           <div>
             <label
               htmlFor="password"
