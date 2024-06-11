@@ -11,7 +11,13 @@ class UserResponseTest {
 
     @Test
     void testSerialization() throws Exception {
-        UserResponse userResponse = new UserResponse("123", "John", "Doe", "john.doe@example.com", "johndoe");
+        UserResponse userResponse = UserResponse.builder()
+                .id("123")
+                .firstName("John")
+                .lastName("Doe")
+                .email("john.doe@example.com")
+                .username("johndoe")
+                .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(userResponse);
