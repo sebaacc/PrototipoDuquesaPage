@@ -5,58 +5,89 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
-import pastries from '../data/pastries.js'
+// import pastries from '../data/pastries.js'
 import ProductsTable from '../components/ProductsTable.jsx'
 import ExcelButton from '../components/ExcelButton.jsx'
 import PDFButton from '../components/PDFButton.jsx'
 import axios from 'axios'
 
-const productosList = pastries
+// const productosList = pastries
+const productosList = [
+  {
+    id: '6661392bd5712dd46e864788',
+    totalQuantity: 15,
+    name: 'torta salada rosa',
+    imageURL: 'http://localhost:8000/product_6807475859842658641.jpeg',
+    price: 30000,
+    subCategoryName: 'tortas saladas'
+  },
+  {
+    id: '66611c40074b920147bbd01c',
+    totalQuantity: 5,
+    name: 'torta salada rosa',
+    imageURL: 'http://localhost:8000/product_7938588495779366279.jpeg',
+    price: 30000,
+    subCategoryName: 'tortas saladas'
+  },
+  {
+    id: '66611c41074b920147bbd01d',
+    totalQuantity: 5,
+    name: 'torta salada rosa',
+    imageURL: 'http://localhost:8000/product_4017494368412684623.jpeg',
+    price: 30000,
+    subCategoryName: 'tortas saladas'
+  },
+  {
+    id: '66613929d5712dd46e864787',
+    totalQuantity: 5,
+    name: 'torta salada rosa',
+    imageURL: 'http://localhost:8000/product_5435593683727126328.jpeg',
+    price: 30000,
+    subCategoryName: 'tortas saladas'
+  }
+]
 
-function ReporteDeProducto() {
+function ReporteDeProducto () {
   const [productos, setProductos] = useState(productosList)
   const [filtro, setFiltro] = useState('Ninguno')
-  
 
   useEffect(() => {
-    setFiltro("agregados")
-    handleFilter("agregados")
+    setFiltro('agregados')
+    handleFilter('agregados')
     fetchData()
   }, [])
 
-
-
   const fetchData = async () => {
     try {
-      const token = localStorage.getItem("accessToken");
+      const token = localStorage.getItem('accessToken')
 
       const config = {
         headers: { Authorization: `Bearer ${token}` }
-      };
+      }
 
-      const response = await axios.get('http://localhost:8090/cart/cartInfo/findMostAddedProducts/15', config);
+      const response = await axios.get(
+        'http://localhost:8090/cart/cartInfo/findMostAddedProducts/15',
+        config
+      )
 
       if (response.status === 200) {
         console.log(response.data)
         setProductos(response.data)
       }
     } catch (error) {
-      console.error('Error updating user:', error);
-      //setFieldError('email', '¡Ya existe una cuenta con ese correo!');
+      console.error('Error updating user:', error)
+      // setFieldError('email', '¡Ya existe una cuenta con ese correo!');
     }
-  };
-
+  }
 
   const handleChange = (event) => {
     const selectedFilter = event.target.value
     setFiltro(selectedFilter)
-    if (selectedFilter == "agregados") {
+    if (selectedFilter === 'agregados') {
       fetchData()
-    }
-    else {
+    } else {
       handleFilter(selectedFilter)
     }
-
   }
 
   const handleFilter = (val) => {

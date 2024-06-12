@@ -13,25 +13,13 @@ const PDFButton = ({ productos }) => {
     doc.text(`Fecha de descarga: ${currentDate}`, 10, 20)
     autoTable(doc, {
       startY: 40,
-      head: [
-        [
-          'Nombre',
-          'Precio',
-          'Stock',
-          'Vendidos',
-          'Agregados al carrito',
-          'Categoría y subcategoría',
-          'Código de producto'
-        ]
-      ],
+      head: [['Id', 'Nombre', 'Precio', 'Añadido al Carrito', 'Subcategoría']],
       body: data.map((p) => [
-        p.title,
+        p.id,
+        p.name,
         p.price,
-        p.stock,
-        p.sold,
-        p.addedToCart,
-        p.type + p.subtipo,
-        p.code
+        p.totalQuantity,
+        p.subCategoryName
       ])
     })
     doc.save('reporte_productos.pdf')
@@ -53,17 +41,12 @@ export default PDFButton
 PDFButton.propTypes = {
   productos: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      subtipo: PropTypes.string.isRequired,
-      image: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      subCategoryName: PropTypes.string.isRequired,
+      imageURL: PropTypes.string.isRequired,
       price: PropTypes.number.isRequired,
-      stock: PropTypes.number.isRequired,
-      sold: PropTypes.number.isRequired,
-      code: PropTypes.string.isRequired,
-      addedToCart: PropTypes.number.isRequired
+      totalQuantity: PropTypes.number.isRequired
     })
   ).isRequired
 }

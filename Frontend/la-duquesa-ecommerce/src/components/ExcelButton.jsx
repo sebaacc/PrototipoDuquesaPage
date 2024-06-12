@@ -6,28 +6,18 @@ const ExcelButton = ({ productos }) => {
     const schema = [
       {
         column: 'ID',
-        type: Number,
+        type: String,
         value: (row) => row.id
       },
       {
         column: 'Título',
         type: String,
-        value: (row) => row.title
+        value: (row) => row.name
       },
       {
-        column: 'Descripción',
+        column: 'Sub categoría',
         type: String,
-        value: (row) => row.description
-      },
-      {
-        column: 'Tipo',
-        type: String,
-        value: (row) => row.type
-      },
-      {
-        column: 'Subtipo',
-        type: String,
-        value: (row) => row.subtipo
+        value: (row) => row.subCategoryName
       },
       {
         column: 'Precio (COP)',
@@ -35,24 +25,9 @@ const ExcelButton = ({ productos }) => {
         value: (row) => row.price
       },
       {
-        column: 'Stock',
-        type: Number,
-        value: (row) => row.stock
-      },
-      {
-        column: 'Vendido',
-        type: Number,
-        value: (row) => row.sold
-      },
-      {
-        column: 'Código',
-        type: String,
-        value: (row) => row.code
-      },
-      {
         column: 'Añadido al Carrito',
         type: Number,
-        value: (row) => row.addedToCart
+        value: (row) => row.totalQuantity
       }
     ]
 
@@ -78,20 +53,33 @@ const ExcelButton = ({ productos }) => {
 
 export default ExcelButton
 
+// ExcelButton.propTypes = {
+//   productos: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       id: PropTypes.number.isRequired,
+//       title: PropTypes.string.isRequired,
+//       description: PropTypes.string.isRequired,
+//       type: PropTypes.string.isRequired,
+//       subtipo: PropTypes.string.isRequired,
+//       image: PropTypes.string.isRequired,
+//       price: PropTypes.number.isRequired,
+//       stock: PropTypes.number.isRequired,
+//       sold: PropTypes.number.isRequired,
+//       code: PropTypes.string.isRequired,
+//       addedToCart: PropTypes.number.isRequired
+//     })
+//   ).isRequired
+// }
+
 ExcelButton.propTypes = {
   productos: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      subtipo: PropTypes.string.isRequired,
-      image: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      subCategoryName: PropTypes.string.isRequired,
+      imageURL: PropTypes.string.isRequired,
       price: PropTypes.number.isRequired,
-      stock: PropTypes.number.isRequired,
-      sold: PropTypes.number.isRequired,
-      code: PropTypes.string.isRequired,
-      addedToCart: PropTypes.number.isRequired
+      totalQuantity: PropTypes.number.isRequired
     })
   ).isRequired
 }
