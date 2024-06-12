@@ -5,6 +5,7 @@ import com.dh.msusers.domain.entities.User;
 import com.dh.msusers.domain.entities.UserResponse;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public interface IKeycloakService {
 
     Map<String, Object> tokenIntrospect(String token);
 
-    ResponseEntity<?> verify(String verificationCode);
+    String verify(String verificationCode);
 
     UserResponse save(User user);
 

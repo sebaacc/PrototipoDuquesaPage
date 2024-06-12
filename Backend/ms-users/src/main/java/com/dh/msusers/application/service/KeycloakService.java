@@ -1,6 +1,6 @@
 package com.dh.msusers.application.service;
 
-import com.dh.msusers.domain.entities.utils.UserFieldValidator;
+import com.dh.msusers.application.utils.UserFieldValidator;
 import com.dh.msusers.domain.entities.TokenResponse;
 import com.dh.msusers.domain.entities.User;
 import com.dh.msusers.domain.entities.UserResponse;
@@ -8,10 +8,12 @@ import com.dh.msusers.domain.repositories.IKeycloakRepository;
 import com.dh.msusers.domain.services.IKeycloakService;
 import com.dh.msusers.exceptions.RestException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +71,7 @@ public class KeycloakService implements IKeycloakService {
     }
 
     @Override
-    public ResponseEntity<?> verify(String verificationCode) {
+    public String verify(String verificationCode) {
         return keycloakRepository.verify(verificationCode);
     }
 
@@ -78,6 +80,9 @@ public class KeycloakService implements IKeycloakService {
         try {
             return keycloakRepository.login(username, password);
         } catch (HttpClientErrorException e) {
+            if (BAD_REQUEST.equals(e.getStatusCode()) || UNAUTHORIZED.equals(e.getStatusCode())) {
+                throw new RestException(BAD_REQUEST, "Invalid username or password.");
+            }
             throw new RestException(INTERNAL_SERVER_ERROR, e.getResponseBodyAsString());
         } catch (Exception e) {
             throw new RestException(INTERNAL_SERVER_ERROR, e.getMessage());

@@ -24,8 +24,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 
 import static com.dh.msusers.application.utils.SafeUtils.getElementByIndex;
@@ -55,6 +58,15 @@ public class KeycloakRepository implements IKeycloakRepository {
     private String clientSecret;
     @Value("${keycloak.serverUrl}")
     private String serverUrl;
+
+    @Value("${spring.mail.redirects.success-verification}")
+    private String successVerificationUrl;
+
+    @Value("${spring.mail.redirects.already-verification}")
+    private String alreadyVerificationUrl;
+
+    @Value("${spring.mail.redirects.error-verification}")
+    private String errorVerificationUrl;
 
     @Override
     public List<User> findAll() {
@@ -156,11 +168,11 @@ public class KeycloakRepository implements IKeycloakRepository {
         HttpEntity<?> requestEntity = new HttpEntity<>(params, headers);
 
         String response = restTemplate.exchange(urlLogin, POST, requestEntity, String.class).getBody();
-        return mapper.readValue(response, TokenResponse.class);
+        return new ObjectMapper().readValue(response, TokenResponse.class);
     }
 
     @Override
-    public ResponseEntity<?> verify(String verificationCode) {
+    public String verify(String verificationCode) {
         List<User> users = stream(keycloak.realm(realm)
                 .users()
                 .searchByAttributes("verificationCode:" + verificationCode))
@@ -168,7 +180,7 @@ public class KeycloakRepository implements IKeycloakRepository {
                 .toList();
 
         if (CollectionUtils.isEmpty(users)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Verification code not found"));
+            return errorVerificationUrl;
         }
 
         UserRepresentation userRepresentation = keycloak.realm(realm)
@@ -179,7 +191,7 @@ public class KeycloakRepository implements IKeycloakRepository {
                 .toRepresentation();
 
         if (Boolean.TRUE.equals(userRepresentation.isEnabled())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "User already verified"));
+            return alreadyVerificationUrl;
         }
 
         userRepresentation.setEnabled(true);
@@ -191,7 +203,7 @@ public class KeycloakRepository implements IKeycloakRepository {
                         .orElse(EMPTY))
                 .update(userRepresentation);
 
-        return ResponseEntity.ok(Map.of("message", "User verified successfully"));
+        return successVerificationUrl;
     }
 
     @Override
