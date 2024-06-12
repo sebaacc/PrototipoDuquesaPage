@@ -1,6 +1,6 @@
 package com.dh.msusers.infrastructure.security;
 
-import com.dh.msusers.domain.entities.utils.constants.Endpoints;
+import com.dh.msusers.application.utils.constants.Endpoints;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
