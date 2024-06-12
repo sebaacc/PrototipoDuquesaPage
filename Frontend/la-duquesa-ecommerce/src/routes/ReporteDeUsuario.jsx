@@ -27,7 +27,7 @@ const usuariosIniciales = [
   }
 ]
 
-function ReporteDeUsuario() {
+function ReporteDeUsuario () {
   const [usuarios, setUsuarios] = useState(usuariosIniciales)
   const [confirmarEliminacion, setConfirmarEliminacion] = useState({ mostrar: false, index: null })
 
@@ -37,24 +37,23 @@ function ReporteDeUsuario() {
 
   const fetchData = async () => {
     try {
-      const token = localStorage.getItem("accessToken");
+      const token = localStorage.getItem('accessToken')
 
       const config = {
         headers: { Authorization: `Bearer ${token}` }
-      };
+      }
 
-      const response = await axios.get('http://localhost:8090/users', config);
+      const response = await axios.get('http://localhost:8090/users', config)
 
       if (response.status === 200) {
         console.log(response.data)
         setUsuarios(response.data)
       }
     } catch (error) {
-      console.error('Error updating user:', error);
-      //setFieldError('email', '¡Ya existe una cuenta con ese correo!');
+      console.error('Error updating user:', error)
+      // setFieldError('email', '¡Ya existe una cuenta con ese correo!')
     }
-  };
-
+  }
 
   const handleEliminar = (index) => {
     const nuevosUsuarios = [...usuarios]
