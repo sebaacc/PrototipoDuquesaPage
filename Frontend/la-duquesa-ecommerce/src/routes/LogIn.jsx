@@ -43,19 +43,15 @@ function LogIn () {
     }
 
     try {
-      const token = JSON.parse(localStorage.getItem('token'))
-
-      const config = {
-        headers: { Authorization: `Bearer ${token}` }
-      }
-
+  
       const response = await axios.post(
         'http://localhost:8090/users/login',
         values,
-        config
+        
       )
 
       if (response.status === 200) {
+        localStorage.setItem("accessToken", response.data.access_token)
         window.location.href = '/'
       }
     } catch (error) {

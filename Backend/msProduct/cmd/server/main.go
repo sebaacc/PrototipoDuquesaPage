@@ -84,7 +84,7 @@ func main() {
 	// Inicialización de repository en base a la bd configurada en data
 	categoryRepository := repositories_implement.NewMongoCategoryRepository(db)
 	subCategoryRepository := repositories_implement.NewMongoSubCategoryRepository(db)
-	productRepository := repositories_implement.NewMongoProductRepository(db)
+	productRepository := repositories_implement.NewMongoProductRepository(db, subCategoryRepository)
 	productImagesRepository := repositories_implement.NewMongoProductImagesRepository(db)
 
 	// Inicialización del servicio pasando los repo anteriores
