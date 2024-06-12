@@ -148,7 +148,8 @@ function Navbar() {
             alt=""
           />
           <p className="mt-1 flex flex-col md:flex-row text-center">
-            <span className="font-bold mr-1">Enviar a</span> KR 21B #29 B - 149
+            {/*<span className="font-bold mr-1">Enviar a</span> KR 21B #29 B - 149*/}
+            <span className="font-bold mr-1">Configura tu dirección <br/> para recibir pedidos</span>
           </p>
         </article>
 

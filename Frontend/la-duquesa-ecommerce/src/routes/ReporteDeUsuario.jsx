@@ -29,7 +29,8 @@ const usuariosIniciales = [
 
 function ReporteDeUsuario () {
   const [usuarios, setUsuarios] = useState(usuariosIniciales)
-  const [confirmarEliminacion, setConfirmarEliminacion] = useState({ mostrar: false, index: null })
+  const [showSuccess, setShowSuccess] = useState(false)
+  const [confirmarEliminacion, setConfirmarEliminacion] = useState({ mostrar: false, id: null })
 
   useEffect(() => {
     fetchData()
@@ -55,19 +56,47 @@ function ReporteDeUsuario () {
     }
   }
 
-  const handleEliminar = (index) => {
-    const nuevosUsuarios = [...usuarios]
-    nuevosUsuarios.splice(index, 1)
-    setUsuarios(nuevosUsuarios)
-    setConfirmarEliminacion({ mostrar: false, index: null })
+
+  const deleteUser  = async () => {
+    try {
+      const token = localStorage.getItem('accessToken')
+
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+
+      const response = await axios.delete('http://localhost:8090/users/' + confirmarEliminacion.id, config)
+
+      console.log(response)
+      if (response.status == 204) {
+        let newUsers = usuarios.filter((user)=>{
+          return user.id != confirmarEliminacion.id
+        });
+
+        console.log(newUsers)
+        setUsuarios(newUsers)
+        setShowSuccess(true)
+
+      }
+    } catch (error) {
+      console.error('Error updating user:', error)
+      // setFieldError('email', '¡Ya existe una cuenta con ese correo!')
+    }
   }
 
-  const mostrarConfirmacion = (index) => {
-    setConfirmarEliminacion({ mostrar: true, index })
+
+  const handleEliminar = () => {
+    deleteUser(confirmarEliminacion)
+    setConfirmarEliminacion({ mostrar: false, id: null })
+  }
+
+  const mostrarConfirmacion = (usuario) => {
+    console.log(usuario)
+    setConfirmarEliminacion({ mostrar: true, id: usuario.id })
   }
 
   const cancelarConfirmacion = () => {
-    setConfirmarEliminacion({ mostrar: false, index: null })
+    setConfirmarEliminacion({ mostrar: false, id: null })
   }
 
   return (
@@ -115,7 +144,7 @@ function ReporteDeUsuario () {
                   <td className="px-6 py-4">{usuario.phone}</td>
                 }
                 <td className="px-6 py-4">
-                  <button onClick={() => mostrarConfirmacion(index)}>
+                  <button onClick={() => mostrarConfirmacion(usuario)}>
                     <IoIosCloseCircleOutline />
                   </button>
                 </td>
@@ -131,7 +160,7 @@ function ReporteDeUsuario () {
             <div className=" flex flex-col mt-3 items-center">
               <button
                 className="bg-pink-400 text-white px-4 py-2 rounded w-1/2 mb-2"
-                onClick={() => handleEliminar(confirmarEliminacion.index)}
+                onClick={() => handleEliminar()}
               >
                 Eliminar
               </button>
@@ -141,6 +170,22 @@ function ReporteDeUsuario () {
               >
                 Cancelar
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {showSuccess && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-4 rounded shadow">
+            <p>¡El usuario ha sido eliminado exitósamente!</p>
+            <div className=" flex flex-col mt-3 items-center">
+              <button
+                className="bg-pink-400 text-white px-4 py-2 rounded w-1/2 mb-2"
+                onClick={() => setShowSuccess(false)}
+              >
+                Entendido
+              </button>
+ 
             </div>
           </div>
         </div>
