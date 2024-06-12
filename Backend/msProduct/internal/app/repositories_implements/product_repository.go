@@ -13,14 +13,17 @@ import (
 )
 
 type MongoProductRepository struct {
-	collection *mongo.Collection
+	collection             *mongo.Collection
+	subCategoryRepository  *MongoSubCategoryRepository
 }
 
-func NewMongoProductRepository(db *mongo.Database) *MongoProductRepository {
+func NewMongoProductRepository(db *mongo.Database, subCategoryRepo *MongoSubCategoryRepository) *MongoProductRepository {
 	return &MongoProductRepository{
-		collection: db.Collection("products"),
+		collection:            db.Collection("products"),
+		subCategoryRepository: subCategoryRepo,
 	}
 }
+
 
 func (r *MongoProductRepository) Create(product *models.Product) error {
 	_, err := r.collection.InsertOne(context.TODO(), product)
@@ -130,44 +133,44 @@ func (r *MongoProductRepository) GetByIDs(ids []primitive.ObjectID) ([]*models.P
 
 
 func (r *MongoProductRepository) GetDtosByIDs(ids []primitive.ObjectID) ([]*dto.ProductDto, error) {
-    var productDtos []*dto.ProductDto
+	var productDtos []*dto.ProductDto
 
-    projection := bson.M{
-        "_id":      1,
-        "name":     1,
-        "price":    1,
-        "imageURLs": 1,
-    }
+	cursor, err := r.collection.Find(context.TODO(), bson.M{"_id": bson.M{"$in": ids}})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.TODO())
 
-    cursor, err := r.collection.Find(context.TODO(), bson.M{"_id": bson.M{"$in": ids}}, options.Find().SetProjection(projection))
-    if err != nil {
-        return nil, err
-    }
-    defer cursor.Close(context.TODO())
+	for cursor.Next(context.TODO()) {
+		var product models.Product
+		if err = cursor.Decode(&product); err != nil {
+			return nil, err
+		}
 
-    for cursor.Next(context.TODO()) {
-        var product models.Product
-        if err = cursor.Decode(&product); err != nil {
-            return nil, err
-        }
+		subCategory, err := r.subCategoryRepository.GetByID(product.SubCategoryID)
+		if err != nil {
+			return nil, err
+		}
 
-        productDto := &dto.ProductDto{
-            ID:       product.ID,
-            Name:     product.Name,
-            Price:    product.Price,
-            ImageURL: "",
-        }
-        if len(product.ImageURLs) > 0 {
-            productDto.ImageURL = product.ImageURLs[0]
-        }
-        productDtos = append(productDtos, productDto)
-    }
+		productDto := &dto.ProductDto{
+			ID:              product.ID,
+			Name:            product.Name,
+			Price:           product.Price,
+			ImageURL:        "",
+			SubCategoryName: subCategory.Name,
+		}
+		if len(product.ImageURLs) > 0 {
+			productDto.ImageURL = product.ImageURLs[0]
+		}
+		productDtos = append(productDtos, productDto)
+	}
 
-    if err = cursor.Err(); err != nil {
-        return nil, err
-    }
+	if err = cursor.Err(); err != nil {
+		return nil, err
+	}
 
-    return productDtos, nil
+	return productDtos, nil
 }
+
 
 

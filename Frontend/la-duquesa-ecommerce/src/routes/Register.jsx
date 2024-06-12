@@ -1,31 +1,49 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../img/lgofondoclaro-removebg-preview 1.png'
+import axios from 'axios'
+import Loader from '../components/loader/Loader'
 
-function SignUp () {
+function SignUp() {
   const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
-    gender: '',
+    first_name: '',
+    last_name: '',
+    username: '',
+    document: '',
+    phone: '',
     email: '',
     password: '',
     confirmPassword: ''
   })
   const [errors, setErrors] = useState({})
+  const [loadingOpen, setLoadingOpen] = useState(false)
+  const [creationError, setCreattionError] = useState(false)
+  const [successOpen, setSuccessOpen] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setForm({ ...form, [name]: value })
   }
 
+  useEffect(() => {
+    console.log(form)
+  }, [form])
+
   const validate = () => {
     const newErrors = {}
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    const passwordMinLength = 8
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#.$%^&+=!]).{8,}$/
 
-    if (!form.firstName) newErrors.firstName = 'El campo de nombre es requerido'
-    if (!form.lastName) newErrors.lastName = 'El campo de apellido es requerido'
-    if (!form.gender) newErrors.gender = 'El campo de género es requerido'
+    if (!form.first_name) newErrors.firstName = 'El campo de nombre es requerido'
+    if (!form.last_name) newErrors.lastName = 'El campo de apellido es requerido'
+    if (!form.username) {
+      newErrors.username = 'El campo de nombre de usuario es requerido'
+    }
+    if (!form.document) {
+      newErrors.documentNumber = 'El campo de número de documento es requerido'
+    }
+    if (!form.phone) newErrors.phone = 'El campo de teléfono es requerido'
     if (!form.email) {
       newErrors.email = 'El campo de correo es requerido'
     } else if (!emailRegex.test(form.email)) {
@@ -33,8 +51,9 @@ function SignUp () {
     }
     if (!form.password) {
       newErrors.password = 'El campo de contraseña es requerido'
-    } else if (form.password.length < passwordMinLength) {
-      newErrors.password = `La contraseña debe tener al menos ${passwordMinLength} caracteres`
+    } else if (!passwordRegex.test(form.password)) {
+      newErrors.password =
+        'La contraseña debe tener al menos 8 caracteres, incluyendo un número, una letra mayúscula, una letra minúscula y un carácter especial (@#.$%^&+=!)'
     }
     if (form.password !== form.confirmPassword) {
       newErrors.confirmPassword = 'Las contraseñas no coinciden'
@@ -47,58 +66,90 @@ function SignUp () {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (validate()) {
-      // enviar datos al servidor o realizar acciones adicionales
+      createAccount()
+    }
+  }
+
+
+  const createAccount = async () => {
+    //Estado para poner un loader
+    setLoadingOpen(true)
+    const { confirmPassword, ...newForm } = form;
+    console.log(newForm)
+
+    try {
+
+      const response = await axios.post('http://localhost:8090/users', newForm);
+
+      if (response.status === 200) {
+        setLoadingOpen(false)
+        setSuccessOpen(true)
+        //Falta añadir un mensaje que diga "Tu cuenta se ha creado con éxito, verifica la cuenta desde tu correo para iniciar sesión"
+        console.log(response.data)
+      }
+    } catch (error) {
+      console.error('Error updating user:', error);
+      setLoadingOpen(false)
+      //Estado para mostrar error al crear cuenta
+      setCreattionError(true)
+      //setFieldError('email', '¡Ya existe una cuenta con ese correo!');
     }
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#F7F8FC]">
-      <div className="w-full max-w-lg p-8 space-y-6 bg-white rounded-lg shadow m-10 md:mt-20 ">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="space-y-8 p-10 bg-white rounded-xl shadow-lg z-10 my-16 w-[85vw]">
         <Link to={'/'} className="text-sm text-[#7F7C82] font-bold">
-          <div className="flex items-center font-bold">
+          <div className="flex items-center font-bold gap-3">
             <ArrowLeftIcon className="h-6 w-6 text-[#7F7C82]" />
             Volver al inicio
           </div>
         </Link>
         <div className="text-center">
-          <img src={logo} alt="La Quesa Bakery" className="mx-auto h-24 w-32" />
+          <img src={logo} alt="Logo" className="mx-auto h-32 w-auto" />
+          <h2 className="mt-6 text-2xl font-extrabold text-[#2D5651]">
+            ¡Crea tu cuenta!
+          </h2>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <section className="flex gap-10">
-            <div>
+        <form
+          className="mt-8 space-y-6 flex flex-col items-center gap-10"
+          onSubmit={handleSubmit}
+        >
+          <section className="flex gap-10 flex-wrap justify-center">
+            <div className="w-[320px]">
               <label
                 htmlFor="firstName"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-extrabold text-[#2D5651]"
               >
                 Nombre
               </label>
               <input
                 id="firstName"
-                name="firstName"
+                name="first_name"
                 type="text"
                 placeholder="Nombre"
                 className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
-                value={form.firstName}
+                value={form.first_name}
                 onChange={handleChange}
               />
               {errors.firstName && (
                 <p className="text-red-500 text-xs mt-2">{errors.firstName}</p>
               )}
             </div>
-            <div>
+            <div className="w-[320px]">
               <label
                 htmlFor="lastName"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-extrabold text-[#2D5651]"
               >
                 Apellido
               </label>
               <input
                 id="lastName"
-                name="lastName"
+                name="last_name"
                 type="text"
                 placeholder="Apellido"
                 className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
-                value={form.lastName}
+                value={form.last_name}
                 onChange={handleChange}
               />
               {errors.lastName && (
@@ -106,106 +157,177 @@ function SignUp () {
               )}
             </div>
           </section>
-          <div>
-            <label
-              htmlFor="gender"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Género
-            </label>
-            <select
-              id="gender"
-              name="gender"
-              placeholder="seleccione"
-              className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
-              value={form.gender}
-              onChange={handleChange}
-            >
-              <option value="select">Seleccione</option>
-              <option value="male">Masculino</option>
-              <option value="female">Femenino</option>
-              <option value="other">Prefiero No Decirlo </option>
-            </select>
-            {errors.gender && (
-              <p className="text-red-500 text-xs mt-2">{errors.gender}</p>
-            )}
-          </div>
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Correo
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Correo"
-              className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
-              value={form.email}
-              onChange={handleChange}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-xs mt-2">{errors.email}</p>
-            )}
-          </div>
-          <section>
-
+          <section className="flex gap-10 flex-wrap justify-center">
+            <div className="w-[320px]">
+              <label
+                htmlFor="username"
+                className="block text-sm font-extrabold text-[#2D5651]"
+              >
+                Nombre de Usuario
+              </label>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                placeholder="Nombre de Usuario"
+                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                value={form.username}
+                onChange={handleChange}
+              />
+              {errors.username && (
+                <p className="text-red-500 text-xs mt-2">{errors.username}</p>
+              )}
+            </div>
+            <div className="w-[320px]">
+              <label
+                htmlFor="email"
+                className="block text-sm font-extrabold text-[#2D5651]"
+              >
+                Correo Electrónico
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Correo Electrónico"
+                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                value={form.email}
+                onChange={handleChange}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-2">{errors.email}</p>
+              )}
+            </div>
           </section>
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+          <section className="flex gap-10 flex-wrap justify-center">
+            <div className="w-[320px]">
+              <label
+                htmlFor="phone"
+                className="block text-sm font-extrabold text-[#2D5651]"
+              >
+                Teléfono
+              </label>
+              <input
+                id="phone"
+                name="phone"
+                type="text"
+                placeholder="Teléfono"
+                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                value={form.phone}
+                onChange={handleChange}
+              />
+              {errors.phone && (
+                <p className="text-red-500 text-xs mt-2">{errors.phone}</p>
+              )}
+            </div>
+            <div className="w-[320px]">
+              <label
+                htmlFor="documentNumber"
+                className="block text-sm font-extrabold text-[#2D5651]"
+              >
+                Número de Documento
+              </label>
+              <input
+                id="documentNumber"
+                name="document"
+                type="text"
+                placeholder="Número de Documento"
+                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                value={form.document}
+                onChange={handleChange}
+              />
+              {errors.documentNumber && (
+                <p className="text-red-500 text-xs mt-2">
+                  {errors.documentNumber}
+                </p>
+              )}
+            </div>
+          </section>
+          <section className="flex gap-10 flex-wrap justify-center">
+            <div className="w-[320px]">
+              <label
+                htmlFor="password"
+                className="block text-sm font-extrabold text-[#2D5651]"
+              >
+                Contraseña
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Contraseña"
+                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                value={form.password}
+                onChange={handleChange}
+              />
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-2">{errors.password}</p>
+              )}
+            </div>
+            <div className="w-[320px]">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-extrabold text-[#2D5651]"
+              >
+                Confirmar Contraseña
+              </label>
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                placeholder="Confirmar Contraseña"
+                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                value={form.confirmPassword}
+                onChange={handleChange}
+              />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-xs mt-2">
+                  {errors.confirmPassword}
+                </p>
+              )}
+            </div>
+          </section>
+
+          {loadingOpen &&
+            <Loader />
+          }
+
+          {successOpen &&
+            <article className='text-green-700 bg-green-100 p-2 rounded'>
+              Tu cuenta ha sido creada exitósamente, dirígete a tu correo para verificarla.
+            </article>
+          }
+
+          {creationError &&
+            <article className='text-red-700 bg-red-100 p-2 rounded'>
+              Ha habido un error al crear la cuenta.
+            </article>
+          }
+
+          {successOpen ?
+            <Link to={"/login"}>
+              <div
+                className="w-40 m-auto flex justify-center bg-[#BD6292] text-white rounded p-2"
+              >
+                Iniciar sesión
+              </div>
+            </Link>
+
+            :
+            <button
+              type="submit"
+              className="w-40 m-auto flex justify-center bg-[#BD6292] text-white rounded p-2"
             >
-              Contraseña
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Contraseña"
-              className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
-              value={form.password}
-              onChange={handleChange}
-            />
-            {errors.password && (
-              <p className="text-red-500 text-xs mt-2">{errors.password}</p>
-            )}
-          </div>
-          <div>
-            <label
-              htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Confirmar Contraseña
-            </label>
-            <input
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              placeholder="Confirmar Contraseña"
-              className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
-              value={form.confirmPassword}
-              onChange={handleChange}
-            />
-            {errors.confirmPassword && (
-              <p className="text-red-500 text-xs mt-2">
-                {errors.confirmPassword}
-              </p>
-            )}
-          </div>
-          <button
-            type="submit"
-            className="w-40 m-auto flex justify-center bg-[#BD6292] text-white rounded p-2"
-          >
-            Registrarse
-          </button>
+              Registrarse
+            </button>
+          }
         </form>
-        <div className="flex justify-between text-sm text-[#7F7C82]">
+        <div className="flex flex-col items-center justify-between text-sm text-[#7F7C82]">
+          <p>¿Ya tienes una cuenta? </p>
           <Link to="/login" className="">
-            ¿Ya tienes una cuenta?{' '}
-            <span className="hover:font-bold">Iniciar Sesión</span>
+            <span className="text-[#2D5651] font-semibold hover:font-extrabold">
+              Iniciar Sesión
+            </span>
           </Link>
         </div>
       </div>
@@ -215,7 +337,7 @@ function SignUp () {
 
 export default SignUp
 
-function ArrowLeftIcon (props) {
+function ArrowLeftIcon(props) {
   return (
     <svg
       {...props}
