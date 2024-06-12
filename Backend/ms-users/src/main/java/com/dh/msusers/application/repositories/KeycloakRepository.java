@@ -262,6 +262,18 @@ public class KeycloakRepository implements IKeycloakRepository {
         return new User(userRepresentation);
     }
 
+    @Override
+    public void deleteById(String id) {
+        findById(id).stream()
+                .findFirst()
+                .orElseThrow(() -> new RestException(HttpStatus.NOT_FOUND, String.format("User with id %s not found", id)));
+
+        keycloak.realm(realm)
+                .users()
+                .get(id)
+                .remove();
+    }
+
     private UserRepresentation setUserRepresentation(UserRepresentation userRepresentation, User user) throws JsonProcessingException {
         userRepresentation.setFirstName(user.getFirstName());
         userRepresentation.setLastName(user.getLastName());

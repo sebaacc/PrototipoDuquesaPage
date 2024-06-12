@@ -21,4 +21,6 @@ public interface IKeycloakService {
     TokenResponse login(String username, String password);
 
     UserResponse patchUpdate(User user, String id);
+
+    void deleteById(String id);
 }
