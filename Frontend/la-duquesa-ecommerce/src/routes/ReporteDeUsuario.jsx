@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
+import axios from 'axios'
 
 const usuariosIniciales = [
   {
@@ -26,9 +27,34 @@ const usuariosIniciales = [
   }
 ]
 
-function ReporteDeUsuario () {
+function ReporteDeUsuario() {
   const [usuarios, setUsuarios] = useState(usuariosIniciales)
   const [confirmarEliminacion, setConfirmarEliminacion] = useState({ mostrar: false, index: null })
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+
+      const response = await axios.get('http://localhost:8090/users', config);
+
+      if (response.status === 200) {
+        console.log(response.data)
+        setUsuarios(response.data)
+      }
+    } catch (error) {
+      console.error('Error updating user:', error);
+      //setFieldError('email', '¡Ya existe una cuenta con ese correo!');
+    }
+  };
+
 
   const handleEliminar = (index) => {
     const nuevosUsuarios = [...usuarios]
@@ -62,11 +88,9 @@ function ReporteDeUsuario () {
                 Documento
               </th>
               <th scope="col" className="px-6 py-3">
-                Pedidos
+                Teléfono
               </th>
-              <th scope="col" className="px-6 py-3">
-                Consumo total
-              </th>
+
               <th scope="col" className="px-6 py-3">
                 Borrar
               </th>
@@ -79,12 +103,18 @@ function ReporteDeUsuario () {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
                 >
-                  {usuario.nombre}
+                  {usuario.username}
                 </th>
-                <td className="px-6 py-4">{usuario.email}</td>
-                <td className="px-6 py-4">{usuario.documento}</td>
-                <td className="px-6 py-4">{usuario.pedidos}</td>
-                <td className="px-6 py-4">{usuario.consumo_total}</td>
+                {usuario.email &&
+                  <td className="px-6 py-4">{usuario.email}</td>
+                }
+                {
+                  usuario.document &&
+                  <td className="px-6 py-4">{usuario.document}</td>
+                }
+                {usuario.phone &&
+                  <td className="px-6 py-4">{usuario.phone}</td>
+                }
                 <td className="px-6 py-4">
                   <button onClick={() => mostrarConfirmacion(index)}>
                     <IoIosCloseCircleOutline />
@@ -100,18 +130,18 @@ function ReporteDeUsuario () {
           <div className="bg-white p-4 rounded shadow">
             <p>¿Estás seguro de que deseas eliminar este usuario?</p>
             <div className=" flex flex-col mt-3 items-center">
-            <button
-              className="bg-pink-400 text-white px-4 py-2 rounded w-1/2 mb-2"
-              onClick={() => handleEliminar(confirmarEliminacion.index)}
-            >
-              Eliminar
-            </button>
-            <button
-              className="bg-gray-400 text-white px-4 py-2 rounded w-1/2"
-              onClick={cancelarConfirmacion}
-            >
-              Cancelar
-            </button>
+              <button
+                className="bg-pink-400 text-white px-4 py-2 rounded w-1/2 mb-2"
+                onClick={() => handleEliminar(confirmarEliminacion.index)}
+              >
+                Eliminar
+              </button>
+              <button
+                className="bg-gray-400 text-white px-4 py-2 rounded w-1/2"
+                onClick={cancelarConfirmacion}
+              >
+                Cancelar
+              </button>
             </div>
           </div>
         </div>

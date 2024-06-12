@@ -41,6 +41,7 @@ const ProductsTable = ({ productos, typeOfSearch }) => {
         </thead>
         <tbody>
           {productos.map((producto, index) => (
+            index <= 5 &&
             <tr key={index} className="bg-white border-b border-[#464646]">
               <td scope="row" className="px-6 py-4 font-medium">
                 {index + 1 + '.'}
@@ -70,7 +71,9 @@ const ProductsTable = ({ productos, typeOfSearch }) => {
               }
               <td className="px-6 py-4">
 
-                <span className=" font-semibold">{producto.subCategoryName}</span>
+                <span className=" font-semibold">
+                  {typeOfSearch === "agregados" ? producto.subCategoryName : `${producto.type} ${producto.subtipo}`}
+                </span>
               </td>
               <td className="px-6 py-4">{producto.id}</td>
             </tr>
