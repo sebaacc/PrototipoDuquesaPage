@@ -25,4 +25,6 @@ public interface IKeycloakRepository {
     TokenResponse login(String username, String password) throws JsonProcessingException;
 
     User patchUpdate(User user, String id) throws JsonProcessingException;
+
+    void deleteById(String id);
 }

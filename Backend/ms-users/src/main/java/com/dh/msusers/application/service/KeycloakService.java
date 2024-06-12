@@ -116,4 +116,9 @@ public class KeycloakService implements IKeycloakService {
             throw new RestException(INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
+
+    @Override
+    public void deleteById(String id) {
+        keycloakRepository.deleteById(id);
+    }
 }
