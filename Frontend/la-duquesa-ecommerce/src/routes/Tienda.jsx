@@ -116,7 +116,7 @@ const Tienda = () => {
                 onClick={clearSearch}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
               >
-                <IoMdClose size={20} />
+                <IoMdClose size={20} className="mt-5" />
               </button>
             )}
           </label>

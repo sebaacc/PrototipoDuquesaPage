@@ -13,27 +13,27 @@ import {
 } from 'react-icons/md'
 import { IoIosAddCircle } from 'react-icons/io'
 import { CiShoppingCart } from 'react-icons/ci'
-import { GrPowerShutdown } from "react-icons/gr";
+import { GrPowerShutdown } from 'react-icons/gr'
 // import { icon } from '@fortawesome/fontawesome-svg-core'
 
 // import shopCar from '../img/cart-large-minimalistic-svgrepo-com.png'
 
-function Navbar() {
+function Navbar () {
   const [nav, setNav] = useState(false)
 
   const [navMobile, setNavMobile] = useState(false)
   const [logedOut, setLogedOut] = useState(false)
 
-
   const liStyle = 'hover:text-[#CE76A4] mr-6 flex'
 
-
   useEffect(() => {
-    if (localStorage.getItem("accessToken") == null || localStorage.getItem("accessToken") == undefined) {
+    if (
+      localStorage.getItem('accessToken') == null ||
+      localStorage.getItem('accessToken') == undefined
+    ) {
       setLogedOut(true)
     }
   }, [])
-
 
   const menuItems = [
     /*
@@ -41,7 +41,7 @@ function Navbar() {
       icon: <TbTruckDelivery size={25} className="mr-4" />,
       text: 'Ordenes'
     },
-    
+
     { icon: <MdFavorite size={25} className="mr-4" />, text: 'Favoritos' },
      */
     {
@@ -59,13 +59,17 @@ function Navbar() {
       text: 'Reporte de producto',
       route: '/reporte-producto'
     },
-    /*{ icon: <MdHelp size={25} className="mr-4" />, text: 'Ayuda' },*/
-    { icon: <GrPowerShutdown size={25} className="mr-4" />, text: 'Cerrar sesión', route: '/' },
+    /* { icon: <MdHelp size={25} className="mr-4" />, text: 'Ayuda' }, */
+    {
+      icon: <GrPowerShutdown size={25} className="mr-4" />,
+      text: 'Cerrar sesión',
+      route: '/'
+    }
   ]
   return (
     <section className="flex justify-between p-12 pt-5">
       {/* Menu mobile para las rutas */}
-      <div className="sm:block md:block lg:hidden xl:hidden">
+      <div className="sm:block md:block lg:hidden xl:hidden content-center">
         <div className="flex items-center">
           <article
             onClick={() => setNavMobile(!navMobile)}
@@ -77,14 +81,14 @@ function Navbar() {
 
         {navMobile
           ? (
-            <div
-              className="bg-black/80 fixed w-full h-screen z-10 top-0 left-0"
-              onClick={() => setNavMobile(!navMobile)}
-            ></div>
-          )
+          <div
+            className="bg-black/80 fixed w-full h-screen z-10 top-0 left-0"
+            onClick={() => setNavMobile(!navMobile)}
+          ></div>
+            )
           : (
-            ''
-          )}
+              ''
+            )}
 
         <div
           className={
@@ -129,18 +133,15 @@ function Navbar() {
       </div>
       {/* Rutas o vistas del sitio */}
 
-      {logedOut
-        ?
-        <Link to={"/"} className="flex justify-between">
+      {logedOut ? (
+        <Link to={'/'} className="flex justify-between">
           <img
-            className="size-20 mr-1 relative left-7 md:left-0 lg:left-0"
+            className="size-28 mr-1 relative md:left-0 lg:left-0"
             src={logo}
-
             alt=""
           />
-
         </Link>
-        :
+      ) : (
         <article className="flex justify-between">
           <img
             className="size-7 mr-1 relative left-7 md:left-0 lg:left-0"
@@ -148,12 +149,13 @@ function Navbar() {
             alt=""
           />
           <p className="mt-1 flex flex-col md:flex-row text-center">
-            {/*<span className="font-bold mr-1">Enviar a</span> KR 21B #29 B - 149*/}
-            <span className="font-bold mr-1">Configura tu dirección <br/> para recibir pedidos</span>
+            {/* <span className="font-bold mr-1">Enviar a</span> KR 21B #29 B - 149 */}
+            <span className="font-bold mr-1">
+              Configura tu dirección <br /> para recibir pedidos
+            </span>
           </p>
         </article>
-
-      }
+      )}
 
       <article className="hidden sm:hidden md:hidden lg:block xl:block 2xl:block mt-1">
         <ul className="flex text-black font-semibold h-full items-center">
@@ -176,15 +178,17 @@ function Navbar() {
       {/* Menu de Administrador */}
 
       <div className="flex items-center">
-
-        {logedOut ?
-
+        {logedOut
+          ? (
           <div className="flex items-center">
-            <Link to={"/login"}>
-              <button className='bg-[#BD6292] text-white p-2 rounded'>Ingresar</button>
+            <Link to={'/login'}>
+              <button className="bg-[#BD6292] text-white p-2 rounded">
+                Ingresar
+              </button>
             </Link>
           </div>
-          :
+            )
+          : (
           <div className="flex items-center">
             <article>
               <img
@@ -195,19 +199,18 @@ function Navbar() {
               />
             </article>
           </div>
-
-        }
+            )}
 
         {nav
           ? (
-            <div
-              className="bg-black/80 fixed w-full h-screen z-10 top-0 left-0"
-              onClick={() => setNav(!nav)}
-            ></div>
-          )
+          <div
+            className="bg-black/80 fixed w-full h-screen z-10 top-0 left-0"
+            onClick={() => setNav(!nav)}
+          ></div>
+            )
           : (
-            ''
-          )}
+              ''
+            )}
 
         <div
           className={
@@ -229,26 +232,30 @@ function Navbar() {
               {menuItems.map(({ icon, text, route }, index) => {
                 return (
                   <div key={index} className="py-4">
-                    {route == "/" ? (
+                    {route == '/'
+                      ? (
                       <Link to={route}>
                         <li
-                          onClick={() => {localStorage.clear(); window.location.reload()}}
+                          onClick={() => {
+                            localStorage.clear()
+                            window.location.reload()
+                          }}
                           className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300"
                         >
                           {icon} {text}
                         </li>
                       </Link>
-                    ) : (
+                        )
+                      : (
                       <Link to={route}>
                         <li className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300">
                           {icon} {text}
                         </li>
                       </Link>
-                    )}
+                        )}
                   </div>
-                );
+                )
               })}
-
             </ul>
           </nav>
         </div>
