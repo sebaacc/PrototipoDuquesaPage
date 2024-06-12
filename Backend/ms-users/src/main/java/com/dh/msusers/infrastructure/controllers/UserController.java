@@ -57,4 +57,10 @@ public class UserController {
         return ResponseEntity.ok(keycloakService.patchUpdate(user, id));
     }
 
+    @DeleteMapping(Endpoints.DELETE_BY_ID)
+    public ResponseEntity<?> deleteById(@PathVariable String id) {
+        keycloakService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
