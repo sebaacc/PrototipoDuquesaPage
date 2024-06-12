@@ -10,6 +10,7 @@ public class MostAddedProduct {
     private String name;
     private String imageURL;
     private Integer price;
+    private String subCategoryName;
 
 
 }

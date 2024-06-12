@@ -45,6 +45,7 @@ public class SecurityConfiguration {
                 .pathMatchers("/admin").hasRole("ADMIN") // Example of role-based access control
                 .anyExchange().authenticated())
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
+
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtSpec -> jwtSpec.jwtAuthenticationConverter(jwtAuthenticationConverter)))
                 .build();
     }
