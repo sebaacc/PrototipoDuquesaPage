@@ -4,7 +4,6 @@ import App from './routes/App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import ErrorPage from './routes/ErrorPage.jsx'
-import Registro from './routes/Registro.jsx'
 import Detalle from './routes/Detalle.jsx'
 import RegistroProducto from './routes/RegistroProducto.jsx'
 import CarritoDeCompras from './routes/CarritoDeCompras.jsx'
@@ -20,11 +19,6 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    errorElement: <ErrorPage />
-  },
-  {
-    path: 'registro',
-    element: <Registro />,
     errorElement: <ErrorPage />
   },
   {

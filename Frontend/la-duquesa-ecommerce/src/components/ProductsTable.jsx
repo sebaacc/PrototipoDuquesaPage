@@ -1,7 +1,7 @@
 import { priceFormatter } from '../utils/PriceFormatter'
 import PropTypes from 'prop-types'
 
-const ProductsTable = ({ productos }) => {
+const ProductsTable = ({ productos, typeOfSearch }) => {
   return (
     <>
       <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -9,20 +9,28 @@ const ProductsTable = ({ productos }) => {
           <tr>
             <th scope="col" className="px-6 py-3 w-min"></th>
             <th scope="col" className="px-6 py-3 w-1/5">
+              Imagen de Producto
+            </th>
+            <th scope="col" className="px-6 py-3 w-1/5">
               Nombre de Producto
             </th>
             <th scope="col" className="px-6 py-3 w-1/5">
               precio
             </th>
-            <th scope="col" className="px-6 py-3 w-1/5">
-              En Stock
-            </th>
-            <th scope="col" className="px-6 py-3 w-1/5">
-              Vendidos
-            </th>
-            <th scope="col" className="px-6 py-3 w-1/5">
-              añadido al carrito
-            </th>
+
+            {typeOfSearch == "vendidos" &&
+
+              <th scope="col" className="px-6 py-3 w-1/5">
+                Vendidos
+              </th>
+            }
+            {typeOfSearch == "agregados" &&
+
+              <th scope="col" className="px-6 py-3 w-1/5">
+                añadido al carrito
+              </th>
+            }
+
             <th scope="col" className="px-6 py-3 w-1/5">
               Categoría y subcategoría
             </th>
@@ -33,10 +41,8 @@ const ProductsTable = ({ productos }) => {
         </thead>
         <tbody>
           {productos.map((producto, index) => (
-            <tr
-              key={index}
-              className="bg-white border-b"
-            >
+            index <= 5 &&
+            <tr key={index} className="bg-white border-b border-[#464646]">
               <td scope="row" className="px-6 py-4 font-medium">
                 {index + 1 + '.'}
               </td>
@@ -44,25 +50,32 @@ const ProductsTable = ({ productos }) => {
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
               >
-                {producto.title}
+                <img src={typeOfSearch == "agregados" ? producto.imageURL : producto.image} alt="Imagen no encontrada" />
+              </td>
+              <td
+                scope="row"
+                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+              >
+                {typeOfSearch == "agregados" ? producto.name : producto.title}
               </td>
               <td className="px-6 py-4">
                 {'$' + priceFormatter(producto.price)}
               </td>
-              <td
-                className={`px-6 py-4 ${
-                  producto.stock <= 20 ? 'text-red-500 font-bold' : ''
-                }`}
-              >
-                {producto.stock}
-              </td>
-              <td className="px-6 py-4">{producto.sold}</td>
-              <td className="px-6 py-4">{producto.addedToCart}</td>
+
+              {typeOfSearch == "vendidos" &&
+                <td className="px-6 py-4">{producto.sold}</td>
+              }
+              {typeOfSearch == "agregados" &&
+
+                <td className="px-6 py-4">{producto.totalQuantity}</td>
+              }
               <td className="px-6 py-4">
-                {producto.type + ', '}
-                <span className=" font-semibold">{producto.subtipo}</span>
+
+                <span className=" font-semibold">
+                  {typeOfSearch === "agregados" ? producto.subCategoryName : `${producto.type} ${producto.subtipo}`}
+                </span>
               </td>
-              <td className="px-6 py-4">{producto.code}</td>
+              <td className="px-6 py-4">{producto.id}</td>
             </tr>
           ))}
         </tbody>

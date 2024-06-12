@@ -27,7 +27,7 @@ func (s *productService) CreateProduct(product *models.Product, files []*multipa
 	product.ID = primitive.NewObjectID()
 
 	var imageURLs []string
-
+	
 	for _, file := range files {
 		// Generate a unique filename
 		filename := fmt.Sprintf("product_%d%s", rand.Int63(), filepath.Ext(file.Filename))

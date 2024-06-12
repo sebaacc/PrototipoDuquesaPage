@@ -12,8 +12,8 @@ const MobileHomeCategories = () => {
     <>
       <Swiper
         modules={[Scrollbar, A11y]}
-        spaceBetween={10}
-        slidesPerView={4}
+        spaceBetween={80}
+        slidesPerView={3.6}
         scrollbar={{ draggable: true }}
       >
         {categories.map((categoria, index) => (
