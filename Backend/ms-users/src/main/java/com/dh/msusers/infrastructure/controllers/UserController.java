@@ -1,15 +1,17 @@
 package com.dh.msusers.infrastructure.controllers;
 
-import com.dh.msusers.domain.entities.utils.constants.Endpoints;
+import com.dh.msusers.application.utils.constants.Endpoints;
 import com.dh.msusers.domain.entities.TokenRequest;
 import com.dh.msusers.domain.entities.TokenResponse;
 import com.dh.msusers.domain.entities.User;
 import com.dh.msusers.domain.entities.UserResponse;
 import com.dh.msusers.domain.services.IKeycloakService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -36,8 +38,8 @@ public class UserController {
     }
 
     @GetMapping(Endpoints.VERIFY)
-    public ResponseEntity<?> verify(@RequestParam String code) {
-        return keycloakService.verify(code);
+    public void verify(@RequestParam String code, HttpServletResponse response) throws IOException {
+        response.sendRedirect(keycloakService.verify(code));
     }
 
     @PostMapping

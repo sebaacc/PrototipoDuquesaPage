@@ -48,10 +48,10 @@ spring:
   cloud:
     gateway:
       globalcors:
-        corsConfigurations:
+        cors-configurations:
           '[/**]':
             allowedOrigins: "*"
-            allowedHeaders: "Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+            allowedHeaders: "*"
             allowedMethods:
               - GET
               - POST
@@ -59,7 +59,6 @@ spring:
               - PATCH
               - DELETE
               - OPTIONS
-
       default-filters:
         - LogFilter
         - TokenRelay
