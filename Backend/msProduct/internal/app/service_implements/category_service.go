@@ -1,8 +1,8 @@
 package services_implement
 
 import (
-    "math/rand"
 	"fmt"
+	"math/rand"
 	"mime/multipart"
 	"path/filepath"
 
@@ -34,8 +34,8 @@ func (s *categoryService) CreateCategory(category *models.Category, file *multip
     fmt.Println("Nombre del archivo generado:", filename)
 
     // Guardar el archivo en el sistema de archivos local
-    uploadPath := "C:/Users/felip/Desktop/CTD/Segundo año/ProyectoIntegrador/ecommerce-equipo4/Images/" + filename
-
+    // uploadPath := "C:/Users/felip/Desktop/CTD/Segundo año/ProyectoIntegrador/ecommerce-equipo4/Images/" + filename
+    uploadPath := "D:/Seba/weas/Documentso/Estudios/PROGRAMACION/DigitalHouse/Segundo/integrador/proyecto/ecommerce-equipo4/Images/" + filename
 
     fmt.Println("Ruta de guardado:", uploadPath)
     err := utils.SaveFileToSystem(file, uploadPath)

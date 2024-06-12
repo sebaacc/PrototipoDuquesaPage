@@ -31,7 +31,8 @@ func (s *productService) CreateProduct(product *models.Product, files []*multipa
 	for _, file := range files {
 		// Generate a unique filename
 		filename := fmt.Sprintf("product_%d%s", rand.Int63(), filepath.Ext(file.Filename))
-		uploadPath := "C:/Users/felip/Desktop/CTD/Segundo año/ProyectoIntegrador/ecommerce-equipo4/Images/" + filename
+		// uploadPath := "C:/Users/felip/Desktop/CTD/Segundo año/ProyectoIntegrador/ecommerce-equipo4/Images/" + filename
+		uploadPath := "D:/Seba/weas/Documentso/Estudios/PROGRAMACION/DigitalHouse/Segundo/integrador/proyecto/ecommerce-equipo4/Images/" + filename
 
 		err := utils.SaveFileToSystem(file, uploadPath)
 		if err != nil {
