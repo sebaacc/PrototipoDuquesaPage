@@ -1,4 +1,4 @@
-package com.dh.msusers.domain.entities.utils;
+package com.dh.msusers.application.utils;
 
 import com.dh.msusers.domain.entities.User;
 import com.dh.msusers.exceptions.RestException;
