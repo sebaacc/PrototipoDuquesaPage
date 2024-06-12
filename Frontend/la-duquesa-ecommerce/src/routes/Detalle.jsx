@@ -10,6 +10,7 @@ import ImageGallery from '../components/ImageGallery'
 import ScrollToTop from '../utils/ScrollToTop'
 import Sugeridos from '../components/Sugeridos'
 import SearchProduct from '../components/SearchProduct'
+import { MdOutlineTimer } from 'react-icons/md'
 
 // const Objeto =[
 //   {
@@ -29,6 +30,7 @@ const Detalle = () => {
         <ScrollToTop />
         <Navbar />
         <SearchProduct />
+        {/*
         <div className="bg-white shadow-sm top-0">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1 md:py-4">
             <div className="flex items-center justify-between md:justify-start">
@@ -46,7 +48,7 @@ const Detalle = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="py-6">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
@@ -75,12 +77,8 @@ const Detalle = () => {
                     </div>
                   </div>
                   <div className="flex-1">
-                    <p className="text-black-500 text-xl font-semibold flex">
-                      <img
-                        src={cronometro}
-                        alt="cronometro"
-                        className="size-10"
-                      />
+                    <p className="text-black-500 text-xl font-semibold flex items-center gap-2">
+                      <MdOutlineTimer className="text-3xl text-[#BD6292]" />
                       <h5 className="mt-2">20 - 30 min</h5>
                     </p>
                   </div>
@@ -119,7 +117,7 @@ const Detalle = () => {
                   <Link to={'/carrito-de-compras'}>
                     <button
                       type="button"
-                      className="h-14 px-6 py-2 font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white"
+                      className="h-14 px-6 py-2 font-semibold rounded-xl bg-[#BD6292] hover:bg-[#f187bf] text-white"
                     >
                       Añadir al carrito
                     </button>
