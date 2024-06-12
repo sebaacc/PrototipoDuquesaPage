@@ -39,6 +39,7 @@ public class SecurityConfiguration {
         // * As Resource Server
 
         return http.authorizeExchange(exchanges -> exchanges
+                .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .pathMatchers(HttpMethod.POST, "/users", "/users/login").permitAll()
                 .pathMatchers(HttpMethod.GET, "/users/verify").permitAll()
                 .pathMatchers("/admin").hasRole("ADMIN") // Example of role-based access control
