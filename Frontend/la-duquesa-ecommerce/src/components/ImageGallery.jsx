@@ -22,7 +22,7 @@ const ImageGallery = ({ images }) => {
 
   return (
     <>
-      <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4">
+      <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 shadow-md">
         {filledImages[imageIndex]
           ? (
           <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center p-3">
@@ -48,7 +48,7 @@ const ImageGallery = ({ images }) => {
         slidesPerView={4}
         pagination={{ clickable: true }}
         scrollbar={{ draggable: true }}
-        className="custom-swiper "
+        className="custom-swiper p-2 shadow-lg rounded-md "
         style={{
           '--swiper-pagination-color': '#BD6292',
           '--swiper-pagination-bullet-size': '10px'
