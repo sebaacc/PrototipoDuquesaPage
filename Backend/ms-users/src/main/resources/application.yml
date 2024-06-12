@@ -18,7 +18,7 @@ spring:
     mail-template: ValidationEmail
     mail-subject: "Validación de cuenta"
     redirects:
-      success-verification: https://cdn.dribbble.com/users/6659664/screenshots/15750262/media/82e52180ea4c63de9e6d5bbcce5b8336.png?resize=1000x750&vertical=center
+      success-verification: http://127.0.0.1:5173/verificacion-exitosa
       already-verification: https://th.bing.com/th/id/OIP.MZZQpcPj-bjfN2bKPSjcDQHaEl?rs=1&pid=ImgDetMain
       error-verification: https://verification.swiftchat.ai/images/email_not_verified.png
     properties:

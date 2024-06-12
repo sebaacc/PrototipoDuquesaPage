@@ -1,24 +1,33 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../img/lgofondoclaro-removebg-preview 1.png'
+import axios from 'axios'
+import Loader from '../components/loader/Loader'
 
-function SignUp () {
+function SignUp() {
   const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     username: '',
-    documentNumber: '',
+    document: '',
     phone: '',
     email: '',
     password: '',
     confirmPassword: ''
   })
   const [errors, setErrors] = useState({})
+  const [loadingOpen, setLoadingOpen] = useState(false)
+  const [creationError, setCreattionError] = useState(false)
+  const [successOpen, setSuccessOpen] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setForm({ ...form, [name]: value })
   }
+
+  useEffect(() => {
+    console.log(form)
+  }, [form])
 
   const validate = () => {
     const newErrors = {}
@@ -26,12 +35,12 @@ function SignUp () {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#.$%^&+=!]).{8,}$/
 
-    if (!form.firstName) newErrors.firstName = 'El campo de nombre es requerido'
-    if (!form.lastName) newErrors.lastName = 'El campo de apellido es requerido'
+    if (!form.first_name) newErrors.firstName = 'El campo de nombre es requerido'
+    if (!form.last_name) newErrors.lastName = 'El campo de apellido es requerido'
     if (!form.username) {
       newErrors.username = 'El campo de nombre de usuario es requerido'
     }
-    if (!form.documentNumber) {
+    if (!form.document) {
       newErrors.documentNumber = 'El campo de número de documento es requerido'
     }
     if (!form.phone) newErrors.phone = 'El campo de teléfono es requerido'
@@ -57,7 +66,33 @@ function SignUp () {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (validate()) {
-      // enviar datos al servidor o realizar acciones adicionales
+      createAccount()
+    }
+  }
+
+
+  const createAccount = async () => {
+    //Estado para poner un loader
+    setLoadingOpen(true)
+    const { confirmPassword, ...newForm } = form;
+    console.log(newForm)
+
+    try {
+
+      const response = await axios.post('http://localhost:8090/users', newForm);
+
+      if (response.status === 200) {
+        setLoadingOpen(false)
+        setSuccessOpen(true)
+        //Falta añadir un mensaje que diga "Tu cuenta se ha creado con éxito, verifica la cuenta desde tu correo para iniciar sesión"
+        console.log(response.data)
+      }
+    } catch (error) {
+      console.error('Error updating user:', error);
+      setLoadingOpen(false)
+      //Estado para mostrar error al crear cuenta
+      setCreattionError(true)
+      //setFieldError('email', '¡Ya existe una cuenta con ese correo!');
     }
   }
 
@@ -90,11 +125,11 @@ function SignUp () {
               </label>
               <input
                 id="firstName"
-                name="firstName"
+                name="first_name"
                 type="text"
                 placeholder="Nombre"
                 className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
-                value={form.firstName}
+                value={form.first_name}
                 onChange={handleChange}
               />
               {errors.firstName && (
@@ -110,11 +145,11 @@ function SignUp () {
               </label>
               <input
                 id="lastName"
-                name="lastName"
+                name="last_name"
                 type="text"
                 placeholder="Apellido"
                 className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
-                value={form.lastName}
+                value={form.last_name}
                 onChange={handleChange}
               />
               {errors.lastName && (
@@ -194,11 +229,11 @@ function SignUp () {
               </label>
               <input
                 id="documentNumber"
-                name="documentNumber"
+                name="document"
                 type="text"
                 placeholder="Número de Documento"
                 className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
-                value={form.documentNumber}
+                value={form.document}
                 onChange={handleChange}
               />
               {errors.documentNumber && (
@@ -252,12 +287,40 @@ function SignUp () {
               )}
             </div>
           </section>
-          <button
-            type="submit"
-            className="w-40 m-auto flex justify-center bg-[#BD6292] text-white rounded p-2"
-          >
-            Registrarse
-          </button>
+
+          {loadingOpen &&
+            <Loader />
+          }
+
+          {successOpen &&
+            <article className='text-green-700 bg-green-100 p-2 rounded'>
+              Tu cuenta ha sido creada exitósamente, dirígete a tu correo para verificarla.
+            </article>
+          }
+
+          {creationError &&
+            <article className='text-red-700 bg-red-100 p-2 rounded'>
+              Ha habido un error al crear la cuenta.
+            </article>
+          }
+
+          {successOpen ?
+            <Link to={"/login"}>
+              <div
+                className="w-40 m-auto flex justify-center bg-[#BD6292] text-white rounded p-2"
+              >
+                Iniciar sesión
+              </div>
+            </Link>
+
+            :
+            <button
+              type="submit"
+              className="w-40 m-auto flex justify-center bg-[#BD6292] text-white rounded p-2"
+            >
+              Registrarse
+            </button>
+          }
         </form>
         <div className="flex flex-col items-center justify-between text-sm text-[#7F7C82]">
           <p>¿Ya tienes una cuenta? </p>
@@ -274,7 +337,7 @@ function SignUp () {
 
 export default SignUp
 
-function ArrowLeftIcon (props) {
+function ArrowLeftIcon(props) {
   return (
     <svg
       {...props}
