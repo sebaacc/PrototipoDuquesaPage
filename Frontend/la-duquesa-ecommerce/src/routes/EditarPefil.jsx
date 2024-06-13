@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import { FaUserCircle } from 'react-icons/fa'
 
@@ -118,7 +118,7 @@ const EditProfile = () => {
                 <span className="relative flex shrink-0 overflow-hidden rounded-full h-16 w-16">
                   {profilePicture === '/placeholder-user.jpg'
                     ? (
-                    <FaUserCircle className="w-full h-full text-[#b53b9c]" />
+                    <FaUserCircle className="w-full h-full text-gray-500" />
                       )
                     : (
                     <img
