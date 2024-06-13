@@ -43,15 +43,14 @@ function LogIn () {
     }
 
     try {
-  
       const response = await axios.post(
         'http://localhost:8090/users/login',
-        values,
-        
+        values
+
       )
 
       if (response.status === 200) {
-        localStorage.setItem("accessToken", response.data.access_token)
+        localStorage.setItem('accessToken', response.data.access_token)
         window.location.href = '/'
       }
     } catch (error) {
@@ -62,7 +61,7 @@ function LogIn () {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#F7F8FC]">
-      <div className="p-8 space-y-6 bg-white rounded-lg shadow m-10 w-[85vw]">
+      <div className="p-8 space-y-6 bg-white rounded-lg shadow m-10 w-[85vw] max-w-xl">
         <div className="flex items-center font-bold">
           <Link to={'/'} className="text-sm text-[#7F7C82] font-bold">
             <div className="flex items-center font-bold gap-3">
@@ -73,7 +72,7 @@ function LogIn () {
         </div>
         <SocialMedia />
         <form className="space-y-6 flex flex-col items-center" onSubmit={handleSubmit}>
-          <div className='max-w-[400px]'>
+          <div className='w-full'>
             <label
               htmlFor="username"
               className="block text-sm font-extrabold text-[#2D5651]"
@@ -84,7 +83,7 @@ function LogIn () {
               id="username"
               type="text"
               placeholder="Usuario"
-              className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+              className="mt-1 block w-full p-3 bg-gray-200 rounded-lg appearance-none"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
@@ -92,7 +91,7 @@ function LogIn () {
               <p className="text-red-500 text-xs mt-2">{errors.username}</p>
             )}
           </div>
-          <div className='max-w-[400px]'>
+          <div className='w-full'>
             <label
               htmlFor="password"
               className="block text-sm font-extrabold text-[#2D5651]"
