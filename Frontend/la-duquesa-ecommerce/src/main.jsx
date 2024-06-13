@@ -15,6 +15,7 @@ import LogIn from './routes/LogIn.jsx'
 import Pagos from './routes/Pagos.jsx'
 import Register from './routes/Register.jsx'
 import NuestrasSedes from './routes/NuestrasSedes.jsx'
+import EditarPerfil from './routes/EditarPefil.jsx'
 
 const router = createBrowserRouter([
   {
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
     path: 'verificacion-exitosa',
     element: <VerificationSuccess />,
     errorElement: <ErrorPage />
+  },
+  {
+    path: 'editar-perfil',
+    element: <EditarPerfil />
   }
 ])
 
