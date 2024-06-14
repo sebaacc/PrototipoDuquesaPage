@@ -7,6 +7,9 @@ function RegistroProducto () {
     nombre: '',
     precio: '',
     descripcion: '',
+    cantidadEnStock: '', // Nuevo campo
+    categoria: '', // Nuevo campo
+    subCategoria: '', // Nuevo campo
     imagenes: []
   })
 
@@ -14,24 +17,29 @@ function RegistroProducto () {
   const [showAlert, setShowAlert] = useState(false)
   const fileInputRef = useRef(null) // Ref para el input de archivos
 
+  const categorias = ['Galletas', 'Pasteles', 'Tartas'] // Categorias
+  const subCategorias = {
+    Galletas: ['Dulces', 'Saladas', 'Festivas'],
+    Pasteles: ['Cumpleaños', 'Frutales'],
+    Tartas: ['Dulces', 'Saladas', 'Tradicionales']
+  } // Ejemplo de subcategorías
+
   const handleChange = (e) => {
     const { id, value } = e.target
     setFormData((prevData) => ({ ...prevData, [id]: value }))
     setErrors((prevErrors) => ({ ...prevErrors, [id]: '' }))
 
-    // Validación en tiempo real para el campo de precio
-    if (id === 'precio') {
+    if (id === 'precio' || id === 'cantidadEnStock') {
       if (isNaN(value)) {
         setErrors((prevErrors) => ({
           ...prevErrors,
-          [id]: 'Por favor, introduce un precio válido.'
+          [id]: 'Por favor, introduce un valor numérico válido.'
         }))
       } else {
         setErrors((prevErrors) => ({ ...prevErrors, [id]: '' }))
       }
     }
 
-    // Validación en tiempo real para el campo de nombre
     if (id === 'nombre') {
       if (/\d/.test(value)) {
         setErrors((prevErrors) => ({
@@ -50,8 +58,8 @@ function RegistroProducto () {
 
     if (!value) {
       errorMessage = 'Por favor, rellena este campo.'
-    } else if (id === 'precio' && isNaN(value)) {
-      errorMessage = 'Por favor, introduce un precio válido.'
+    } else if ((id === 'precio' || id === 'cantidadEnStock') && isNaN(value)) {
+      errorMessage = 'Por favor, introduce un valor numérico válido.'
     } else if (id === 'descripcion' && value.length < 10) {
       errorMessage = 'La descripción debe tener al menos 10 caracteres.'
     } else if (id === 'nombre' && /\d/.test(value)) {
@@ -92,26 +100,21 @@ function RegistroProducto () {
   const handleRemoveImage = (index) => {
     const newImages = formData.imagenes.filter((_, i) => i !== index)
 
-    // Crear un nuevo DataTransfer y agregar las imágenes restantes
     const dataTransfer = new DataTransfer()
     newImages.forEach((image) => {
       dataTransfer.items.add(image.file)
     })
 
-    // Actualizar el estado del formulario
     setFormData((prevData) => ({
       ...prevData,
       imagenes: newImages
     }))
 
-    // Actualizar el input de archivos
     fileInputRef.current.files = dataTransfer.files
 
-    // Mostrar alerta de error si no quedan imágenes
     setErrors((prevErrors) => ({
       ...prevErrors,
-      imagen:
-        newImages.length === 0 ? 'Por favor, sube al menos una imagen.' : ''
+      imagen: newImages.length === 0 ? 'Por favor, sube al menos una imagen.' : ''
     }))
   }
 
@@ -135,8 +138,21 @@ function RegistroProducto () {
     if (!formData.descripcion) {
       formErrors.descripcion = 'Por favor, rellena este campo.'
     } else if (formData.descripcion.length < 10) {
-      formErrors.descripcion =
-        'La descripción debe tener al menos 10 caracteres.'
+      formErrors.descripcion = 'La descripción debe tener al menos 10 caracteres.'
+    }
+
+    if (!formData.cantidadEnStock) {
+      formErrors.cantidadEnStock = 'Por favor, rellena este campo.'
+    } else if (isNaN(formData.cantidadEnStock)) {
+      formErrors.cantidadEnStock = 'Por favor, introduce un valor numérico válido.'
+    }
+
+    if (!formData.categoria) {
+      formErrors.categoria = 'Por favor, selecciona una categoría.'
+    }
+
+    if (!formData.subCategoria) {
+      formErrors.subCategoria = 'Por favor, selecciona una subcategoría.'
     }
 
     if (formData.imagenes.length === 0) {
@@ -146,21 +162,20 @@ function RegistroProducto () {
     setErrors(formErrors)
 
     if (Object.keys(formErrors).length === 0) {
-      // Simula el registro del producto y muestra la alerta
       setShowAlert(true)
 
-      // Restablece los campos del formulario
       setFormData({
         nombre: '',
         precio: '',
         descripcion: '',
+        cantidadEnStock: '',
+        categoria: '',
+        subCategoria: '',
         imagenes: []
       })
 
-      // Limpia el input de archivos
       fileInputRef.current.value = ''
 
-      // Oculta la alerta después de 6 segundos
       setTimeout(() => {
         setShowAlert(false)
       }, 6000)
@@ -248,6 +263,83 @@ function RegistroProducto () {
                 <p className="text-red-500 text-xs italic">
                   {errors.descripcion}
                 </p>
+              )}
+            </div>
+            <div className="w-full px-3 mb-6">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
+                htmlFor="cantidadEnStock"
+              >
+                Cantidad en Stock
+              </label>
+              <input
+                className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
+                  errors.cantidadEnStock ? 'border-red-500' : 'border-gray-200'
+                } rounded py-3 px-4 mb-2 leading-tight focus:outline-none focus:bg-white`}
+                id="cantidadEnStock"
+                type="text"
+                placeholder="Cantidad en stock"
+                value={formData.cantidadEnStock}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {errors.cantidadEnStock && (
+                <p className="text-red-500 text-xs italic">{errors.cantidadEnStock}</p>
+              )}
+            </div>
+            <div className="w-full px-3 mb-6">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
+                htmlFor="categoria"
+              >
+                Categoría
+              </label>
+              <select
+                id="categoria"
+                className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
+                  errors.categoria ? 'border-red-500' : 'border-gray-200'
+                } rounded py-3 px-4 mb-2 leading-tight focus:outline-none focus:bg-white`}
+                value={formData.categoria}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              >
+                <option value="">Selecciona una categoría</option>
+                {categorias.map((categoria, index) => (
+                  <option key={index} value={categoria}>
+                    {categoria}
+                  </option>
+                ))}
+              </select>
+              {errors.categoria && (
+                <p className="text-red-500 text-xs italic">{errors.categoria}</p>
+              )}
+            </div>
+            <div className="w-full px-3 mb-6">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
+                htmlFor="subCategoria"
+              >
+                Subcategoría
+              </label>
+              <select
+                id="subCategoria"
+                className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
+                  errors.subCategoria ? 'border-red-500' : 'border-gray-200'
+                } rounded py-3 px-4 mb-2 leading-tight focus:outline-none focus:bg-white`}
+                value={formData.subCategoria}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              >
+                <option value="">Selecciona una subcategoría</option>
+                {formData.categoria &&
+                  subCategorias[formData.categoria]?.map((subCat, index) => (
+                    <option key={index} value={subCat}>
+                      {subCat}
+                    </option>
+                  ))}
+              </select>
+              {errors.subCategoria && (
+                <p className="text-red-500 text-xs italic">{errors.subCategoria}</p>
               )}
             </div>
             <div className="w-full px-3">

@@ -17,6 +17,7 @@ import Register from './routes/Register.jsx'
 import NuestrasSedes from './routes/NuestrasSedes.jsx'
 import Category from './routes/Category.jsx'
 import Subcategory from './routes/Subcategory.jsx'
+import EditarPerfil from './routes/EditarPefil.jsx'
 
 const router = createBrowserRouter([
   {
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
   {
     path: 'subcategory',
     element: <Subcategory />,
+    errorElement: <ErrorPage />},
+  {
+    path: 'editar-perfil',
+    element: <EditarPerfil/>,
     errorElement: <ErrorPage />
   }
 ])
