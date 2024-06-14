@@ -16,6 +16,7 @@ import Pagos from './routes/Pagos.jsx'
 import Register from './routes/Register.jsx'
 import NuestrasSedes from './routes/NuestrasSedes.jsx'
 import Category from './routes/Category.jsx'
+import Subcategory from './routes/Subcategory.jsx'
 
 const router = createBrowserRouter([
   {
@@ -81,6 +82,11 @@ const router = createBrowserRouter([
   {
     path: 'category',
     element: <Category />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'subcategory',
+    element: <Subcategory />,
     errorElement: <ErrorPage />
   }
 ])
