@@ -2,12 +2,17 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import SocialMedia from '../components/SocialMedia'
+import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
 
 function LogIn () {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({ username: '', password: '' })
+  const [passVisible, setPassVisible] = useState(false)
 
+  const togglePassVisibility = () => {
+    setPassVisible((prev) => !prev)
+  }
   const handleSubmit = (e) => {
     e.preventDefault()
     const newErrors = { username: '', password: '' }
@@ -18,7 +23,7 @@ function LogIn () {
     if (!username) {
       newErrors.username = 'El campo de correo es requerido'
     } else if (!emailRegex.test(username)) {
-      newErrors.username = 'El campo de correo debe ser un correo válido'
+      newErrors.username = 'El correo debe ser un correo válido'
     }
 
     // Validación de la contraseña
@@ -58,6 +63,8 @@ function LogIn () {
     }
   }
 
+  const errorStyle = 'text-red-500 text-sm mt-2 font-semibold'
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#F7F8FC]">
       <div className="p-8 space-y-6 bg-white rounded-lg shadow m-10 w-[85vw] max-w-xl">
@@ -84,14 +91,12 @@ function LogIn () {
             <input
               id="username"
               type="text"
-              placeholder="Usuario"
+              placeholder="Correo"
               className="mt-1 block w-full p-3 bg-gray-200 rounded-lg appearance-none"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
-            {errors.username && (
-              <p className="text-red-500 text-xs mt-2">{errors.username}</p>
-            )}
+            {errors.username && <p className={errorStyle}>{errors.username}</p>}
           </div>
           <div className="w-full">
             <label
@@ -100,17 +105,23 @@ function LogIn () {
             >
               Contraseña
             </label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Contraseña"
-              className="mt-1 block w-full p-3 bg-gray-200 rounded-lg appearance-none"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            {errors.password && (
-              <p className="text-red-500 text-xs mt-2">{errors.password}</p>
-            )}
+            <div className="relative">
+              <input
+                id="password"
+                type={passVisible ? 'text' : 'password'}
+                placeholder="Contraseña"
+                className="mt-1 block w-full p-3 bg-gray-200 rounded-lg appearance-none"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <div
+                onClick={togglePassVisibility}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 text-lg"
+              >
+                {passVisible ? <MdVisibility /> : <MdVisibilityOff />}
+              </div>
+            </div>
+            {errors.password && <p className={errorStyle}>{errors.password}</p>}
           </div>
           <button
             type="submit"
