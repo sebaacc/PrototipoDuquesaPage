@@ -16,9 +16,9 @@ function LogIn () {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
     if (!username) {
-      newErrors.username = 'El campo de usuario es requerido'
+      newErrors.username = 'El campo de correo es requerido'
     } else if (!emailRegex.test(username)) {
-      newErrors.username = 'El campo de usuario debe ser un correo válido'
+      newErrors.username = 'El campo de correo debe ser un correo válido'
     }
 
     // Validación de la contraseña
@@ -46,7 +46,6 @@ function LogIn () {
       const response = await axios.post(
         'http://localhost:8090/users/login',
         values
-
       )
 
       if (response.status === 200) {
@@ -71,13 +70,16 @@ function LogIn () {
           </Link>
         </div>
         <SocialMedia />
-        <form className="space-y-6 flex flex-col items-center" onSubmit={handleSubmit}>
-          <div className='w-full'>
+        <form
+          className="space-y-6 flex flex-col items-center"
+          onSubmit={handleSubmit}
+        >
+          <div className="w-full">
             <label
               htmlFor="username"
               className="block text-sm font-extrabold text-[#2D5651]"
             >
-              Usuario
+              Correo
             </label>
             <input
               id="username"
@@ -91,7 +93,7 @@ function LogIn () {
               <p className="text-red-500 text-xs mt-2">{errors.username}</p>
             )}
           </div>
-          <div className='w-full'>
+          <div className="w-full">
             <label
               htmlFor="password"
               className="block text-sm font-extrabold text-[#2D5651]"
