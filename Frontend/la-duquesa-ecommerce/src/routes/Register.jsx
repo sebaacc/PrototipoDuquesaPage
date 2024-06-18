@@ -4,6 +4,7 @@ import logo from '../img/lgofondoclaro-removebg-preview 1.png'
 import axios from 'axios'
 import Loader from '../components/loader/Loader'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
+import endpoints from '../utils/endpoints'
 
 function SignUp () {
   const [form, setForm] = useState({
@@ -108,7 +109,7 @@ function SignUp () {
     console.log(newForm)
 
     try {
-      const response = await axios.post('http://localhost:8090/users', newForm)
+      const response = await axios.post(endpoints.getAndPostUser, newForm)
 
       if (response.status === 200) {
         setLoadingOpen(false)

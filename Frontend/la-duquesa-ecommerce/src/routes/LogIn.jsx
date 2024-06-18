@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import SocialMedia from '../components/SocialMedia'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
+import endpoints from '../utils/endpoints'
 
 function LogIn () {
   const [username, setUsername] = useState('')
@@ -48,10 +49,7 @@ function LogIn () {
     }
 
     try {
-      const response = await axios.post(
-        'http://localhost:8090/users/login',
-        values
-      )
+      const response = await axios.post(endpoints.postLogin, values)
 
       if (response.status === 200) {
         localStorage.setItem('accessToken', response.data.access_token)

@@ -10,53 +10,52 @@ import ProductsTable from '../components/ProductsTable.jsx'
 import ExcelButton from '../components/ExcelButton.jsx'
 import PDFButton from '../components/PDFButton.jsx'
 import axios from 'axios'
+import endpoints from '../utils/endpoints.js'
 
 const productosList = pastries
 
-function ReporteDeProducto() {
+function ReporteDeProducto () {
   const [productos, setProductos] = useState(productosList)
   const [filtro, setFiltro] = useState('Ninguno')
-  
 
   useEffect(() => {
-    setFiltro("agregados")
-    handleFilter("agregados")
+    setFiltro('agregados')
+    handleFilter('agregados')
     fetchData()
   }, [])
 
-
-
   const fetchData = async () => {
     try {
-      const token = localStorage.getItem("accessToken");
+      const token = localStorage.getItem('accessToken')
 
       const config = {
         headers: { Authorization: `Bearer ${token}` }
-      };
+      }
 
-      const response = await axios.get('http://localhost:8090/cart/cartInfo/findMostAddedProducts/15', config);
+      // const response = await axios.get('http://localhost:8090/cart/cartInfo/findMostAddedProducts/15', config)
+      const response = await axios.get(
+        endpoints.getMostAddedProducts + '15',
+        config
+      )
 
       if (response.status === 200) {
         console.log(response.data)
         setProductos(response.data)
       }
     } catch (error) {
-      console.error('Error updating user:', error);
-      //setFieldError('email', '¡Ya existe una cuenta con ese correo!');
+      console.error('Error updating user:', error)
+      // setFieldError('email', '¡Ya existe una cuenta con ese correo!');
     }
-  };
-
+  }
 
   const handleChange = (event) => {
     const selectedFilter = event.target.value
     setFiltro(selectedFilter)
-    if (selectedFilter == "agregados") {
+    if (selectedFilter == 'agregados') {
       fetchData()
-    }
-    else {
+    } else {
       handleFilter(selectedFilter)
     }
-
   }
 
   const handleFilter = (val) => {
