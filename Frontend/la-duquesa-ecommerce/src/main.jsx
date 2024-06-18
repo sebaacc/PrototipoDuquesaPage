@@ -17,6 +17,7 @@ import Register from './routes/Register.jsx'
 import NuestrasSedes from './routes/NuestrasSedes.jsx'
 import EditarPerfil from './routes/EditarPefil.jsx'
 import VerificationError from './routes/VerificationError.jsx'
+import VerificationUnnecessary from './routes/VerificationUnnecessary.jsx'
 
 const router = createBrowserRouter([
   {
@@ -82,6 +83,11 @@ const router = createBrowserRouter([
   {
     path: 'verificacion-error',
     element: <VerificationError />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'verificacion-revalidada',
+    element: <VerificationUnnecessary />,
     errorElement: <ErrorPage />
   },
   {

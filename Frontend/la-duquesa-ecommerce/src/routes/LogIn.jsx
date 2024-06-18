@@ -125,7 +125,7 @@ function LogIn () {
           </div>
           <button
             type="submit"
-            className="w-40 m-auto flex justify-center bg-[#BD6292] text-white rounded p-2"
+            className="w-40 m-auto flex justify-center text-white rounded p-2 bg-[#8B7BB1] hover:bg-[#BD6292] hover:shadow-md transition-all duration-300"
           >
             Ingresar
           </button>

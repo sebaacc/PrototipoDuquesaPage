@@ -20,7 +20,7 @@ const VerificationSuccess = () => {
             <path d="M20 6 9 17l-5-5"></path>
           </svg>
         </div>
-        <h2 className="text-2xl font-bold">Cuenta aprobada</h2>
+        <h2 className="text-2xl font-bold">{'Cuenta aprobada :)'}</h2>
         <p className="text-[#7F7C82] ">
           ¡Felicidades! Tu cuenta se ha verificado exitosamente, ahora puedes
           iniciar sesión.
