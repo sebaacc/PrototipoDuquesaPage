@@ -1,0 +1,713 @@
+{
+	"info": {
+		"_postman_id": "0dc72b96-ef0d-44ae-9e16-eb783f80e8ff",
+		"name": "Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24635478"
+	},
+	"item": [
+		{
+			"name": "ms-users",
+			"item": [
+				{
+					"name": "Obtener Usuario por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{GATEWAY}}/users/f786db17-77a5-43b8-9198-1130b83c8c09",
+							"host": [
+								"{{GATEWAY}}"
+							],
+							"path": [
+								"users",
+								"f786db17-77a5-43b8-9198-1130b83c8c09"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener todos los usuarios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{GATEWAY}}/users",
+							"host": [
+								"{{GATEWAY}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// * ================ \r",
+									"\r",
+									"/**\r",
+									" * Status 200 en la petición de token con Keycloak\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Status code token request\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// * ================\r",
+									"\r",
+									"/**\r",
+									" * Guardar el token como variable global\r",
+									" */\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"TOKEN\", jsonData[\"access_token\"]);\r",
+									"\r",
+									"// * ================\r",
+									"\r",
+									"/**\r",
+									" * Validación de la existencia de un Content_type en la respuesta\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"// * ===============\r",
+									"\r",
+									"/**\r",
+									" * Validación que el objeto sea JSON correcto\r",
+									" */\r",
+									"\r",
+									"var schema = {\r",
+									"    \"access_token\": {\r",
+									"        \"type\": \"string\"\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test('Schema is valid', function () {\r",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"anagalarza\",\r\n    \"password\": \"12345Ana!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{GATEWAY}}/users/login",
+							"host": [
+								"{{GATEWAY}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// * ================\r",
+									"\r",
+									"/**\r",
+									" * Validación de status code en 201 para la creación de nuevos usuarios\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"// * ================\r",
+									"\r",
+									"/**\r",
+									" * Validación de la existencia de un Content_type en la respuesta\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"// * =============== \r",
+									"\r",
+									"/**\r",
+									" * Guardar el ID del usuario como variable global\r",
+									" */\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"ID\", jsonData[\"id\"]);\r",
+									"\r",
+									"// * ===============\r",
+									"\r",
+									"/**\r",
+									" * Validación que el objeto sea JSON correcto\r",
+									" */\r",
+									"\r",
+									"var schema = {\r",
+									"    \"id\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"first_name\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"last_name\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"dni\": {\r",
+									"        \"type\": \"number\"\r",
+									"    }, \r",
+									"    \"email\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"phone\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"username\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"\r",
+									"};\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test('Schema is valid', function () {\r",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// * =================\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"Ana Maria\",\r\n    \"last_name\": \"Galarza Leon\",\r\n    \"email\": \"anamariagalarza1221@gmail.com\",\r\n    \"username\": \"anagalarza\",\r\n    \"password\": \"12345Ana!\",\r\n    \"phone\": 3216549870,\r\n    \"document\": 1024568987,\r\n    \"location\": {\r\n        \"x\": \"4.6793042\",\r\n        \"y\": \"-74.1137036\"\r\n    },\r\n    \"location_details\": \"Aeropuesto internacional El Dorado\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{GATEWAY}}/users",
+							"host": [
+								"{{GATEWAY}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar Usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// * ================\r",
+									"\r",
+									"/**\r",
+									" * Validación de status code en 201 para la creación de nuevos usuarios\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"// * ================\r",
+									"\r",
+									"/**\r",
+									" * Validación de la existencia de un Content_type en la respuesta\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"// * =============== \r",
+									"\r",
+									"/**\r",
+									" * Guardar el ID del usuario como variable global\r",
+									" */\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"ID\", jsonData[\"id\"]);\r",
+									"\r",
+									"// * ===============\r",
+									"\r",
+									"/**\r",
+									" * Validación que el objeto sea JSON correcto\r",
+									" */\r",
+									"\r",
+									"var schema = {\r",
+									"    \"id\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"first_name\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"last_name\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"dni\": {\r",
+									"        \"type\": \"number\"\r",
+									"    }, \r",
+									"    \"email\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"phone\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"username\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"\r",
+									"};\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test('Schema is valid', function () {\r",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// * =================\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"Ana Maria\",\r\n    \"last_name\": \"Galarza Leon\",\r\n    \"email\": \"anamariagalarza1221@gmail.com\",\r\n    \"username\": \"anagalarza\",\r\n    \"password\": \"12345Ana!\",\r\n    \"phone\": 3216549870,\r\n    \"document\": 1024568987,\r\n    \"location\": {\r\n        \"x\": 4.6793042,\r\n        \"y\": -74.1137036\r\n    },\r\n    \"locationDetails\": \"Aeropuesto internacional El Dorado\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{GATEWAY}}/users/verify?code=f26657",
+							"host": [
+								"{{GATEWAY}}"
+							],
+							"path": [
+								"users",
+								"verify"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "f26657"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// * ================\r",
+									"\r",
+									"/**\r",
+									" * Validación de status code en 200 para la invalidación del token\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// * ================\r",
+									"\r",
+									"/**\r",
+									" * Validación de la existencia de un Content_type en la respuesta\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"// * ===============\r",
+									"\r",
+									"/**\r",
+									" * Validación que el objeto sea JSON correcto\r",
+									" */\r",
+									"\r",
+									"var schema = {\r",
+									"    \"message\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"};\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test('Schema is valid', function () {\r",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// * ================ \r",
+									"\r",
+									"/**\r",
+									" * Validación de logout correcto\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Logout successful\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"Logout successful\");\r",
+									"});\r",
+									"\r",
+									"// * =================\r",
+									"\r",
+									"/**\r",
+									" * Validación de que el token de autorización debe encontrarse en las cabeceras de la petición\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Authorization is present\", function () {\r",
+									"    pm.request.to.have.header(\"Authorization\");\r",
+									"    let token = pm.request.headers.get(\"Authorization\")\r",
+									"    pm.expect(token).includes(\"Bearer\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{GATEWAY}}/users/logout",
+							"host": [
+								"{{GATEWAY}}"
+							],
+							"path": [
+								"users",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualización de parametros",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// * ================\r",
+									"\r",
+									"/**\r",
+									" * Validación de status code en 200 para la actualización de la contraseña del usuario\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// * ================\r",
+									"\r",
+									"/**\r",
+									" * Validación de la existencia de un Content_type en la respuesta\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"// * ===============\r",
+									"\r",
+									"/**\r",
+									" * Validación que el objeto sea JSON correcto\r",
+									" */\r",
+									"\r",
+									"var schema = {\r",
+									"    \"id\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"first_name\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"last_name\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"dni\": {\r",
+									"        \"type\": \"number\"\r",
+									"    }, \r",
+									"    \"email\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"phone\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"username\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"\r",
+									"};\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test('Schema is valid', function () {\r",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// * =================\r",
+									"\r",
+									"/**\r",
+									" * Validación de que el token de autorización debe encontrarse en las cabeceras de la petición\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Authorization is present\", function () {\r",
+									"    pm.request.to.have.header(\"Authorization\");\r",
+									"    let token = pm.request.headers.get(\"Authorization\")\r",
+									"    pm.expect(token).includes(\"Bearer\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"Test\",\r\n    \"last_name\": \"User DMH 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{GATEWAY}}/users/{{ID}}",
+							"host": [
+								"{{GATEWAY}}"
+							],
+							"path": [
+								"users",
+								"{{ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar usuario por ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// * ================\r",
+									"\r",
+									"/**\r",
+									" * Validación de status code en 200 para la actualización de la contraseña del usuario\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// * ================\r",
+									"\r",
+									"/**\r",
+									" * Validación de la existencia de un Content_type en la respuesta\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"// * ===============\r",
+									"\r",
+									"/**\r",
+									" * Validación que el objeto sea JSON correcto\r",
+									" */\r",
+									"\r",
+									"var schema = {\r",
+									"    \"id\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"first_name\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"last_name\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"dni\": {\r",
+									"        \"type\": \"number\"\r",
+									"    }, \r",
+									"    \"email\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"phone\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"    \"username\": {\r",
+									"        \"type\": \"string\"\r",
+									"    },\r",
+									"\r",
+									"};\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test('Schema is valid', function () {\r",
+									"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// * =================\r",
+									"\r",
+									"/**\r",
+									" * Validación de que el token de autorización debe encontrarse en las cabeceras de la petición\r",
+									" */\r",
+									"\r",
+									"pm.test(\"Authorization is present\", function () {\r",
+									"    pm.request.to.have.header(\"Authorization\");\r",
+									"    let token = pm.request.headers.get(\"Authorization\")\r",
+									"    pm.expect(token).includes(\"Bearer\")\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{GATEWAY}}/users/{{ID}}",
+							"host": [
+								"{{GATEWAY}}"
+							],
+							"path": [
+								"users",
+								"{{ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
