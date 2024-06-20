@@ -16,6 +16,7 @@ import (
 	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/insfraestructure/data"
 	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/insfraestructure/routes"
 	"gitlab.com/eescarria/ecommerce-equipo4.git/pkg/eureka"
+	"gitlab.com/eescarria/ecommerce-equipo4.git/pkg/utils"
 )
 
 func getRandomPort() string {
@@ -24,6 +25,13 @@ func getRandomPort() string {
 }
 
 func main() {
+	utils.InitS3()
+
+	// Verificar si S3Session está inicializado
+	if utils.S3Session == nil {
+		log.Fatal("Failed to initialize S3 session")
+	}
+
 	r := gin.Default()
 
 

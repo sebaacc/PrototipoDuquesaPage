@@ -2,6 +2,7 @@ package services_implement
 
 import (
 	"fmt"
+	"io/ioutil"
 	"math/rand"
 	"mime/multipart"
 	"path/filepath"
@@ -22,36 +23,83 @@ type productService struct {
 func NewProductService(repo repositories.ProductRepository) services.ProductService {
 	return &productService{repo}
 }
-
 func (s *productService) CreateProduct(product *models.Product, files []*multipart.FileHeader) error {
-	product.ID = primitive.NewObjectID()
+    product.ID = primitive.NewObjectID()
 
-	var imageURLs []string
-	
-	for _, file := range files {
-		// Generate a unique filename
-		filename := fmt.Sprintf("product_%d%s", rand.Int63(), filepath.Ext(file.Filename))
-		// uploadPath := "C:/Users/felip/Desktop/CTD/Segundo año/ProyectoIntegrador/ecommerce-equipo4/Images/" + filename
-		uploadPath := "D:/Seba/weas/Documentso/Estudios/PROGRAMACION/DigitalHouse/Segundo/integrador/proyecto/ecommerce-equipo4/Images/" + filename
+    var imageURLs []string
 
-		err := utils.SaveFileToSystem(file, uploadPath)
-		if err != nil {
-			return err
-		}
+    for _, file := range files {
+        // Generate a unique filename
+        filename := fmt.Sprintf("product_%d%s", rand.Int63(), filepath.Ext(file.Filename))
+        fmt.Println("Nombre del archivo generado:", filename)
 
-		imageURL := "http://localhost:8000/" + filename
-		imageURLs = append(imageURLs, imageURL)
-	}
+        // Read the file content
+        fileContent, err := file.Open()
+        if err != nil {
+            return err
+        }
+        defer fileContent.Close()
 
-	product.ImageURLs = imageURLs
+        fileBytes, err := ioutil.ReadAll(fileContent)
+        if err != nil {
+            return err
+        }
 
-	err := s.repo.Create(product)
-	if err != nil {
-		return err
-	}
+        // Upload the file to S3
+        err = utils.UploadFileToS3(filename, fileBytes)
+        if err != nil {
+            fmt.Println("Error al subir el archivo a S3:", err)
+            return err
+        }
 
-	return nil
+        // Generate the presigned URL
+        imageURL, err := utils.GeneratePresignedURL(filename)
+        if err != nil {
+            fmt.Println("Error al generar la URL presignada:", err)
+            return err
+        }
+
+        imageURLs = append(imageURLs, imageURL)
+    }
+
+    product.ImageURLs = imageURLs
+
+    err := s.repo.Create(product)
+    if err != nil {
+        return err
+    }
+
+    return nil
 }
+// func (s *productService) CreateProduct(product *models.Product, files []*multipart.FileHeader) error {
+// 	product.ID = primitive.NewObjectID()
+
+// 	var imageURLs []string
+	
+// 	for _, file := range files {
+// 		// Generate a unique filename
+// 		filename := fmt.Sprintf("product_%d%s", rand.Int63(), filepath.Ext(file.Filename))
+// 		// uploadPath := "C:/Users/felip/Desktop/CTD/Segundo año/ProyectoIntegrador/ecommerce-equipo4/Images/" + filename
+// 		uploadPath := "D:/Seba/weas/Documentso/Estudios/PROGRAMACION/DigitalHouse/Segundo/integrador/proyecto/ecommerce-equipo4/Images/" + filename
+
+// 		err := utils.SaveFileToSystem(file, uploadPath)
+// 		if err != nil {
+// 			return err
+// 		}
+
+// 		imageURL := "http://localhost:8000/" + filename
+// 		imageURLs = append(imageURLs, imageURL)
+// 	}
+
+// 	product.ImageURLs = imageURLs
+
+// 	err := s.repo.Create(product)
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	return nil
+// }
 
 func (s *productService) GetProductByID(id primitive.ObjectID) (*models.Product, error) {
 	return s.repo.GetByID(id)
