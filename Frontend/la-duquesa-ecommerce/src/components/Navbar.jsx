@@ -232,7 +232,7 @@ function Navbar () {
               {menuItems.map(({ icon, text, route }, index) => {
                 return (
                   <div key={index} className="py-4">
-                    {route == '/'
+                    {route === '/'
                       ? (
                       <Link to={route}>
                         <li

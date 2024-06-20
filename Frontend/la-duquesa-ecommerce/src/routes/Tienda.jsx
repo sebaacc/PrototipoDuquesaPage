@@ -24,6 +24,7 @@ const Tienda = () => {
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm)
 
   const handleFilterChange = useCallback((newFilter) => {
+    setSearchTerm('')
     setFilter(newFilter)
     setCurrentPage(1)
   }, [])

@@ -13,7 +13,7 @@ function Footer () {
   return (
     <footer className="bg-[#BD6292] p-10 flex flex-col items-center w-full mt-auto relative bottom-0">
       <img className="w-40 h-42 m-auto" src={logo} alt="" />
-      <article className="m-auto">
+      <article className="m-auto text-center">
         <p className="text-white font-semibold h-20 size-80 text-xl m-auto lg:">
           Tu antojo, nuestra especialidad.
         </p>
