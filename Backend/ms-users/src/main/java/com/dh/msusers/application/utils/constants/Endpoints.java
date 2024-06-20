@@ -10,6 +10,7 @@ public class Endpoints {
     public static final String TOKEN_INTROSPECT = "/token-introspect";
     public static final String LOGIN = "/login";
     public static final String VERIFY = "/verify";
+    public static final String SAVE = "/save";
     public static final String PATCH_UPDATE = "/{id}";
     public static final String DELETE_BY_ID = "/{id}";
 

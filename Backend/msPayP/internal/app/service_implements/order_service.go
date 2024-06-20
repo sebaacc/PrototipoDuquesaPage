@@ -18,7 +18,7 @@ func NewOrderService(repo repositories.OrderRepository) services.OrderService {
 // 1 2 3 4 5
 
 func (s *orderService) CreateOrder(order *models.Order) error {
-    order.ID = primitive.NewObjectID()
+    //order.ID = primitive.NewObjectID()
     return s.repo.Create(order)
 }
 

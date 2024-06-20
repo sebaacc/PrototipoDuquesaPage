@@ -37,7 +37,7 @@ func (h *PayHandler) Post(c *gin.Context) {
 
     // Crear automáticamente un order
     order := models.Order{
-        IdPayment:     pay.ID.Hex(), 
+        //IdPayment:     pay.ID.Hex(), 
         IdProduct:     "Producto_ID", // Vincularlo con el ID correspondiente del producto.
         NumberOfUnits: 1, // Cantidad de unidades??????
     }
@@ -90,4 +90,41 @@ func (h *PayHandler) DeletePayHandler(c *gin.Context) {
     }
 
     c.JSON(http.StatusOK, gin.H{"message": "Pago eliminado exitosamente"})
+}
+
+
+func (h *PayHandler) CreatePreference(c *gin.Context) {
+    preference, err := h.payService.CreatePreference()
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"id": preference.ID})
+}
+
+
+
+
+func (h *PayHandler) HandleWebhook(c *gin.Context) {
+	// Obtener el valor de x-signature del header
+	xSignature := c.GetHeader("x-signature")
+	xRequestId := c.GetHeader("x-request-id")
+
+	// Obtener los parámetros de la URL
+	queryParams := c.Request.URL.Query()
+
+	// Extraer el "data.id" de los parámetros de la URL
+	dataID := queryParams.Get("data.id")
+
+	// Obtener la clave secreta desde una variable de entorno o configuración
+	secret := "CjXlkxPUyfyilAI3nzapvlYGOawfqSda"
+
+	// Pasar los datos al servicio para que procese la lógica adicional
+	if err := h.payService.ProcessWebhook(c, dataID, xRequestId, xSignature, secret); err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Webhook processed successfully"})
 }

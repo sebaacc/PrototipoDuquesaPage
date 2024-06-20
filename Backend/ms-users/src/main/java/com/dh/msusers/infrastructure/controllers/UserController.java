@@ -42,7 +42,7 @@ public class UserController {
         response.sendRedirect(keycloakService.verify(code));
     }
 
-    @PostMapping
+    @PostMapping(Endpoints.SAVE)
     public ResponseEntity<UserResponse> save(@RequestBody User user) {
         return ResponseEntity.ok(keycloakService.save(user));
     }

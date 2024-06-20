@@ -47,7 +47,7 @@ func (r *MongoOrderRepository) GetAll() ([]*models.Order, error) {
 }
 
 func (r *MongoOrderRepository) Update(order *models.Order) error {
-    _, err := r.collection.UpdateOne(context.TODO(), bson.M{"_id": order.ID}, bson.M{"$set": order})
+    _, err := r.collection.UpdateOne(context.TODO(), bson.M{"_id": order}, bson.M{"$set": order})
     return err
 }
 
