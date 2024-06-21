@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom'
 import logo from '../img/lgofondoclaro-removebg-preview 1.png'
 import axios from 'axios'
 import Loader from '../components/loader/Loader'
+import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
+import endpoints from '../utils/endpoints'
 
-function SignUp() {
+function SignUp () {
   const [form, setForm] = useState({
     first_name: '',
     last_name: '',
@@ -17,7 +19,7 @@ function SignUp() {
   })
   const [errors, setErrors] = useState({})
   const [loadingOpen, setLoadingOpen] = useState(false)
-  const [creationError, setCreattionError] = useState(false)
+  const [creationError, setCreationError] = useState(false)
   const [successOpen, setSuccessOpen] = useState(false)
 
   const handleChange = (e) => {
@@ -29,19 +31,46 @@ function SignUp() {
     console.log(form)
   }, [form])
 
+  const [passVisible, setPassVisible] = useState(false)
+
+  const togglePassVisibility = () => {
+    setPassVisible((prev) => !prev)
+  }
   const validate = () => {
     const newErrors = {}
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#.$%^&+=!]).{8,}$/
 
-    if (!form.first_name) newErrors.firstName = 'El campo de nombre es requerido'
-    if (!form.last_name) newErrors.lastName = 'El campo de apellido es requerido'
+    const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/
+    const lastNameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/
+    const telRegex = /^[0-9\s]+$/
+    const documentRegex = /^[0-9\s]+$/
+
+    if (!nameRegex.test(form.first_name)) {
+      newErrors.firstName = 'El nombre no debe contener números'
+    }
+    if (!form.first_name) {
+      newErrors.firstName = 'El campo de nombre es requerido'
+    }
+    if (!lastNameRegex.test(form.last_name)) {
+      newErrors.lastName = 'El apellido no debe contener números'
+    }
+    if (!form.last_name) {
+      newErrors.lastName = 'El campo de apellido es requerido'
+    }
     if (!form.username) {
       newErrors.username = 'El campo de nombre de usuario es requerido'
     }
+    if (!documentRegex.test(form.document)) {
+      newErrors.documentNumber =
+        'El número de documento no debe contener letras'
+    }
     if (!form.document) {
       newErrors.documentNumber = 'El campo de número de documento es requerido'
+    }
+    if (!telRegex.test(form.phone)) {
+      newErrors.phone = 'El teléfono no debe contener letras'
     }
     if (!form.phone) newErrors.phone = 'El campo de teléfono es requerido'
     if (!form.email) {
@@ -58,6 +87,9 @@ function SignUp() {
     if (form.password !== form.confirmPassword) {
       newErrors.confirmPassword = 'Las contraseñas no coinciden'
     }
+    if (!form.confirmPassword) {
+      newErrors.confirmPassword = 'El campo de repetir contraseña es requerido'
+    }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -70,31 +102,29 @@ function SignUp() {
     }
   }
 
-
   const createAccount = async () => {
-    //Estado para poner un loader
+    // Estado para poner un loader
     setLoadingOpen(true)
-    const { confirmPassword, ...newForm } = form;
+    const { confirmPassword, ...newForm } = form
     console.log(newForm)
 
     try {
-
-      const response = await axios.post('http://localhost:8090/users', newForm);
+      const response = await axios.post(endpoints.SaveUser, newForm)
 
       if (response.status === 200) {
         setLoadingOpen(false)
         setSuccessOpen(true)
-        //Falta añadir un mensaje que diga "Tu cuenta se ha creado con éxito, verifica la cuenta desde tu correo para iniciar sesión"
         console.log(response.data)
       }
     } catch (error) {
-      console.error('Error updating user:', error);
+      console.error('Error updating user:', error)
       setLoadingOpen(false)
-      //Estado para mostrar error al crear cuenta
-      setCreattionError(true)
-      //setFieldError('email', '¡Ya existe una cuenta con ese correo!');
+      // Estado para mostrar error al crear cuenta
+      setCreationError(true)
+      // setFieldError('email', '¡Ya existe una cuenta con ese correo!');
     }
   }
+  const errorStyle = 'text-red-500 text-sm mt-2 font-semibold'
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -133,7 +163,7 @@ function SignUp() {
                 onChange={handleChange}
               />
               {errors.firstName && (
-                <p className="text-red-500 text-xs mt-2">{errors.firstName}</p>
+                <p className={errorStyle}>{errors.firstName}</p>
               )}
             </div>
             <div className="w-[320px]">
@@ -153,7 +183,7 @@ function SignUp() {
                 onChange={handleChange}
               />
               {errors.lastName && (
-                <p className="text-red-500 text-xs mt-2">{errors.lastName}</p>
+                <p className={errorStyle}>{errors.lastName}</p>
               )}
             </div>
           </section>
@@ -175,7 +205,7 @@ function SignUp() {
                 onChange={handleChange}
               />
               {errors.username && (
-                <p className="text-red-500 text-xs mt-2">{errors.username}</p>
+                <p className={errorStyle}>{errors.username}</p>
               )}
             </div>
             <div className="w-[320px]">
@@ -194,9 +224,7 @@ function SignUp() {
                 value={form.email}
                 onChange={handleChange}
               />
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-2">{errors.email}</p>
-              )}
+              {errors.email && <p className={errorStyle}>{errors.email}</p>}
             </div>
           </section>
           <section className="flex gap-10 flex-wrap justify-center">
@@ -216,9 +244,7 @@ function SignUp() {
                 value={form.phone}
                 onChange={handleChange}
               />
-              {errors.phone && (
-                <p className="text-red-500 text-xs mt-2">{errors.phone}</p>
-              )}
+              {errors.phone && <p className={errorStyle}>{errors.phone}</p>}
             </div>
             <div className="w-[320px]">
               <label
@@ -237,9 +263,7 @@ function SignUp() {
                 onChange={handleChange}
               />
               {errors.documentNumber && (
-                <p className="text-red-500 text-xs mt-2">
-                  {errors.documentNumber}
-                </p>
+                <p className={errorStyle}>{errors.documentNumber}</p>
               )}
             </div>
           </section>
@@ -251,17 +275,27 @@ function SignUp() {
               >
                 Contraseña
               </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Contraseña"
-                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
-                value={form.password}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  name="password"
+                  type={passVisible ? 'text' : 'password'}
+                  placeholder="Contraseña"
+                  className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                  value={form.password}
+                  onChange={handleChange}
+                />
+
+                <div
+                  onClick={togglePassVisibility}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 text-lg"
+                >
+                  {passVisible ? <MdVisibility /> : <MdVisibilityOff />}
+                </div>
+              </div>
+
               {errors.password && (
-                <p className="text-red-500 text-xs mt-2">{errors.password}</p>
+                <p className={errorStyle}>{errors.password}</p>
               )}
             </div>
             <div className="w-[320px]">
@@ -271,56 +305,61 @@ function SignUp() {
               >
                 Confirmar Contraseña
               </label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                placeholder="Confirmar Contraseña"
-                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
-                value={form.confirmPassword}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={passVisible ? 'text' : 'password'}
+                  placeholder="Confirmar Contraseña"
+                  className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                  value={form.confirmPassword}
+                  onChange={handleChange}
+                />
+                <div
+                  onClick={togglePassVisibility}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 text-lg"
+                >
+                  {passVisible ? <MdVisibility /> : <MdVisibilityOff />}
+                </div>
+              </div>
               {errors.confirmPassword && (
-                <p className="text-red-500 text-xs mt-2">
-                  {errors.confirmPassword}
-                </p>
+                <p className={errorStyle}>{errors.confirmPassword}</p>
               )}
             </div>
           </section>
 
-          {loadingOpen &&
-            <Loader />
-          }
+          {loadingOpen && <Loader />}
 
-          {successOpen &&
-            <article className='text-green-700 bg-green-100 p-2 rounded'>
-              Tu cuenta ha sido creada exitósamente, dirígete a tu correo para verificarla.
+          {successOpen && (
+            <article className="text-green-700 bg-green-100 p-2 rounded">
+              Tu cuenta ha sido creada exitosamente, dirígete a tu correo para
+              verificarla.
             </article>
-          }
+          )}
 
-          {creationError &&
-            <article className='text-red-700 bg-red-100 p-2 rounded'>
-              Ha habido un error al crear la cuenta.
+          {creationError && (
+            <article className="text-red-700 bg-red-100 p-2 rounded font-semibold">
+              Ha habido un error al crear la cuenta. Por favor intente
+              nuevamente.
             </article>
-          }
+          )}
 
-          {successOpen ?
-            <Link to={"/login"}>
-              <div
-                className="w-40 m-auto flex justify-center bg-[#BD6292] text-white rounded p-2"
-              >
+          {successOpen
+            ? (
+            <Link to={'/login'}>
+              <div className="w-40 m-auto flex justify-center bg-[#BD6292] text-white rounded p-2">
                 Iniciar sesión
               </div>
             </Link>
-
-            :
+              )
+            : (
             <button
               type="submit"
-              className="w-40 m-auto flex justify-center bg-[#BD6292] text-white rounded p-2"
+              className="w-40 m-auto flex justify-center text-white rounded p-2 bg-[#8B7BB1] hover:bg-[#BD6292] hover:shadow-md transition-all duration-300"
             >
               Registrarse
             </button>
-          }
+              )}
         </form>
         <div className="flex flex-col items-center justify-between text-sm text-[#7F7C82]">
           <p>¿Ya tienes una cuenta? </p>
@@ -337,7 +376,7 @@ function SignUp() {
 
 export default SignUp
 
-function ArrowLeftIcon(props) {
+function ArrowLeftIcon (props) {
   return (
     <svg
       {...props}

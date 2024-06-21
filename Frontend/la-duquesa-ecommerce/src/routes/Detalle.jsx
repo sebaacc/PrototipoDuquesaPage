@@ -60,13 +60,16 @@ const Detalle = () => {
                 <h2 className="mb-2 leading-tight tracking-tight font-bold text-gray-800 text-2xl md:text-3xl">
                   Torta de Chocolate.
                 </h2>
-                <button className="mr-6 w-28 p-3 bg-[#BD6292] text-white rounded-xl">
-                  Pastelería
-                </button>
+                <Link to={'/tienda?search=Pastel'}>
+                  <button className="mr-6 w-28 p-3 bg-[#BD6292] text-white rounded-xl">
+                    Pastelería
+                  </button>{' '}
+                </Link>
+                <Link to={'/tienda?search=Tarta'}>
                 <button className="mr-6 w-28 p-3 bg-[#BD6292] text-white rounded-xl">
                   Torta Fría
                 </button>
-
+                </Link>
                 <div className="flex items-center space-x-4 my-4">
                   <div>
                     <div className="rounded-lg bg-gray-100 flex py-2 px-3">

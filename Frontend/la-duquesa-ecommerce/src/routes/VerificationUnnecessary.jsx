@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-const VerificationSuccess = () => {
+const VerificationUnnecessary = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[100vh] px-4 md:px-6 bg-[#F7F8FC]">
       <div className="max-w-md w-full space-y-4 text-center bg-white p-4 rounded-lg shadow">
@@ -20,10 +20,12 @@ const VerificationSuccess = () => {
             <path d="M20 6 9 17l-5-5"></path>
           </svg>
         </div>
-        <h2 className="text-2xl font-bold">{'Cuenta aprobada :)'}</h2>
-        <p className="text-[#7F7C82] ">
-          ¡Felicidades! Tu cuenta se ha verificado exitosamente, ahora puedes
-          iniciar sesión.
+        <h2 className="text-2xl font-bold">
+          {'La cuenta ya estaba verificada ;)'}
+        </h2>
+        <p className="text-[#7F7C82]">
+          Tu cuenta ya se había verificado antes exitosamente, ya puedes volver
+          a iniciar sesión.
         </p>
         <Link to={'/login'}>
           <div
@@ -39,4 +41,4 @@ const VerificationSuccess = () => {
   )
 }
 
-export default VerificationSuccess
+export default VerificationUnnecessary

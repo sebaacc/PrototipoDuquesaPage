@@ -16,7 +16,7 @@ const SearchProduct = () => {
       <div className="m-10 md:flex justify-center">
         <form onSubmit={handleSearch} className="relative w-full max-w-4xl">
           <input
-            className="border p-4 rounded-lg w-full h-[80px] bg-[#D9D9D9] text-black font-medium pl-12"
+            className="border p-4 rounded-lg w-full h-[80px] bg-[#D9D9D9] text-black font-medium pl-12 outline-none"
             type="text"
             placeholder="Busca un producto..."
             value={searchTerm}

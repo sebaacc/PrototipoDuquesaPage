@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
 import axios from 'axios'
+import endpoints from '../utils/endpoints'
 
 const usuariosIniciales = [
   {
@@ -30,7 +31,10 @@ const usuariosIniciales = [
 function ReporteDeUsuario () {
   const [usuarios, setUsuarios] = useState(usuariosIniciales)
   const [showSuccess, setShowSuccess] = useState(false)
-  const [confirmarEliminacion, setConfirmarEliminacion] = useState({ mostrar: false, id: null })
+  const [confirmarEliminacion, setConfirmarEliminacion] = useState({
+    mostrar: false,
+    id: null
+  })
 
   useEffect(() => {
     fetchData()
@@ -44,7 +48,8 @@ function ReporteDeUsuario () {
         headers: { Authorization: `Bearer ${token}` }
       }
 
-      const response = await axios.get('http://localhost:8090/users', config)
+      // const response = await axios.get('http://localhost:8090/users', config)
+      const response = await axios.get(endpoints.getAndPostUser, config)
 
       if (response.status === 200) {
         console.log(response.data)
@@ -56,8 +61,7 @@ function ReporteDeUsuario () {
     }
   }
 
-
-  const deleteUser  = async () => {
+  const deleteUser = async () => {
     try {
       const token = localStorage.getItem('accessToken')
 
@@ -65,25 +69,30 @@ function ReporteDeUsuario () {
         headers: { Authorization: `Bearer ${token}` }
       }
 
-      const response = await axios.delete('http://localhost:8090/users/' + confirmarEliminacion.id, config)
+      // const response = await axios.delete(
+      //   'http://localhost:8090/users/' + confirmarEliminacion.id,
+      //   config
+      // )
+      const response = await axios.delete(
+        endpoints.getAndPostUser + confirmarEliminacion.id,
+        config
+      )
 
       console.log(response)
       if (response.status == 204) {
-        let newUsers = usuarios.filter((user)=>{
+        const newUsers = usuarios.filter((user) => {
           return user.id != confirmarEliminacion.id
-        });
+        })
 
         console.log(newUsers)
         setUsuarios(newUsers)
         setShowSuccess(true)
-
       }
     } catch (error) {
       console.error('Error updating user:', error)
       // setFieldError('email', '¡Ya existe una cuenta con ese correo!')
     }
   }
-
 
   const handleEliminar = () => {
     deleteUser(confirmarEliminacion)
@@ -133,16 +142,15 @@ function ReporteDeUsuario () {
                 >
                   {usuario.username}
                 </th>
-                {usuario.email &&
+                {usuario.email && (
                   <td className="px-6 py-4">{usuario.email}</td>
-                }
-                {
-                  usuario.document &&
+                )}
+                {usuario.document && (
                   <td className="px-6 py-4">{usuario.document}</td>
-                }
-                {usuario.phone &&
+                )}
+                {usuario.phone && (
                   <td className="px-6 py-4">{usuario.phone}</td>
-                }
+                )}
                 <td className="px-6 py-4">
                   <button onClick={() => mostrarConfirmacion(usuario)}>
                     <IoIosCloseCircleOutline />
@@ -185,7 +193,6 @@ function ReporteDeUsuario () {
               >
                 Entendido
               </button>
- 
             </div>
           </div>
         </div>

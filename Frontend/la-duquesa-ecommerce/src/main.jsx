@@ -18,6 +18,8 @@ import NuestrasSedes from './routes/NuestrasSedes.jsx'
 import Category from './routes/Category.jsx'
 import Subcategory from './routes/Subcategory.jsx'
 import EditarPerfil from './routes/EditarPefil.jsx'
+import VerificationError from './routes/VerificationError.jsx'
+import VerificationUnnecessary from './routes/VerificationUnnecessary.jsx'
 
 const router = createBrowserRouter([
   {
@@ -88,7 +90,18 @@ const router = createBrowserRouter([
   {
     path: 'subcategory',
     element: <Subcategory />,
-    errorElement: <ErrorPage />},
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'verificacion-error',
+    element: <VerificationError />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'verificacion-revalidada',
+    element: <VerificationUnnecessary />,
+    errorElement: <ErrorPage />
+  },
   {
     path: 'editar-perfil',
     element: <EditarPerfil/>,

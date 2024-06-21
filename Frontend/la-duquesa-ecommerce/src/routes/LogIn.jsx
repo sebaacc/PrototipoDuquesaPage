@@ -2,12 +2,18 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import SocialMedia from '../components/SocialMedia'
+import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
+import endpoints from '../utils/endpoints'
 
 function LogIn () {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({ username: '', password: '' })
+  const [passVisible, setPassVisible] = useState(false)
 
+  const togglePassVisibility = () => {
+    setPassVisible((prev) => !prev)
+  }
   const handleSubmit = (e) => {
     e.preventDefault()
     const newErrors = { username: '', password: '' }
@@ -16,9 +22,9 @@ function LogIn () {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
     if (!username) {
-      newErrors.username = 'El campo de usuario es requerido'
+      newErrors.username = 'El campo de correo es requerido'
     } else if (!emailRegex.test(username)) {
-      newErrors.username = 'El campo de usuario debe ser un correo válido'
+      newErrors.username = 'El correo debe ser un correo válido'
     }
 
     // Validación de la contraseña
@@ -43,11 +49,7 @@ function LogIn () {
     }
 
     try {
-      const response = await axios.post(
-        'http://localhost:8090/users/login',
-        values
-
-      )
+      const response = await axios.post(endpoints.postLogin, values)
 
       if (response.status === 200) {
         localStorage.setItem('accessToken', response.data.access_token)
@@ -58,6 +60,8 @@ function LogIn () {
       // setFieldError('email', '¡Ya existe una cuenta con ese correo!');
     }
   }
+
+  const errorStyle = 'text-red-500 text-sm mt-2 font-semibold'
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#F7F8FC]">
@@ -71,48 +75,55 @@ function LogIn () {
           </Link>
         </div>
         <SocialMedia />
-        <form className="space-y-6 flex flex-col items-center" onSubmit={handleSubmit}>
-          <div className='w-full'>
+        <form
+          className="space-y-6 flex flex-col items-center"
+          onSubmit={handleSubmit}
+        >
+          <div className="w-full">
             <label
               htmlFor="username"
               className="block text-sm font-extrabold text-[#2D5651]"
             >
-              Usuario
+              Correo
             </label>
             <input
               id="username"
               type="text"
-              placeholder="Usuario"
+              placeholder="Correo"
               className="mt-1 block w-full p-3 bg-gray-200 rounded-lg appearance-none"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
-            {errors.username && (
-              <p className="text-red-500 text-xs mt-2">{errors.username}</p>
-            )}
+            {errors.username && <p className={errorStyle}>{errors.username}</p>}
           </div>
-          <div className='w-full'>
+          <div className="w-full">
             <label
               htmlFor="password"
               className="block text-sm font-extrabold text-[#2D5651]"
             >
               Contraseña
             </label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Contraseña"
-              className="mt-1 block w-full p-3 bg-gray-200 rounded-lg appearance-none"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            {errors.password && (
-              <p className="text-red-500 text-xs mt-2">{errors.password}</p>
-            )}
+            <div className="relative">
+              <input
+                id="password"
+                type={passVisible ? 'text' : 'password'}
+                placeholder="Contraseña"
+                className="mt-1 block w-full p-3 bg-gray-200 rounded-lg appearance-none"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <div
+                onClick={togglePassVisibility}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 text-lg"
+              >
+                {passVisible ? <MdVisibility /> : <MdVisibilityOff />}
+              </div>
+            </div>
+            {errors.password && <p className={errorStyle}>{errors.password}</p>}
           </div>
           <button
             type="submit"
-            className="w-40 m-auto flex justify-center bg-[#BD6292] text-white rounded p-2"
+            className="w-40 m-auto flex justify-center text-white rounded p-2 bg-[#8B7BB1] hover:bg-[#BD6292] hover:shadow-md transition-all duration-300"
           >
             Ingresar
           </button>
