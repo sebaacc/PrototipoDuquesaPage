@@ -109,7 +109,7 @@ function SignUp () {
     console.log(newForm)
 
     try {
-      const response = await axios.post(endpoints.getAndPostUser, newForm)
+      const response = await axios.post(endpoints.SaveUser, newForm)
 
       if (response.status === 200) {
         setLoadingOpen(false)

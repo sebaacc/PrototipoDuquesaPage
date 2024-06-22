@@ -16,4 +16,8 @@ func PayRoutes(r *gin.Engine, payService services.PayService, orderService servi
     r.GET(payRoute + "/findPayById/:id", payHandler.GetPayByIDHandler)
     r.PUT(payRoute + "/updatePay/:id", payHandler.UpdatePayHandler)
     r.DELETE(payRoute + "/deletePay/:id", payHandler.DeletePayHandler)
+    r.GET(payRoute + "/findPayAll", payHandler.FindAll())
+    r.PATCH(payRoute + "/:id/payment-status", payHandler.UpdatePaymentStatus)
+    r.POST(payRoute + "/handleWebhook", payHandler.HandleWebhook)
+    r.POST(payRoute + "/create_preference", payHandler.CreatePreference)
 }

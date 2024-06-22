@@ -8,11 +8,14 @@ import (
 	"fmt"
 	"strings"
 
+	"time"
+
 	"github.com/mercadopago/sdk-go/pkg/config"
 	"github.com/mercadopago/sdk-go/pkg/preference"
 	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/models"
 	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/repositories"
 	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/services"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type payService struct {
@@ -25,23 +28,51 @@ func NewPayService(repo repositories.PayRepository) services.PayService {
 
 // 1 2 3 4
 
+// GetAllPay implements services.PayService.
+func (s *payService) GetAllPay() ([]*models.Pay, error) {
+	return s.repo.GetAll()
+}
+
 func (s *payService) CreatePay(ctx context.Context, pay *models.Pay) error {
+	pay.ID = primitive.NewObjectID()
+	pay.Date = primitive.NewDateTimeFromTime(time.Now())
 	return s.repo.CreatePay(ctx, pay)
+	
 }
 
 func (s *payService) GetPayByID(ctx context.Context, id string) (*models.Pay, error) {
 	return s.repo.GetPayByID(ctx, id)
 }
 
-func (s *payService) UpdatePay(ctx context.Context, id string, pay *models.Pay) error {
+func (s *payService) UpdatePay(ctx context.Context, id primitive.ObjectID, pay *models.Pay) error {
 	return s.repo.UpdatePay(ctx, id, pay)
 }
 
-func (s *payService) DeletePay(ctx context.Context, id string) error {
+func (s *payService) DeletePay(ctx context.Context, id primitive.ObjectID) error {
+	
 	return s.repo.DeletePay(ctx, id)
 }
 
+/*
+func (s *productService) DeleteProduct(id primitive.ObjectID) error {
+    // Elimina el producto del repositorio
+    if err := s.repo.Delete(id); err != nil {
+		fmt.Println("Ha llegado 1")
+		fmt.Println(err)
+        return err
+    }
 
+    //Mandamos una petición al ms-cart para que elimine el producto de todos los carritos
+    go methodsimplements.DeleteProductInCarts(id);
+
+
+    return nil
+}*/
+
+
+func (s *payService) UpdatePaymentStatus(payID primitive.ObjectID, paymentStatus string) error {
+	return s.repo.UpdatePaymentStatus(payID, paymentStatus)
+}
 
 /*
 Video youtube: https://www.youtube.com/watch?v=vXqo-hgvvZU
