@@ -6,9 +6,9 @@ import (
 )
 
 type OrderRepository interface {
-    Create(order *models.Order) error
+  //  Create(order *models.Order) error
     GetByID(id primitive.ObjectID) (*models.Order, error)
     GetAll() ([]*models.Order, error)
-    Update(order *models.Order) error
+   // Update(order *models.Order) error
     Delete(id primitive.ObjectID) error
 }

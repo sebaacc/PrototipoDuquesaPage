@@ -16,11 +16,11 @@ func NewOrderService(repo repositories.OrderRepository) services.OrderService {
 }
 
 // 1 2 3 4 5
-
+/*
 func (s *orderService) CreateOrder(order *models.Order) error {
     order.ID = primitive.NewObjectID()
     return s.repo.Create(order)
-}
+}*/
 
 func (s *orderService) GetOrderByID(id primitive.ObjectID) (*models.Order, error) {
     return s.repo.GetByID(id)
@@ -29,10 +29,10 @@ func (s *orderService) GetOrderByID(id primitive.ObjectID) (*models.Order, error
 func (s *orderService) GetAllOrder() ([]*models.Order, error) {
     return s.repo.GetAll()
 }
-
+/*
 func (s *orderService) UpdateOrder(order *models.Order) error {
     return s.repo.Update(order)
-}
+}*/
 
 func (s *orderService) DeleteOrder(id primitive.ObjectID) error {
     return s.repo.Delete(id)
