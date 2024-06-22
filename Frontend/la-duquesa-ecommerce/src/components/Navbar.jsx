@@ -1,8 +1,9 @@
 import profile from '../img/Profile.png'
 import menuHamburger from '../img/MenuHamburguer.png'
 import ubication from '../img/icons8-location-64 1.png'
+import logo from '../img/LogoRosayAmarillo.png'
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { TbTruckDelivery, TbReport } from 'react-icons/tb'
 import {
@@ -12,6 +13,7 @@ import {
 } from 'react-icons/md'
 import { IoIosAddCircle } from 'react-icons/io'
 import { CiShoppingCart } from 'react-icons/ci'
+import { GrPowerShutdown } from 'react-icons/gr'
 // import { icon } from '@fortawesome/fontawesome-svg-core'
 
 // import shopCar from '../img/cart-large-minimalistic-svgrepo-com.png'
@@ -20,15 +22,28 @@ function Navbar () {
   const [nav, setNav] = useState(false)
 
   const [navMobile, setNavMobile] = useState(false)
+  const [logedOut, setLogedOut] = useState(false)
 
-  const liStyle = 'hover:text-[#CE76A4] mr-6  flex'
+  const liStyle = 'hover:text-[#CE76A4] mr-6 flex'
+
+  useEffect(() => {
+    if (
+      localStorage.getItem('accessToken') == null ||
+      localStorage.getItem('accessToken') == undefined
+    ) {
+      setLogedOut(true)
+    }
+  }, [])
 
   const menuItems = [
+    /*
     {
       icon: <TbTruckDelivery size={25} className="mr-4" />,
       text: 'Ordenes'
     },
+
     { icon: <MdFavorite size={25} className="mr-4" />, text: 'Favoritos' },
+     */
     {
       icon: <IoIosAddCircle size={25} className="mr-4" />,
       text: 'Cargar Producto',
@@ -44,12 +59,17 @@ function Navbar () {
       text: 'Reporte de producto',
       route: '/reporte-producto'
     },
-    { icon: <MdHelp size={25} className="mr-4" />, text: 'Ayuda' }
+    /* { icon: <MdHelp size={25} className="mr-4" />, text: 'Ayuda' }, */
+    {
+      icon: <GrPowerShutdown size={25} className="mr-4" />,
+      text: 'Cerrar sesión',
+      route: '/'
+    }
   ]
   return (
-    <section className="flex justify-between p-12">
+    <section className="flex justify-between p-12 pt-5">
       {/* Menu mobile para las rutas */}
-      <div className="sm:block md:block lg:hidden xl:hidden">
+      <div className="sm:block md:block lg:hidden xl:hidden content-center">
         <div className="flex items-center">
           <article
             onClick={() => setNavMobile(!navMobile)}
@@ -97,7 +117,7 @@ function Navbar () {
                   Productos
                 </li>
               </Link>
-              <Link>
+              <Link to={'/nuestras-sedes'}>
                 <li className="text-xl flex cursor-pointer  w-[80%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1]">
                   Nuestras sedes
                 </li>
@@ -112,26 +132,40 @@ function Navbar () {
         </div>
       </div>
       {/* Rutas o vistas del sitio */}
-      <article className="flex justify-between">
-        <img
-          className="size-7 mr-1 relative left-7 md:left-0 lg:left-0"
-          src={ubication}
-          alt=""
-        />
-        <p className="mt-1 flex flex-col md:flex-row text-center">
-          <span className="font-bold mr-1">Enviado a</span> KR 21B #29 B - 149
-        </p>
-      </article>
+
+      {logedOut ? (
+        <Link to={'/'} className="flex justify-between">
+          <img
+            className="size-28 mr-1 relative md:left-0 lg:left-0"
+            src={logo}
+            alt=""
+          />
+        </Link>
+      ) : (
+        <article className="flex justify-between">
+          <img
+            className="size-7 mr-1 relative left-7 md:left-0 lg:left-0"
+            src={ubication}
+            alt=""
+          />
+          <p className="mt-1 flex flex-col md:flex-row text-center">
+            {/* <span className="font-bold mr-1">Enviar a</span> KR 21B #29 B - 149 */}
+            <span className="font-bold mr-1">
+              Configura tu dirección <br /> para recibir pedidos
+            </span>
+          </p>
+        </article>
+      )}
 
       <article className="hidden sm:hidden md:hidden lg:block xl:block 2xl:block mt-1">
-        <ul className="flex text-black font-semibold">
+        <ul className="flex text-black font-semibold h-full items-center">
           <Link to={'/'}>
             <li className={liStyle}>Inicio</li>
           </Link>
           <Link to={'/tienda'}>
             <li className={liStyle}>Productos</li>
           </Link>
-          <Link to={'/'}>
+          <Link to={'/nuestras-sedes'}>
             <li className={liStyle}>Nuestras sedes</li>
           </Link>
           <Link to={'/carrito-de-compras'}>
@@ -142,17 +176,30 @@ function Navbar () {
         </ul>
       </article>
       {/* Menu de Administrador */}
-      <div>
-        <div className="flex items-center">
-          <article>
-            <img
-              onClick={() => setNav(!nav)}
-              className="size-16 cursor-pointer"
-              src={profile}
-              alt="Perfil"
-            />
-          </article>
-        </div>
+
+      <div className="flex items-center">
+        {logedOut
+          ? (
+          <div className="flex items-center">
+            <Link to={'/login'}>
+              <button className="bg-[#BD6292] text-white p-2 rounded">
+                Ingresar
+              </button>
+            </Link>
+          </div>
+            )
+          : (
+          <div className="flex items-center">
+            <article>
+              <img
+                onClick={() => setNav(!nav)}
+                className="size-16 cursor-pointer"
+                src={profile}
+                alt="Perfil"
+              />
+            </article>
+          </div>
+            )}
 
         {nav
           ? (
@@ -184,12 +231,28 @@ function Navbar () {
             <ul className="flex flex-col p-4 text-black gap-7 font-medium">
               {menuItems.map(({ icon, text, route }, index) => {
                 return (
-                  <div key={index} className=" py-4">
-                    <Link to={route}>
-                      <li className="text-xl flex cursor-pointer  w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1]">
-                        {icon} {text}
-                      </li>
-                    </Link>
+                  <div key={index} className="py-4">
+                    {route === '/'
+                      ? (
+                      <Link to={route}>
+                        <li
+                          onClick={() => {
+                            localStorage.clear()
+                            window.location.reload()
+                          }}
+                          className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300"
+                        >
+                          {icon} {text}
+                        </li>
+                      </Link>
+                        )
+                      : (
+                      <Link to={route}>
+                        <li className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300">
+                          {icon} {text}
+                        </li>
+                      </Link>
+                        )}
                   </div>
                 )
               })}

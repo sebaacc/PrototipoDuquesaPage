@@ -17,6 +17,10 @@ spring:
       verify: http://localhost:8090/users/verify
     mail-template: ValidationEmail
     mail-subject: "Validación de cuenta"
+    redirects:
+      success-verification: http://127.0.0.1:5173/verificacion-exitosa
+      already-verification: https://th.bing.com/th/id/OIP.MZZQpcPj-bjfN2bKPSjcDQHaEl?rs=1&pid=ImgDetMain
+      error-verification: https://verification.swiftchat.ai/images/email_not_verified.png
     properties:
       mail:
         smtp:
@@ -40,7 +44,7 @@ keycloak:
   realm: LaDuquesa
   serverUrl: http://${KEYCLOK_HOST:localhost}:${KEYCLOK_PORT:8080}
   clientId: LaDuquesa
-  clientSecret: BZnbBjaWjsAaUxNYZzv2ZKhokWyhxzqs
+  clientSecret: 123456789
 
 logging:
   level:

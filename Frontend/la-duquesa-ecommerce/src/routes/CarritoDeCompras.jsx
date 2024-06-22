@@ -3,32 +3,34 @@ import CardCarrito from '../components/CardCarrito'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import bolsaVacia from '../img/Shopping-Bag-1.svg'
-function CarritoDeCompras () {
-  const listaProductos = [
-    {
-      nombre: 'Torta de chocolate',
-      descripcion: 'alguna descripcion',
-      img: 'src/img/choco-chocolate 1.png',
-      precio: '14000',
-      cantidad: 1
-    },
-    {
-      nombre: 'Croissant',
-      descripcion: 'alguna descripcion',
-      img: 'https://aprende.com/wp-content/uploads/2020/10/brownies-postre_opt-940x580.jpg',
-      precio: '3800',
-      cantidad: 3
-    },
-    {
-      nombre: 'Cupcake de Naranja con crocante',
-      descripcion: 'alguna descripcion',
-      img: 'https://aprende.com/wp-content/uploads/2020/10/brownies-postre_opt-940x580.jpg',
-      precio: '5000',
-      cantidad: 2
-    }
-  ]
-  const [productos, setProductos] = useState(listaProductos)
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
+const listaProductos = [
+  {
+    nombre: 'Torta de chocolate',
+    descripcion: 'alguna descripcion',
+    img: 'src/img/choco-chocolate 1.png',
+    precio: '14000',
+    cantidad: 1
+  },
+  {
+    nombre: 'Croissant',
+    descripcion: 'alguna descripcion',
+    img: 'https://aprende.com/wp-content/uploads/2020/10/brownies-postre_opt-940x580.jpg',
+    precio: '3800',
+    cantidad: 3
+  },
+  {
+    nombre: 'Cupcake de Naranja con crocante',
+    descripcion: 'alguna descripcion',
+    img: 'https://aprende.com/wp-content/uploads/2020/10/brownies-postre_opt-940x580.jpg',
+    precio: '5000',
+    cantidad: 2
+  }
+]
+function CarritoDeCompras () {
+  const [productos, setProductos] = useState(listaProductos)
+  const [animationParent] = useAutoAnimate() // de la librería de auto-animation para animar las cards del carrito.
   const deleteProducts = () => {
     setProductos([])
     window.scrollTo({
@@ -45,7 +47,10 @@ function CarritoDeCompras () {
         <h1 className="text-4xl font-black pl-9 pr-9 sm:text-center">
           Carrito de Compras
         </h1>
-        <div className="flex bg-[#F6F6F6] border-2 border-solid border-[#E9E9E9] rounded-xl flex-col">
+        <div
+          ref={animationParent}
+          className="flex bg-[#F6F6F6] border-2 border-solid border-[#E9E9E9] rounded-xl flex-col w-full"
+        >
           {productos.length === 0
             ? (
             <div className=" flex flex-col items-center m-6">
@@ -79,7 +84,7 @@ function CarritoDeCompras () {
             </button>
           </div>
           <div className="flex justify-center">
-            <button className="bg-[#8B7BB1] hover:bg-[#BD6292] text-white font-bold py-2 px-4 rounded mb-8">
+            <button className="bg-[#8B7BB1] hover:bg-[#BD6292] text-white font-bold py-2 px-4 rounded mb-8 shadow transition-colors focus-visible:outline-none focus-visible:ring-1">
               Continuar Compra
             </button>
           </div>

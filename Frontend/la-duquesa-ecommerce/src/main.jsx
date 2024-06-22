@@ -4,7 +4,7 @@ import App from './routes/App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import ErrorPage from './routes/ErrorPage.jsx'
-import Registro from './routes/Registro.jsx'
+import VerificationSuccess from './routes/VerificationSuccess.jsx'
 import Detalle from './routes/Detalle.jsx'
 import RegistroProducto from './routes/RegistroProducto.jsx'
 import CarritoDeCompras from './routes/CarritoDeCompras.jsx'
@@ -14,16 +14,15 @@ import ReporteDeProducto from './routes/ReporteDeProducto.jsx'
 import LogIn from './routes/LogIn.jsx'
 import Pagos from './routes/Pagos.jsx'
 import Register from './routes/Register.jsx'
+import NuestrasSedes from './routes/NuestrasSedes.jsx'
+import EditarPerfil from './routes/EditarPefil.jsx'
+import VerificationError from './routes/VerificationError.jsx'
+import VerificationUnnecessary from './routes/VerificationUnnecessary.jsx'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    errorElement: <ErrorPage />
-  },
-  {
-    path: 'registro',
-    element: <Registro />,
     errorElement: <ErrorPage />
   },
   {
@@ -70,6 +69,30 @@ const router = createBrowserRouter([
     path: 'register',
     element: <Register />,
     errorElement: <ErrorPage />
+  },
+  {
+    path: 'nuestras-sedes',
+    element: <NuestrasSedes />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'verificacion-exitosa',
+    element: <VerificationSuccess />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'verificacion-error',
+    element: <VerificationError />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'verificacion-revalidada',
+    element: <VerificationUnnecessary />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'editar-perfil',
+    element: <EditarPerfil />
   }
 ])
 

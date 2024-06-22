@@ -1,5 +1,5 @@
 import Navbar from '../components/Navbar'
-import Main from '../components/Main'
+import Main from '../components/Principal'
 import Products from '../components/Products'
 import Footer from '../components/Footer'
 

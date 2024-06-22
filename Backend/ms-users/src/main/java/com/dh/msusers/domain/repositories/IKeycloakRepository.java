@@ -3,7 +3,6 @@ package com.dh.msusers.domain.repositories;
 import com.dh.msusers.domain.entities.TokenResponse;
 import com.dh.msusers.domain.entities.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,7 @@ public interface IKeycloakRepository {
 
     List<User> findByUsername(String username);
 
-    ResponseEntity<?> verify(String verificationCode);
+    String verify(String verificationCode);
 
     Map<String, Object> tokenIntrospect(String token) throws JsonProcessingException;
 
@@ -26,4 +25,6 @@ public interface IKeycloakRepository {
     TokenResponse login(String username, String password) throws JsonProcessingException;
 
     User patchUpdate(User user, String id) throws JsonProcessingException;
+
+    void deleteById(String id);
 }

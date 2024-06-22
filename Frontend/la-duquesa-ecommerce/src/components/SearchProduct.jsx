@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { FaSearch } from 'react-icons/fa'
 
 const SearchProduct = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -13,17 +14,20 @@ const SearchProduct = () => {
   return (
     <>
       <div className="m-10 md:flex justify-center">
-        <form onSubmit={handleSearch}>
+        <form onSubmit={handleSearch} className="relative w-full max-w-4xl">
           <input
-            className="border p-4 rounded-lg w-[330px] h-[80px] bg-[#D9D9D9] text-black font-medium sm:w-[560px] md:w-[600px] lg:w-[630px] xl:w-[1000px]"
+            className="border p-4 rounded-lg w-full h-[80px] bg-[#D9D9D9] text-black font-medium pl-12 outline-none"
             type="text"
             placeholder="Busca un producto..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             id="search-product"
           />
-          <button type="submit" className="hidden">
-            Buscar
+          <button
+            type="submit"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2"
+          >
+            <FaSearch className="text-black" />
           </button>
         </form>
       </div>

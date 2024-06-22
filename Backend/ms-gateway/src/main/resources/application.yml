@@ -27,25 +27,31 @@ spring:
 
   security:
     oauth2:
-      client:
-        provider:
-          keycloak:
-            user-name-attribute: preferred_username
-            issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
-        registration:
-          keycloak:
-            client-id: ${KEYCLOAK_CLIENT_ID:LaDuquesa}
-            client-secret: ${KEYCLOAK_CLIENT_SECRET:lJRb5FJxD9bx052xeyQOUIgH2E11X5dX}
-            redirect-uri: '{baseUrl}/login/oauth2/code/keycloak'
-            scope: openid
+
+      # As Client
+
+      #client:
+      #  provider:
+      #    keycloak:
+      #      user-name-attribute: preferred_username
+      #      issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
+      #  registration:
+      #    keycloak:
+      #      client-id: ${KEYCLOAK_CLIENT_ID:LaDuquesa}
+      #      client-secret: ${KEYCLOAK_CLIENT_SECRET:0YSqadlisrDFeWuXWMsz12mPWe6PIsJ7}
+      #      redirect-uri: '{baseUrl}/login/oauth2/code/keycloak'
+      #      scope: openid
+      resourceserver:
+        jwt:
+          issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
 
   cloud:
     gateway:
       globalcors:
-        corsConfigurations:
+        cors-configurations:
           '[/**]':
             allowedOrigins: "*"
-            allowedHeaders: "Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+            allowedHeaders: "*"
             allowedMethods:
               - GET
               - POST
@@ -53,7 +59,6 @@ spring:
               - PATCH
               - DELETE
               - OPTIONS
-
       default-filters:
         - LogFilter
         - TokenRelay
@@ -63,6 +68,18 @@ spring:
           uri: lb://ms-java
           predicates:
             - Path=/java/**
+          filters:
+            - StripPrefix=1
+        - id: ms-go
+          uri: lb://ms-go
+          predicates:
+            - Path=/go/**
+          filters:
+            - StripPrefix=1
+        - id: ms-users
+          uri: lb://ms-users
+          predicates:
+            - Path=/users/**
           filters:
             - StripPrefix=1
         - id: ms-cart
@@ -77,12 +94,7 @@ spring:
             - Path=/product/**
           filters:
             - StripPrefix=1
-        - id: ms-users
-          uri: lb://ms-users
-          predicates:
-            - Path=/users/**
-          filters:
-            - StripPrefix=1
+
 
 logging:
   level:

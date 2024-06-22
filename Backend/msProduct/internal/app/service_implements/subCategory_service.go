@@ -1,8 +1,9 @@
 package services_implement
 
 import (
-	"math/rand"
 	"fmt"
+	"io/ioutil"
+	"math/rand"
 	"mime/multipart"
 	"path/filepath"
 
@@ -25,7 +26,6 @@ func NewSubCategoryService(subCategoryRepo repositories.SubCategoryRepository, p
     }
 }
 
-
 func (s *subCategoryService) CreateSubCategory(subCategory *models.SubCategory, file *multipart.FileHeader) error {
     subCategory.ID = primitive.NewObjectID()
 
@@ -33,18 +33,32 @@ func (s *subCategoryService) CreateSubCategory(subCategory *models.SubCategory, 
     filename := fmt.Sprintf("subcategory_%d%s", rand.Int63(), filepath.Ext(file.Filename))
     fmt.Println("Nombre del archivo generado:", filename)
 
-    // Guardar el archivo en el sistema de archivos local
-    uploadPath := "C:/Users/felip/Desktop/CTD/Segundo año/ProyectoIntegrador/ecommerce-equipo4/Images/" + filename
-
-    fmt.Println("Ruta de guardado:", uploadPath)
-    err := utils.SaveFileToSystem(file, uploadPath)
+    // Leer el archivo
+    fileContent, err := file.Open()
     if err != nil {
-        fmt.Println("Error al guardar el archivo:", err)
+        return err
+    }
+    defer fileContent.Close()
+
+    fileBytes, err := ioutil.ReadAll(fileContent)
+    if err != nil {
+        return err
+    }
+
+    // Subir el archivo a S3
+    err = utils.UploadFileToS3(filename, fileBytes)
+    if err != nil {
+        fmt.Println("Error al subir el archivo a S3:", err)
         return err
     }
 
     // Asignar la URL de la imagen al campo SubCategoryImage
-    subCategory.SubCategoryImage = "http://localhost:8000/" + filename
+    subCategory.SubCategoryImage, err = utils.GeneratePresignedURL(filename)
+    if err != nil {
+        fmt.Println("Error al generar la URL presignada:", err)
+        return err
+    }
+
     fmt.Println("URL de la imagen:", subCategory.SubCategoryImage)
 
     fmt.Println("SubCategoría a crear:", subCategory)
@@ -56,6 +70,37 @@ func (s *subCategoryService) CreateSubCategory(subCategory *models.SubCategory, 
 
     return nil
 }
+
+// func (s *subCategoryService) CreateSubCategory(subCategory *models.SubCategory, file *multipart.FileHeader) error {
+//     subCategory.ID = primitive.NewObjectID()
+
+//     // Generar un nombre único para el archivo
+//     filename := fmt.Sprintf("subcategory_%d%s", rand.Int63(), filepath.Ext(file.Filename))
+//     fmt.Println("Nombre del archivo generado:", filename)
+
+//     // Guardar el archivo en el sistema de archivos local
+//     // uploadPath := "C:/Users/felip/Desktop/CTD/Segundo año/ProyectoIntegrador/ecommerce-equipo4/Images/" + filename
+//     uploadPath := "D:/Seba/weas/Documentso/Estudios/PROGRAMACION/DigitalHouse/Segundo/integrador/proyecto/ecommerce-equipo4/Images/" + filename
+//     fmt.Println("Ruta de guardado:", uploadPath)
+//     err := utils.SaveFileToSystem(file, uploadPath)
+//     if err != nil {
+//         fmt.Println("Error al guardar el archivo:", err)
+//         return err
+//     }
+
+//     // Asignar la URL de la imagen al campo SubCategoryImage
+//     subCategory.SubCategoryImage = "http://localhost:8000/" + filename
+//     fmt.Println("URL de la imagen:", subCategory.SubCategoryImage)
+
+//     fmt.Println("SubCategoría a crear:", subCategory)
+//     err = s.subCategoryRepo.Create(subCategory)
+//     if err != nil {
+//         fmt.Println("Error al crear la subcategoría en service:", err)
+//         return err
+//     }
+
+//     return nil
+// }
 
 func (s *subCategoryService) GetSubCategoryByID(id primitive.ObjectID) (*models.SubCategory, error) {
     return s.subCategoryRepo.GetByID(id)
