@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Navbar from '../components/Navbar'
 import { FaUserCircle } from 'react-icons/fa'
 import axios from 'axios'
@@ -6,12 +6,10 @@ import endpoints from '../utils/endpoints'
 
 const EditProfile = () => {
   const [profilePicture, setProfilePicture] = useState('/placeholder-user.jpg')
-  const [password, setPassword] = useState('')
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [confirmPassword, setConfirmPassword] = useState('')
   const [user, setUser] = useState({})
+  const [isEditable, setIsEditable] = useState(false)
 
-  const handleProfilePictureChange = (event) => {
+  const handleProfilePictureChange = useCallback((event) => {
     const file = event.target.files[0]
     if (file) {
       const reader = new FileReader()
@@ -20,42 +18,34 @@ const EditProfile = () => {
       }
       reader.readAsDataURL(file)
     }
-  }
-
-  const handlePasswordChange = (event) => {
-    const value = event.target.value
-    setPassword(value)
-    setShowConfirmPassword(value.length > 0)
-  }
-
-  const handleConfirmPasswordChange = (event) => {
-    setConfirmPassword(event.target.value)
-  }
+  }, [])
 
   useEffect(() => {
+    const fetchData = async () => {
+      const userId = JSON.parse(localStorage.getItem('user')).sub
+      const token = localStorage.getItem('accessToken')
+
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+
+      try {
+        const response = await axios.get(`${endpoints.getUser}/${userId}`, config)
+
+        if (response.status === 200) {
+          setUser(response.data)
+        }
+      } catch (error) {
+        console.error('Error getting user:', error)
+      }
+    }
+
     fetchData()
   }, [])
 
-  const fetchData = async () => {
-    const userId = JSON.parse(localStorage.getItem('user')).sub
-
-    const token = localStorage.getItem('accessToken')
-
-    const config = {
-      headers: { Authorization: `Bearer ${token}` }
-    }
-
-    try {
-      const response = await axios.get(`${endpoints.getUser}/${userId}`, config)
-
-      if (response.status === 200) {
-        setUser(response.data)
-        console.log(response.data)
-      }
-    } catch (error) {
-      console.error('Error getting user:', error)
-    }
-  }
+  const handleChange = useCallback((field, value) => {
+    setUser(prevUser => ({ ...prevUser, [field]: value }))
+  }, [])
 
   return (
     <div>
@@ -84,8 +74,44 @@ const EditProfile = () => {
                   id="name"
                   placeholder="John Doe"
                   type="text"
-                  value={user.name || ''}
-                  onChange={(e) => setUser({ ...user, name: e.target.value })}
+                  value={user.first_name || ''}
+                  onChange={(e) => handleChange('first_name', e.target.value)}
+                  disabled={!isEditable}
+                />
+              </div>
+              <div className="space-y-2">
+                <label
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  htmlFor="lastname"
+                >
+                  Apellido
+                </label>
+                <input
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  id="lastname"
+                  placeholder="Doe"
+                  value={user.last_name || ''}
+                  onChange={(e) => handleChange('last_name', e.target.value)}
+                  disabled={!isEditable}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="space-y-2">
+                <label
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  htmlFor="username"
+                >
+                  Nombre de usuario
+                </label>
+                <input
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  id="username"
+                  placeholder="johndoe"
+                  type="text"
+                  value={user.username || ''}
+                  onChange={(e) => handleChange('username', e.target.value)}
+                  disabled={!isEditable}
                 />
               </div>
               <div className="space-y-2">
@@ -101,44 +127,47 @@ const EditProfile = () => {
                   placeholder="john@example.com"
                   type="email"
                   value={user.email || ''}
-                  onChange={(e) => setUser({ ...user, email: e.target.value })}
+                  onChange={(e) => handleChange('email', e.target.value)}
+                  disabled={!isEditable}
                 />
               </div>
             </div>
-            <div className="space-y-2">
-              <label
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                htmlFor="password"
-              >
-                Contraseña
-              </label>
-              <input
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 items-center content-center"
-                id="password"
-                placeholder="********"
-                type="password"
-                value={password}
-                onChange={handlePasswordChange}
-              />
-            </div>
-            {showConfirmPassword && (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <div className="space-y-2">
                 <label
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  htmlFor="confirm-password"
+                  htmlFor="phone"
                 >
-                  Confirmar Contraseña
+                  Teléfono
                 </label>
                 <input
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 items-center content-center"
-                  id="confirm-password"
-                  placeholder="********"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={handleConfirmPasswordChange}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  id="phone"
+                  placeholder="300 00000"
+                  type="text"
+                  value={user.phone || ''}
+                  onChange={(e) => handleChange('phone', e.target.value)}
+                  disabled={!isEditable}
                 />
               </div>
-            )}
+              <div className="space-y-2">
+                <label
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  htmlFor="document"
+                >
+                  Documento
+                </label>
+                <input
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  id="document"
+                  placeholder="100000000"
+                  type="text"
+                  value={user.document || ''}
+                  onChange={(e) => handleChange('document', e.target.value)}
+                  disabled={!isEditable}
+                />
+              </div>
+            </div>
             <div className="space-y-2">
               <label
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -165,11 +194,23 @@ const EditProfile = () => {
                   id="profile-picture"
                   type="file"
                   onChange={handleProfilePictureChange}
+                  disabled={!isEditable}
                 />
               </div>
             </div>
-            <div className="flex justify-end">
-              <button className="bg-[#BD6292] rounded p-2 text-white">
+            <div className="flex justify-end gap-4">
+              <button
+                type="button"
+                className="bg-gray-500 rounded p-2 text-white"
+                onClick={() => setIsEditable(true)}
+              >
+                Editar
+              </button>
+              <button
+                type="submit"
+                className="bg-[#BD6292] rounded p-2 text-white"
+                disabled={!isEditable}
+              >
                 Guardar
               </button>
             </div>
