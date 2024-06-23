@@ -197,3 +197,8 @@ func (s *productService) UpdateAvailableAmount(amount uint64, id primitive.Objec
 }
 
 
+
+
+
+
+

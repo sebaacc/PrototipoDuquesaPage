@@ -18,21 +18,19 @@ const ProductsTable = ({ productos, typeOfSearch }) => {
               precio
             </th>
 
-            {typeOfSearch == "vendidos" &&
-
+            {typeOfSearch === 'vendidos' && (
               <th scope="col" className="px-6 py-3 w-1/5">
                 Vendidos
               </th>
-            }
-            {typeOfSearch == "agregados" &&
-
+            )}
+            {typeOfSearch === 'agregados' && (
               <th scope="col" className="px-6 py-3 w-1/5">
                 añadido al carrito
               </th>
-            }
+            )}
 
             <th scope="col" className="px-6 py-3 w-1/5">
-              Categoría y subcategoría
+              Sub-Categoría
             </th>
             <th scope="col" className="px-6 py-3 w-1/5">
               Código de producto
@@ -40,44 +38,48 @@ const ProductsTable = ({ productos, typeOfSearch }) => {
           </tr>
         </thead>
         <tbody>
-          {productos.map((producto, index) => (
-            index <= 5 &&
-            <tr key={index} className="bg-white border-b border-[#464646]">
-              <td scope="row" className="px-6 py-4 font-medium">
-                {index + 1 + '.'}
-              </td>
-              <td
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-              >
-                <img src={typeOfSearch == "agregados" ? producto.imageURL : producto.image} alt="Imagen no encontrada" />
-              </td>
-              <td
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-              >
-                {typeOfSearch == "agregados" ? producto.name : producto.title}
-              </td>
-              <td className="px-6 py-4">
-                {'$' + priceFormatter(producto.price)}
-              </td>
+          {productos.map(
+            (producto, index) =>
+              index <= 5 && (
+                <tr key={index} className="bg-white border-b border-[#464646]">
+                  <td scope="row" className="px-6 py-4 font-medium">
+                    {index + 1 + '.'}
+                  </td>
+                  <td
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                  >
+                    <img
+                      src={producto.imageURL}
+                      alt="Imagen no encontrada"
+                      className="h-24 w-24 object-cover"
+                    />
+                  </td>
+                  <td
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                  >
+                    {producto.name}
+                  </td>
+                  <td className="px-6 py-4">
+                    {'$' + priceFormatter(producto.price)}
+                  </td>
 
-              {typeOfSearch == "vendidos" &&
-                <td className="px-6 py-4">{producto.sold}</td>
-              }
-              {typeOfSearch == "agregados" &&
-
-                <td className="px-6 py-4">{producto.totalQuantity}</td>
-              }
-              <td className="px-6 py-4">
-
-                <span className=" font-semibold">
-                  {typeOfSearch === "agregados" ? producto.subCategoryName : `${producto.type} ${producto.subtipo}`}
-                </span>
-              </td>
-              <td className="px-6 py-4">{producto.id}</td>
-            </tr>
-          ))}
+                  {typeOfSearch === 'vendidos' && (
+                    <td className="px-6 py-4">{producto.sold}</td>
+                  )}
+                  {typeOfSearch === 'agregados' && (
+                    <td className="px-6 py-4">{producto.totalQuantity}</td>
+                  )}
+                  <td className="px-6 py-4">
+                    <span className=" font-semibold">
+                      {producto.subCategoryName}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">{producto.id}</td>
+                </tr>
+              )
+          )}
         </tbody>
       </table>
     </>
@@ -88,18 +90,19 @@ ProductsTable.propTypes = {
   productos: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired,
       subtipo: PropTypes.string.isRequired,
-      image: PropTypes.string.isRequired,
+      imageURL: PropTypes.string.isRequired,
       price: PropTypes.number.isRequired,
       stock: PropTypes.number.isRequired,
       sold: PropTypes.number.isRequired,
       code: PropTypes.string.isRequired,
       addedToCart: PropTypes.number.isRequired
     })
-  ).isRequired
+  ).isRequired,
+  typeOfSearch: PropTypes.string.isRequired
 }
 
 export default ProductsTable

@@ -18,7 +18,7 @@ import java.util.Optional;
 
 
 @Service
-    public class CartServiceImplements implements ICartService {
+public class CartServiceImplements implements ICartService {
 
     private final ICartRepository cartRepository;
 
@@ -31,22 +31,50 @@ import java.util.Optional;
 
     @Override
     public List<Product> getAllProductsInCart(String clientId) {
+        // Obtener la lista de carritos para el cliente
         List<Cart> cartList = cartRepository.findByClient(clientId);
 
+        // Crear una lista de IDs de productos del carrito
         List<String> productIdsList = new ArrayList<>();
-
         for (Cart cart : cartList) {
             productIdsList.add(cart.getProduct());
         }
 
-        // Convierte la lista de IDs en una cadena de IDs separados por comas
+        // Convertir la lista de IDs en una cadena de IDs separados por comas
         String idsString = String.join(",", productIdsList);
 
-        // Llamamos al método de products que recibe multiples ids a través de Fegin
+        // Llamar al método de products que recibe múltiples IDs a través de Feign
         List<Product> products = productClient.findMultipleProducts(idsString);
 
-        return products;
+        // Crear una lista para los productos actualizados que se retornarán
+        List<Product> updatedProducts = new ArrayList<>();
+
+        // Iterar sobre los productos para ajustar las cantidades
+        for (Product product : products) {
+            // Buscar el carrito correspondiente al producto
+            Cart cart = cartList.stream()
+                    .filter(c -> c.getProduct().equals(product.getId()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (cart != null) {
+                if (product.getAmount() == 0) {
+                    // Si la cantidad disponible es 0, eliminar el producto del carrito
+                    cartRepository.delete(cart);
+                } else if (product.getAmount() < cart.getQuantity()) {
+                    // Si la cantidad disponible es menor que la del carrito, actualizar la cantidad del carrito
+                    cart.setQuantity(product.getAmount());
+                    cartRepository.save(cart);
+                }
+                // Actualizar la cantidad del producto para reflejar la cantidad en el carrito
+                product.setAmount(cart.getQuantity());
+                updatedProducts.add(product);
+            }
+        }
+
+        return updatedProducts;
     }
+
 
 
     public void addProductToCart(Cart cart) throws BadRequestException {

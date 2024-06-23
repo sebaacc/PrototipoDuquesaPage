@@ -17,12 +17,12 @@ func NewMongoOrderRepository(db *mongo.Database) *MongoOrderRepository {
         collection: db.Collection("orders"),
     }
 }
-
+/*
 func (r *MongoOrderRepository) Create(order *models.Order) error {
     _, err := r.collection.InsertOne(context.TODO(), order)
     return err
 }
-
+*/
 func (r *MongoOrderRepository) GetByID(id primitive.ObjectID) (*models.Order, error) {
     var order models.Order
     err := r.collection.FindOne(context.TODO(), bson.M{"_id": id}).Decode(&order)
@@ -45,11 +45,11 @@ func (r *MongoOrderRepository) GetAll() ([]*models.Order, error) {
 
     return order, cursor.Err()
 }
-
+/*
 func (r *MongoOrderRepository) Update(order *models.Order) error {
-    _, err := r.collection.UpdateOne(context.TODO(), bson.M{"_id": order.ID}, bson.M{"$set": order})
+    _, err := r.collection.UpdateOne(context.TODO(), bson.M{"_id": order}, bson.M{"$set": order})
     return err
-}
+}*/
 
 func (r *MongoOrderRepository) Delete(id primitive.ObjectID) error {
     _, err := r.collection.DeleteOne(context.TODO(), bson.M{"_id": id})

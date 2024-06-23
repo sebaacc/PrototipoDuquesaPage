@@ -16,7 +16,8 @@ info:
 eureka:
   client:
     service-url:
-      defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka
+      #defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka
+      defaultZone: http://ms-discovery:${EUREKA_PORT:8761}/eureka
 
 server:
   port: 8090
@@ -43,7 +44,8 @@ spring:
       #      scope: openid
       resourceserver:
         jwt:
-          issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
+          #issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
+          issuer-uri: http://keycloak:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
 
   cloud:
     gateway:
@@ -92,6 +94,12 @@ spring:
           uri: lb://msproduct
           predicates:
             - Path=/product/**
+          filters:
+            - StripPrefix=1
+        - id: mspayp
+          uri: lb://mspayp
+          predicates:
+            - Path=/mspayp/**
           filters:
             - StripPrefix=1
 

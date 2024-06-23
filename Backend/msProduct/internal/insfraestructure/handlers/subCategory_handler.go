@@ -76,6 +76,7 @@ func (h *SubCategoryHandler) Post() gin.HandlerFunc {
     }
 }
 
+
 func (h *SubCategoryHandler) Put() gin.HandlerFunc {
     return func(c *gin.Context) {
         idParam := c.Param("id")

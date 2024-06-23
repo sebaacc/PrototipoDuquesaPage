@@ -1,5 +1,6 @@
 instance:
-  hostName: "localhost"
+  #hostName: "localhost"
+  hostName: "192.168.56.1"
   app: "MSPRODUCT"
   ipAddr: "192.168.56.1"
   status: "UP"

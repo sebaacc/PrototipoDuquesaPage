@@ -114,6 +114,7 @@ function SignUp () {
       if (response.status === 200) {
         setLoadingOpen(false)
         setSuccessOpen(true)
+        setCreationError(false)
         console.log(response.data)
       }
     } catch (error) {

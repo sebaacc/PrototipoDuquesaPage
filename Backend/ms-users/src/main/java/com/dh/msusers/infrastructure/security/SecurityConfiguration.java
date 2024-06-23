@@ -20,6 +20,7 @@ public class SecurityConfiguration {
 
         http.authorizeHttpRequests(exchange -> exchange
                         .requestMatchers(HttpMethod.POST, Endpoints.LOGIN, "/").permitAll()
+                        .requestMatchers(HttpMethod.POST, Endpoints.SAVE, "/").permitAll()
                         .requestMatchers(HttpMethod.GET, Endpoints.VERIFY).permitAll()
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)

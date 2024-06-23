@@ -6,7 +6,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
+          #issuer-uri: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
+          issuer-uri: http://keycloak:${KEYCLOAK_PORT:8080}/realms/${KEYCLOAK_REALM:LaDuquesa}
 
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
@@ -14,7 +15,8 @@ spring:
     username: ${MAIL_USERNAME:hairphoriastore@gmail.com}
     password: ${MAIL_PASSWORD:ywwidqyyvhvaortv}
     link:
-      verify: http://localhost:8090/users/verify
+      #verify: http://localhost:8090/users/verify
+      verify: http://gateway:8090/users/verify
     mail-template: ValidationEmail
     mail-subject: "Validación de cuenta"
     redirects:
@@ -30,19 +32,23 @@ spring:
             required: true
 
 server:
-  port: ${PORT:0}
+  #port: ${PORT:0}
+  port: 8080
 
 eureka:
   instance:
-    hostname: localhost
+    #hostname: localhost
+    hostname: ms-users
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
     service-url:
-      defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka
+      #defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka
+      defaultZone: http://ms-discovery:8761/eureka/
 
 keycloak:
   realm: LaDuquesa
-  serverUrl: http://${KEYCLOK_HOST:localhost}:${KEYCLOK_PORT:8080}
+  #serverUrl: http://${KEYCLOK_HOST:localhost}:${KEYCLOK_PORT:8080}
+  serverUrl: http://keycloak:8080
   clientId: LaDuquesa
   clientSecret: 123456789
 

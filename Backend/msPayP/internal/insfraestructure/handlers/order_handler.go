@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/models"
+	
 	"gitlab.com/eescarria/ecommerce-equipo4.git/internal/domain/services"
 	"gitlab.com/eescarria/ecommerce-equipo4.git/pkg/web"
 	"errors"
@@ -19,7 +19,7 @@ func NewOrderHandler(s services.OrderService) *OrderHandler {
 }
 
 //--------------- Crear ---------------
-
+/*
 func (h *OrderHandler) Post() gin.HandlerFunc {
     return func(c *gin.Context) {
         var order models.Order
@@ -36,7 +36,7 @@ func (h *OrderHandler) Post() gin.HandlerFunc {
         web.Success(c, 201, order)
     }
 }
-
+*/
 //--------------- Buscar todos ---------------
 
 func (h *OrderHandler) FindAll() gin.HandlerFunc {
@@ -70,7 +70,7 @@ func (h *OrderHandler) FindById() gin.HandlerFunc {
 }
 
 //--------------- Actualizar ---------------
-
+/*
 func (h *OrderHandler) Put() gin.HandlerFunc {
     return func(c *gin.Context) {
         idParam := c.Param("id")
@@ -97,7 +97,7 @@ func (h *OrderHandler) Put() gin.HandlerFunc {
         }
         web.Success(c, 200, order)
     }
-}
+}*/
 
 //--------------- Borarr ---------------
 

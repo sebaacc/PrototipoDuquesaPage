@@ -40,8 +40,8 @@ func main() {
 
 	//Extraemos el nombre del ms del archivo yml
 	appName := vp.GetString("instance.app")
-	//appId := "msproduct:" + uuid.New().String()
-	appId := "localhost:msproduct:0"
+	//appId := "mspayp:" + uuid.New().String()
+	appId := "localhost:mspayp:0"
 
 	var port string
 	var ln net.Listener
