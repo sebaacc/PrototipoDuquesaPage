@@ -76,7 +76,6 @@ public class CartServiceImplements implements ICartService {
     }
 
 
-
     public void addProductToCart(Cart cart) throws BadRequestException {
 
         Optional<Cart> posibleCart = cartRepository.findByClientAndProduct(cart.getClient(), cart.getProduct());

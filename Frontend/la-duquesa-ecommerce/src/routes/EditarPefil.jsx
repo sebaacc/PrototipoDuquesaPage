@@ -37,7 +37,7 @@ const EditProfile = () => {
   }, [])
 
   const fetchData = async () => {
-    const userId = JSON.parse(localStorage.getItem('user')).sid
+    const userId = JSON.parse(localStorage.getItem('user')).sub
 
     const token = localStorage.getItem('accessToken')
 

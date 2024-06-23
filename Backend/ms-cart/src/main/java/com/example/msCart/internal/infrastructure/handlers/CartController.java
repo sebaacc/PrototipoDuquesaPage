@@ -25,7 +25,6 @@ public class CartController {
         private  ProductClient productClient;
 
 
-
         @GetMapping("/findCartProducts/{userId}")
         public ResponseEntity<List<Product>> findCartProducts(@PathVariable String userId)
         {
@@ -62,9 +61,5 @@ public class CartController {
                 cartService.removeProductFromAllCarts(productId);
                 return ResponseEntity.ok("Product removed");
         }
-
-
-
-
 
 }

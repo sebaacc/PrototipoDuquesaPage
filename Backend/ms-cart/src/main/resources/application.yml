@@ -1,17 +1,19 @@
 server:
-  port: ${PORT:${SERVER_PORT:0}}
+  #port: ${PORT:${SERVER_PORT:0}}
+  port: 8080
 
 spring:
   application:
     name: ms-cart
   datasource:
-    url: jdbc:mysql://localhost:3306/mscart
+    #url: jdbc:mysql://localhost:3306/mscart
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/mscart
     username: root
     password: root
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
   mysql:
     console:
       enabled: true
@@ -32,7 +34,8 @@ eureka:
     healthcheck:
       enabled: true
     service-url:
-      default-zone: http://localhost:8761/eureka
+      #default-zone: http://localhost:8761/eureka
+      defaultZone: http://ms-discovery:8761/eureka/
     instance:
       prefer-ip-address: false
       lease-renewal-interval-in-seconds: 5
