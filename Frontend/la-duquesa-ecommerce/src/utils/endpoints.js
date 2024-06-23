@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8090'
+const BASE_URL = 'https://3d82-191-156-37-52.ngrok-free.app' // cambiar este endpoint cuando se necesite
 
 const endpoints = {
   getAndPostUser: `${BASE_URL}/users`, // se puede registrar un usuario u obtener los usuarios, cambiando entre post y get, y además cambiando la data/requested_Options que se le pasan
