@@ -4,6 +4,7 @@ import axios from 'axios'
 import SocialMedia from '../components/SocialMedia'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
 import endpoints from '../utils/endpoints'
+import { jwtDecode } from 'jwt-decode'
 
 function LogIn () {
   const [username, setUsername] = useState('')
@@ -53,11 +54,12 @@ function LogIn () {
 
       if (response.status === 200) {
         localStorage.setItem('accessToken', response.data.access_token)
+        localStorage.setItem('user', JSON.stringify(jwtDecode(response.data.access_token)))
+        console.log(jwtDecode(response.data.access_token))
         window.location.href = '/'
       }
     } catch (error) {
       console.error('Error updating user:', error)
-      // setFieldError('email', '¡Ya existe una cuenta con ese correo!');
     }
   }
 

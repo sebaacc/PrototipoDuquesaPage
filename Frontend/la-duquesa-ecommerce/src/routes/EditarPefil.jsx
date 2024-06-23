@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { FaUserCircle } from 'react-icons/fa'
+import axios from 'axios'
+import endpoints from '../utils/endpoints'
 
 const EditProfile = () => {
   const [profilePicture, setProfilePicture] = useState('/placeholder-user.jpg')
   const [password, setPassword] = useState('')
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [user, setUser] = useState({})
 
   const handleProfilePictureChange = (event) => {
     const file = event.target.files[0]
@@ -27,6 +30,31 @@ const EditProfile = () => {
 
   const handleConfirmPasswordChange = (event) => {
     setConfirmPassword(event.target.value)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchData = async () => {
+    const userId = JSON.parse(localStorage.getItem('user')).sid
+
+    const token = localStorage.getItem('accessToken')
+
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+
+    try {
+      const response = await axios.get(`${endpoints.getUser}/${userId}`, config)
+
+      if (response.status === 200) {
+        setUser(response.data)
+        console.log(response.data)
+      }
+    } catch (error) {
+      console.error('Error getting user:', error)
+    }
   }
 
   return (
@@ -56,6 +84,8 @@ const EditProfile = () => {
                   id="name"
                   placeholder="John Doe"
                   type="text"
+                  value={user.name || ''}
+                  onChange={(e) => setUser({ ...user, name: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
@@ -70,6 +100,8 @@ const EditProfile = () => {
                   id="email"
                   placeholder="john@example.com"
                   type="email"
+                  value={user.email || ''}
+                  onChange={(e) => setUser({ ...user, email: e.target.value })}
                 />
               </div>
             </div>

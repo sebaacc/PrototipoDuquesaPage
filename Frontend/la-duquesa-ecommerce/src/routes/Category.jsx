@@ -2,53 +2,53 @@ import { useState, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
-function Category() {
+function Category () {
   const [formData, setFormData] = useState({
     nombre: '',
     descripcion: '',
     imagen: null
-  });
+  })
 
-  const [errors, setErrors] = useState({});
-  const [showAlert, setShowAlert] = useState(false);
-  const fileInputRef = useRef(null);
+  const [errors, setErrors] = useState({})
+  const [showAlert, setShowAlert] = useState(false)
+  const fileInputRef = useRef(null)
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [id]: value }));
-    setErrors((prevErrors) => ({ ...prevErrors, [id]: '' }));
+    const { id, value } = e.target
+    setFormData((prevData) => ({ ...prevData, [id]: value }))
+    setErrors((prevErrors) => ({ ...prevErrors, [id]: '' }))
 
     if (id === 'nombre') {
       if (/\d/.test(value)) {
         setErrors((prevErrors) => ({
           ...prevErrors,
           [id]: 'El nombre no debe contener números.'
-        }));
+        }))
       } else {
-        setErrors((prevErrors) => ({ ...prevErrors, [id]: '' }));
+        setErrors((prevErrors) => ({ ...prevErrors, [id]: '' }))
       }
     }
-  };
+  }
 
   const handleBlur = (e) => {
-    const { id, value } = e.target;
-    let errorMessage = '';
+    const { id, value } = e.target
+    let errorMessage = ''
 
     if (!value) {
-      errorMessage = 'Por favor, rellena este campo.';
+      errorMessage = 'Por favor, rellena este campo.'
     } else if (id === 'descripcion' && value.length < 10) {
-      errorMessage = 'La descripción debe tener al menos 10 caracteres.';
+      errorMessage = 'La descripción debe tener al menos 10 caracteres.'
     } else if (id === 'nombre' && /\d/.test(value)) {
-      errorMessage = 'El nombre no debe contener números.';
+      errorMessage = 'El nombre no debe contener números.'
     }
 
-    setErrors((prevErrors) => ({ ...prevErrors, [id]: errorMessage }));
-  };
+    setErrors((prevErrors) => ({ ...prevErrors, [id]: errorMessage }))
+  }
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    const validImageTypes = ['image/jpeg', 'image/png'];
-    const newErrors = { ...errors };
+    const file = e.target.files[0]
+    const validImageTypes = ['image/jpeg', 'image/png']
+    const newErrors = { ...errors }
 
     if (file && validImageTypes.includes(file.type)) {
       setFormData((prevData) => ({
@@ -57,68 +57,68 @@ function Category() {
           file,
           url: URL.createObjectURL(file)
         }
-      }));
-      newErrors.imagen = '';
+      }))
+      newErrors.imagen = ''
     } else {
-      newErrors.imagen = 'Solo se permiten archivos JPG o PNG.';
+      newErrors.imagen = 'Solo se permiten archivos JPG o PNG.'
     }
 
-    setErrors(newErrors);
-  };
+    setErrors(newErrors)
+  }
 
   const handleRemoveImage = () => {
     setFormData((prevData) => ({
       ...prevData,
       imagen: null
-    }));
-    fileInputRef.current.value = '';
+    }))
+    fileInputRef.current.value = ''
     setErrors((prevErrors) => ({
       ...prevErrors,
       imagen: 'Por favor, sube al menos una imagen.'
-    }));
-  };
+    }))
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const formErrors = {};
+    const formErrors = {}
 
     if (!formData.nombre) {
-      formErrors.nombre = 'Por favor, rellena este campo.';
+      formErrors.nombre = 'Por favor, rellena este campo.'
     } else if (/\d/.test(formData.nombre)) {
-      formErrors.nombre = 'El nombre no debe contener números.';
+      formErrors.nombre = 'El nombre no debe contener números.'
     }
 
     if (!formData.descripcion) {
-      formErrors.descripcion = 'Por favor, rellena este campo.';
+      formErrors.descripcion = 'Por favor, rellena este campo.'
     } else if (formData.descripcion.length < 10) {
-      formErrors.descripcion = 'La descripción debe tener al menos 10 caracteres.';
+      formErrors.descripcion = 'La descripción debe tener al menos 10 caracteres.'
     }
 
     if (!formData.imagen) {
-      formErrors.imagen = 'Por favor, sube al menos una imagen.';
+      formErrors.imagen = 'Por favor, sube al menos una imagen.'
     }
 
-    setErrors(formErrors);
+    setErrors(formErrors)
 
     if (Object.keys(formErrors).length === 0) {
-      setShowAlert(true);
+      setShowAlert(true)
 
       setFormData({
         nombre: '',
         descripcion: '',
         imagen: null
-      });
+      })
 
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = ''
 
       setTimeout(() => {
-        setShowAlert(false);
-      }, 6000);
+        setShowAlert(false)
+      }, 6000)
 
-      console.log('Form data:', formData);
+      console.log('Form data:', formData)
     }
-  };
+  }
 
   return (
     <div>
@@ -214,7 +214,7 @@ function Category() {
         <Footer />
       </div>
     </div>
-  );
+  )
 }
 
-export default Category;
+export default Category
