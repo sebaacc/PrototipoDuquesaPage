@@ -51,7 +51,7 @@ function ReporteDeProducto () {
   const handleChange = (event) => {
     const selectedFilter = event.target.value
     setFiltro(selectedFilter)
-    if (selectedFilter == 'agregados') {
+    if (selectedFilter === 'agregados') {
       fetchData()
     } else {
       handleFilter(selectedFilter)

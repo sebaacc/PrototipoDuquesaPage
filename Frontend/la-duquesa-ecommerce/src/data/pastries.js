@@ -26,11 +26,10 @@ import cinnamonRoll from '../img/productos/RollCanela-lucasguizo-pexels.jpg'
 const pastries = [
   {
     id: 1,
-    title: 'Pastel de Chocolate',
+    name: 'Pastel de Chocolate',
     description: 'Pastel de chocolate decadente con rico glaseado',
-    type: 'Pastel',
-    subtipo: 'Bizcocho',
-    image: pastelChocolate,
+    subCategoryName: 'Bizcocho',
+    imageURL: pastelChocolate,
     price: 20000, // COP
     stock: 50,
     sold: 120,
@@ -39,11 +38,10 @@ const pastries = [
   },
   {
     id: 2,
-    title: 'Tarta de Fresas',
+    name: 'Tarta de Fresas',
     description: 'Tarta ligera y esponjosa con fresas frescas',
-    type: 'Pastel',
-    subtipo: 'Tarta',
-    image: tortaFresa,
+    subCategoryName: 'Tarta',
+    imageURL: tortaFresa,
     price: 25000, // COP
     stock: 30,
     sold: 85,
@@ -52,12 +50,11 @@ const pastries = [
   },
   {
     id: 3,
-    title: 'Galletas de Mantequilla de Maní',
+    name: 'Galletas de Mantequilla de Maní',
     description:
       'Galletas de mantequilla de maní masticables con un toque de sal',
-    type: 'Galleta',
-    subtipo: 'Mantequilla',
-    image: galletaMani,
+    subCategoryName: 'Mantequilla',
+    imageURL: galletaMani,
     price: 8000, // COP
     stock: 5,
     sold: 150,
@@ -66,12 +63,11 @@ const pastries = [
   },
   {
     id: 4,
-    title: 'Tarta de Manzana',
+    name: 'Tarta de Manzana',
     description:
       'Tarta de manzana clásica hecha en casa con una corteza hojaldrada',
-    type: 'Tarta',
-    subtipo: 'Frutas',
-    image: tartaManzana,
+    subCategoryName: 'Frutas',
+    imageURL: tartaManzana,
     price: 22000, // COP
     stock: 40,
     sold: 90,
@@ -80,11 +76,10 @@ const pastries = [
   },
   {
     id: 5,
-    title: 'Croissant',
+    name: 'Croissant',
     description: 'Croissant estilo francés, mantecoso y hojaldrado',
-    type: 'Pastelería',
-    subtipo: 'Hojaldre',
-    image: croissant,
+    subCategoryName: 'Hojaldre',
+    imageURL: croissant,
     price: 7000, // COP
     stock: 200,
     sold: 300,
@@ -93,12 +88,11 @@ const pastries = [
   },
   {
     id: 6,
-    title: 'Tarta de Limón',
+    name: 'Tarta de Limón',
     description:
       'Tarta de limón con una corteza crujiente de galleta de mantequilla',
-    type: 'Pastelería',
-    subtipo: 'Cítrico',
-    image: tartaLimon,
+    subCategoryName: 'Cítrico',
+    imageURL: tartaLimon,
     price: 21000, // COP
     stock: 35,
     sold: 75,
@@ -107,11 +101,10 @@ const pastries = [
   },
   {
     id: 7,
-    title: 'Galletas con Chispas de Chocolate',
+    name: 'Galletas con Chispas de Chocolate',
     description: 'Galletas suaves y masticables con chispas de chocolate',
-    type: 'Galleta',
-    subtipo: 'Chocolate',
-    image: galletaChocolate,
+    subCategoryName: 'Chocolate',
+    imageURL: galletaChocolate,
     price: 9000, // COP
     stock: 80,
     sold: 180,
@@ -120,12 +113,11 @@ const pastries = [
   },
   {
     id: 8,
-    title: 'Pastel de Terciopelo Rojo',
+    name: 'Pastel de Terciopelo Rojo',
     description:
       'Pastel de terciopelo rojo húmedo y rico con glaseado de queso crema',
-    type: 'Pastel',
-    subtipo: 'Terciopelo',
-    image: pastelTercipelo,
+    subCategoryName: 'Terciopelo',
+    imageURL: pastelTercipelo,
     price: 24000, // COP
     stock: 25,
     sold: 70,
@@ -134,11 +126,10 @@ const pastries = [
   },
   {
     id: 9,
-    title: 'Tarta de Arándanos',
+    name: 'Tarta de Arándanos',
     description: 'Tarta de arándanos jugosa con una corteza hojaldrada',
-    type: 'Tarta',
-    subtipo: 'Frutas',
-    image: tartaArandanos,
+    subCategoryName: 'Frutas',
+    imageURL: tartaArandanos,
     price: 23000, // COP
     stock: 40,
     sold: 65,
@@ -147,12 +138,11 @@ const pastries = [
   },
   {
     id: 10,
-    title: 'Eclair de Vainilla',
+    name: 'Eclair de Vainilla',
     description:
       'Eclair relleno de crema de vainilla y cubierto con glaseado de chocolate',
-    type: 'Pastelería',
-    subtipo: 'Hojaldre',
-    image: eclairVainilla,
+    subCategoryName: 'Hojaldre',
+    imageURL: eclairVainilla,
     price: 12000, // COP
     stock: 60,
     sold: 110,
@@ -161,11 +151,10 @@ const pastries = [
   },
   {
     id: 11,
-    title: 'Macarons de Frambuesa',
+    name: 'Macarons de Frambuesa',
     description: 'Macarons ligeros y crujientes con relleno de frambuesa',
-    type: 'Pastelería',
-    subtipo: 'Macaron',
-    image: macaronsFrambuesa,
+    subCategoryName: 'Macaron',
+    imageURL: macaronsFrambuesa,
     price: 15000, // COP
     stock: 70,
     sold: 130,
@@ -174,11 +163,10 @@ const pastries = [
   },
   {
     id: 12,
-    title: 'Muffin de Arándanos',
+    name: 'Muffin de Arándanos',
     description: 'Muffin esponjoso con arándanos frescos',
-    type: 'Pastelería',
-    subtipo: 'Muffin',
-    image: muffinsArandanos,
+    subCategoryName: 'Muffin',
+    imageURL: muffinsArandanos,
     price: 10000, // COP
     stock: 90,
     sold: 140,
@@ -187,11 +175,10 @@ const pastries = [
   },
   {
     id: 13,
-    title: 'Tarta de Queso',
+    name: 'Tarta de Queso',
     description: 'Tarta de queso cremosa con base de galleta graham',
-    type: 'Tarta',
-    subtipo: 'Queso',
-    image: tartaQueso,
+    subCategoryName: 'Queso',
+    imageURL: tartaQueso,
     price: 27000, // COP
     stock: 45,
     sold: 80,
@@ -200,11 +187,10 @@ const pastries = [
   },
   {
     id: 14,
-    title: 'Pan de Plátano',
+    name: 'Pan de Plátano',
     description: 'Pan de plátano húmedo con nueces',
-    type: 'Pastelería',
-    subtipo: 'Pan',
-    image: panPlatano,
+    subCategoryName: 'Pan',
+    imageURL: panPlatano,
     price: 12000, // COP
     stock: 75,
     sold: 160,
@@ -213,11 +199,10 @@ const pastries = [
   },
   {
     id: 15,
-    title: 'Pastel de Zanahoria',
+    name: 'Pastel de Zanahoria',
     description: 'Pastel de zanahoria húmedo con glaseado de queso crema',
-    type: 'Pastel',
-    subtipo: 'Zanahoria',
-    image: pastelZanahoria,
+    subCategoryName: 'Zanahoria',
+    imageURL: pastelZanahoria,
     price: 22000, // COP
     stock: 40,
     sold: 100,
@@ -226,11 +211,10 @@ const pastries = [
   },
   {
     id: 16,
-    title: 'Galletas de Avena',
+    name: 'Galletas de Avena',
     description: 'Galletas de avena saludables con pasas',
-    type: 'Galleta',
-    subtipo: 'Avena',
-    image: galletaAvena,
+    subCategoryName: 'Avena',
+    imageURL: galletaAvena,
     price: 8500, // COP
     stock: 110,
     sold: 130,
@@ -239,11 +223,10 @@ const pastries = [
   },
   {
     id: 17,
-    title: 'Galletas de Jengibre',
+    name: 'Galletas de Jengibre',
     description: 'Galletas de jengibre especiadas con un toque de melaza',
-    type: 'Galleta',
-    subtipo: 'Jengibre',
-    image: galletaJenjibre,
+    subCategoryName: 'Jengibre',
+    imageURL: galletaJenjibre,
     price: 8500, // COP
     stock: 90,
     sold: 120,
@@ -252,12 +235,11 @@ const pastries = [
   },
   {
     id: 18,
-    title: 'Profiteroles',
+    name: 'Profiteroles',
     description:
       'Profiteroles rellenos de crema y cubiertos con glaseado de chocolate',
-    type: 'Pastelería',
-    subtipo: 'Hojaldre',
-    image: profiteroles,
+    subCategoryName: 'Hojaldre',
+    imageURL: profiteroles,
     price: 13000, // COP
     stock: 50,
     sold: 100,
@@ -266,11 +248,10 @@ const pastries = [
   },
   {
     id: 19,
-    title: 'Tarta de Moras',
+    name: 'Tarta de Moras',
     description: 'Tarta de moras frescas con una corteza hojaldrada',
-    type: 'Tarta',
-    subtipo: 'Frutas',
-    image: tartaMora,
+    subCategoryName: 'Frutas',
+    imageURL: tartaMora,
     price: 22000, // COP
     stock: 35,
     sold: 70,
@@ -279,11 +260,10 @@ const pastries = [
   },
   {
     id: 20,
-    title: 'Tarta de Durazno',
+    name: 'Tarta de Durazno',
     description: 'Tarta de durazno jugosa con una corteza hojaldrada',
-    type: 'Tarta',
-    subtipo: 'Frutas',
-    image: tartaDurzano,
+    subCategoryName: 'Frutas',
+    imageURL: tartaDurzano,
     price: 21000, // COP
     stock: 40,
     sold: 65,
@@ -292,11 +272,10 @@ const pastries = [
   },
   {
     id: 21,
-    title: 'Cinnamon Roll',
+    name: 'Cinnamon Roll',
     description: 'Rollos de canela suaves y esponjosos con glaseado',
-    type: 'Pastelería',
-    subtipo: 'Canela',
-    image: cinnamonRoll,
+    subCategoryName: 'Canela',
+    imageURL: cinnamonRoll,
     price: 14000, // COP
     stock: 55,
     sold: 90,
@@ -305,11 +284,10 @@ const pastries = [
   },
   {
     id: 22,
-    title: 'Brioche',
+    name: 'Brioche',
     description: 'Pan brioche suave y mantecoso',
-    type: 'Pastelería',
-    subtipo: 'Pan',
-    image: brioche,
+    subCategoryName: 'Pan',
+    imageURL: brioche,
     price: 10000, // COP
     stock: 70,
     sold: 110,
@@ -318,11 +296,10 @@ const pastries = [
   },
   {
     id: 23,
-    title: 'Baguette',
+    name: 'Baguette',
     description: 'Baguette crujiente y dorada',
-    type: 'Pastelería',
-    subtipo: 'Pan',
-    image: baguette,
+    subCategoryName: 'Pan',
+    imageURL: baguette,
     price: 8000, // COP
     stock: 20,
     sold: 140,
@@ -331,11 +308,10 @@ const pastries = [
   },
   {
     id: 24,
-    title: 'Cinnamon',
+    name: 'Cinnamon',
     description: 'Canela 100% pura de alta calidad para tus comidas.',
-    type: 'Pastelería',
-    subtipo: 'Dulce',
-    image: cinnamon,
+    subCategoryName: 'Dulce',
+    imageURL: cinnamon,
     price: 10000, // COP
     stock: 50,
     sold: 90,
