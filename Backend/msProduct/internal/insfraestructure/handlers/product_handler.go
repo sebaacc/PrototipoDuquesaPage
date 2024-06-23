@@ -322,3 +322,5 @@ func (h *ProductHandler) UpdateAvailableAmount() gin.HandlerFunc {
         web.Success(c, http.StatusOK, nil)
     }
 }
+
+

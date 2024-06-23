@@ -37,7 +37,7 @@ func (s *payService) CreatePay(ctx context.Context, pay *models.Pay) error {
 	pay.ID = primitive.NewObjectID()
 	pay.Date = primitive.NewDateTimeFromTime(time.Now())
 	return s.repo.CreatePay(ctx, pay)
-	
+
 }
 
 func (s *payService) GetPayByID(ctx context.Context, id string) (*models.Pay, error) {
@@ -49,7 +49,7 @@ func (s *payService) UpdatePay(ctx context.Context, id primitive.ObjectID, pay *
 }
 
 func (s *payService) DeletePay(ctx context.Context, id primitive.ObjectID) error {
-	
+
 	return s.repo.DeletePay(ctx, id)
 }
 
@@ -68,7 +68,6 @@ func (s *productService) DeleteProduct(id primitive.ObjectID) error {
 
     return nil
 }*/
-
 
 func (s *payService) UpdatePaymentStatus(payID primitive.ObjectID, paymentStatus string) error {
 	return s.repo.UpdatePaymentStatus(payID, paymentStatus)
@@ -133,38 +132,46 @@ func (s *payService) ProcessWebhook(ctx context.Context, dataID, xRequestId, xSi
 	}
 }
 
-
-
 func (s *payService) CreatePreference() (*preference.Response, error) {
-    // Configurar credenciales de Mercado Pago
-	cfg, err := config.New("{{APP_USR-4772246821378419-061700-737a98b071afc32d25fef14039599c29-1298842399}}")
+	fmt.Println("Iniciando CreatePreference")
+
+	// Configurar credenciales de Mercado Pago
+	cfg, err := config.New("{{APP_USR-2642587301219287-062217-a157595881172d53943208877ba1533d-1868085675}}")
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error al configurar credenciales:", err)
+		return nil, err
 	}
+	fmt.Println("Credenciales configuradas correctamente")
 
-    client := preference.NewClient(cfg)
+	client := preference.NewClient(cfg)
+	fmt.Println("Cliente de preferencia creado")
 
-    request := preference.Request{
-        Items: []preference.ItemRequest{
-            {
-                Title:     "Producto de ejemplo",
-                Quantity:  1,
-                UnitPrice: 100.0,
-            },
-        },
-        BackURLs: &preference.BackURLsRequest{
-            Success: "http://your-success-url.com",
-            Failure: "http://your-failure-url.com",
-            Pending: "http://your-pending-url.com",
-        },
-        //NotificationURL: "http://your-notification-url.com/webhooks",
-    }
+	request := preference.Request{
+		Items: []preference.ItemRequest{
+			{
+				Title:     "My product",
+				Quantity:  1,
+				UnitPrice: 75.76,
+			},
+		},
+		/*
+		   BackURLs: &preference.BackURLsRequest{
+		       Success: "http://your-success-url.com",
+		       Failure: "http://your-failure-url.com",
+		       Pending: "http://your-pending-url.com",
+		   },
+		*/
+		//NotificationURL: "http://your-notification-url.com/webhooks",
+	}
+	fmt.Printf("Request creado: %+v\n", request)
 
-    resource, err := client.Create(context.Background(), request)
-    if err != nil {
-        return nil, err
-    }
+	resource, err := client.Create(context.Background(), request)
+	if err != nil {
+		fmt.Println("Error al crear la preferencia:", err)
+		return nil, err
+	}
+	fmt.Println("Preferencia creada exitosamente")
+	fmt.Printf("Recurso obtenido: %+v\n", resource)
 
-    fmt.Println(resource)
-    return resource, nil
+	return resource, nil
 }

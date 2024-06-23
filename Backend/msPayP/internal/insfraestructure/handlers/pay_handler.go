@@ -179,6 +179,12 @@ func (h PayHandler) CreatePreference(c *gin.Context) {
         return
     }
 
+    c.JSON(http.StatusOK, gin.H{"id": preference.ID})
+}
+
+
+
+
 func (h PayHandler) HandleWebhook(c *gin.Context) {
     // Obtener el valor de x-signature del header
     xSignature := c.GetHeader("x-signature")
