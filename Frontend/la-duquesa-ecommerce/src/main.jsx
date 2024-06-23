@@ -18,6 +18,7 @@ import NuestrasSedes from './routes/NuestrasSedes.jsx'
 import EditarPerfil from './routes/EditarPefil.jsx'
 import VerificationError from './routes/VerificationError.jsx'
 import VerificationUnnecessary from './routes/VerificationUnnecessary.jsx'
+import ForgotPassword from './routes/ForgotPassword.jsx'
 
 const router = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
   {
     path: 'editar-perfil',
     element: <EditarPerfil />
+  },
+  {
+    path: 'forgot-password',
+    element: <ForgotPassword />
   }
 ])
 

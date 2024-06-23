@@ -4,6 +4,7 @@ import axios from 'axios'
 import SocialMedia from '../components/SocialMedia'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
 import endpoints from '../utils/endpoints'
+import { ArrowLeftIcon } from '../components/Arrows/ArrowLeftIcon'
 
 function LogIn () {
   const [username, setUsername] = useState('')
@@ -143,23 +144,3 @@ function LogIn () {
 }
 
 export default LogIn
-
-function ArrowLeftIcon (props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m12 19-7-7 7-7" />
-      <path d="M19 12H5" />
-    </svg>
-  )
-}
