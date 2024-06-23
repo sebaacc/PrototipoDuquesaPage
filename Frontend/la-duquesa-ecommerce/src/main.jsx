@@ -18,6 +18,7 @@ import NuestrasSedes from './routes/NuestrasSedes.jsx'
 import EditarPerfil from './routes/EditarPefil.jsx'
 import VerificationError from './routes/VerificationError.jsx'
 import VerificationUnnecessary from './routes/VerificationUnnecessary.jsx'
+import ConfirmacionDeCompra from './routes/ConfirmacionDeCompra.jsx'
 
 const router = createBrowserRouter([
   {
@@ -89,6 +90,11 @@ const router = createBrowserRouter([
     path: 'verificacion-revalidada',
     element: <VerificationUnnecessary />,
     errorElement: <ErrorPage />
+  },
+  {
+    path: 'confirmacion-de-compra',
+    element: <ConfirmacionDeCompra/>,
+    errorElement: <ErrorPage/>
   },
   {
     path: 'editar-perfil',
