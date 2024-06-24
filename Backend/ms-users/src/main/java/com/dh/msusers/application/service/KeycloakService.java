@@ -103,11 +103,12 @@ public class KeycloakService implements IKeycloakService {
         if (nonNull(user.getEmail()) && UserFieldValidator.isValidEmail(user.getEmail())) {
             userToPatch.setEmail(user.getEmail());
         }
-
+        
+        /*
         if (nonNull(user.getPassword()) && UserFieldValidator.isValidPassword(user.getPassword())) {
             userToPatch.setPassword(user.getPassword());
         }
-
+*/
         try {
             return new UserResponse(keycloakRepository.patchUpdate(userToPatch, id));
         } catch (HttpClientErrorException e) {
