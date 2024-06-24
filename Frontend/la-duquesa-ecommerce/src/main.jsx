@@ -15,9 +15,12 @@ import LogIn from './routes/LogIn.jsx'
 import Pagos from './routes/Pagos.jsx'
 import Register from './routes/Register.jsx'
 import NuestrasSedes from './routes/NuestrasSedes.jsx'
+import Category from './routes/Category.jsx'
+import Subcategory from './routes/Subcategory.jsx'
 import EditarPerfil from './routes/EditarPefil.jsx'
 import VerificationError from './routes/VerificationError.jsx'
 import VerificationUnnecessary from './routes/VerificationUnnecessary.jsx'
+import ConfirmacionDeCompra from './routes/ConfirmacionDeCompra.jsx'
 import ForgotPassword from './routes/ForgotPassword.jsx'
 
 const router = createBrowserRouter([
@@ -82,6 +85,16 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />
   },
   {
+    path: 'category',
+    element: <Category />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'subcategory',
+    element: <Subcategory />,
+    errorElement: <ErrorPage />
+  },
+  {
     path: 'verificacion-error',
     element: <VerificationError />,
     errorElement: <ErrorPage />
@@ -92,12 +105,19 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />
   },
   {
+    path: 'confirmacion-de-compra',
+    element: <ConfirmacionDeCompra/>,
+    errorElement: <ErrorPage/>
+  },
+  {
     path: 'editar-perfil',
-    element: <EditarPerfil />
+    element: <EditarPerfil/>,
+    errorElement: <ErrorPage />
   },
   {
     path: 'forgot-password',
-    element: <ForgotPassword />
+    element: <ForgotPassword />,
+    errorElement: <ErrorPage />
   }
 ])
 

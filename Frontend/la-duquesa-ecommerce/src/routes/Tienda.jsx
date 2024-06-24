@@ -65,7 +65,7 @@ const Tienda = () => {
     return pastries
       .filter((pastry) => (filter === 'Todos' ? true : pastry.type === filter))
       .filter((pastry) =>
-        pastry.title.toLowerCase().includes(searchTerm.toLowerCase())
+        pastry.name.toLowerCase().includes(searchTerm.toLowerCase())
       )
   }, [filter, searchTerm])
 
@@ -146,7 +146,7 @@ const Tienda = () => {
               <div>
                 <LazyLoad height={200} offset={100}>
                   <img
-                    src={pastry.image}
+                    src={pastry.imageURL}
                     alt={pastry.title}
                     className="h-40 w-full object-cover mb-4 rounded-lg"
                   />

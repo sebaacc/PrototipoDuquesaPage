@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import Sugeridos from './Sugeridos'
 import Slider from 'react-slick'

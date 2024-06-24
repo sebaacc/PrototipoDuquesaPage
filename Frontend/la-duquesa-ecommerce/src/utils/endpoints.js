@@ -1,4 +1,4 @@
-const BASE_URL = 'https://8466-2800-e2-b580-1797-112-1e7b-cf4d-3117.ngrok-free.app' // cambiar este endpoint cuando se necesite
+const BASE_URL = 'https://2c8818ff533513b7028ffb54902ec104.serveo.net/'
 
 const endpoints = {
   getAndPostUser: `${BASE_URL}/users`, // se puede registrar un usuario u obtener los usuarios, cambiando entre post y get, y además cambiando la data/requested_Options que se le pasan
@@ -8,7 +8,8 @@ const endpoints = {
   // getProducts: `${BASE_URL}/products`,
   // getOrders: `${BASE_URL}/orders`
   getMostAddedProducts: `${BASE_URL}/cart/cartInfo/findMostAddedProducts`,
-  postForgotPass: `${BASE_URL}/users/forgot-password`
+  postForgotPass: `${BASE_URL}/users/forgot-password`,
+  getUser: `${BASE_URL}/users`
 }
 
 export default endpoints
