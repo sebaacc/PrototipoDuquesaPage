@@ -87,7 +87,7 @@ function Products () {
                     </span>
                   </div>
                   <div className="mt-4">
-                    <Link to={product.detailLink}>
+                    <Link to={'detalle-de-producto/' + product.id}>
                       <button className="mr-6 w-28 p-3 bg-[#BD6292] text-white rounded-xl hover:bg-[#df75ae] hover:shadow-sm transition-all duration-300">
                         Información
                       </button>

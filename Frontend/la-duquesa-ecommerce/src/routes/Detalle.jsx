@@ -8,6 +8,7 @@ import { MdOutlineTimer } from 'react-icons/md'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import endpoints from '../utils/endpoints'
+import ImageGallery from '../components/ImageGallery'
 
 const Detalle = () => {
   const [selectedValue, setSelectedValue] = useState(1)
@@ -18,7 +19,7 @@ const Detalle = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${endpoints.getProductById}/6674adf05cda3211c66c625d`
+          `${endpoints.getProductById}/${id}`
         )
         console.log(response.data)
 
@@ -83,10 +84,11 @@ const Detalle = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
               <div className="flex flex-col md:flex-row">
                 <div className="md:flex-1 px-4 sm:w-1/2">
-                  <img
+                  {/* <img
                     src="https://duquesabucket.s3.us-east-2.amazonaws.com/product_2274302744944653563.jpeg"
                     alt=""
-                  />
+                  /> */}
+                   {product.imageURLs && <ImageGallery images={product.imageURLs}/>}
                 </div>
                 <div className="md:flex-1 px-4">
                   <h2 className="mb-2 leading-tight tracking-tight font-bold text-gray-800 text-2xl md:text-3xl">

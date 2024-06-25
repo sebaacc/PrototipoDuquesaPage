@@ -15,10 +15,10 @@ const ImageGallery = ({ images }) => {
   const [imageIndex, setImageIndex] = useState(0)
 
   // Solo llenar el array de imágenes con placeholders si hay menos de 4 imágenes
-  const filledImages =
-    images.length < 4
-      ? [...images, ...Array(4 - images.length).fill(null)]
-      : images
+  // const filledImages =
+  //   images.length < 4
+  //     ? [...images, ...Array(4 - images.length).fill(null)]
+  //     : images
 
   useEffect(() => {
     console.log('hola')
@@ -30,8 +30,8 @@ const ImageGallery = ({ images }) => {
       <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 shadow-md">
           <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center p-3">
             <img
-              // src={images[imageIndex]}
-              src="https://duquesabucket.s3.us-east-2.amazonaws.com/product_8134339177120133066.png"
+              src={images[imageIndex]}
+              // src="https://duquesabucket.s3.us-east-2.amazonaws.com/product_8134339177120133066.png"
               alt={`Imagen ${imageIndex + 1}`}
               className="h-full w-full object-contain"
             />
