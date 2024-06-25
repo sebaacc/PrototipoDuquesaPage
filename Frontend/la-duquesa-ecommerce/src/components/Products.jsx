@@ -36,6 +36,28 @@ function Products () {
     ]
   }
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `${endpoints.getProductById}/6674adf05cda3211c66c625d`
+  //       )
+  //       console.log(response.data)
+
+  //       if (response.status === 200) {
+  //         setProduct(response.data)
+  //       } else {
+  //         console.error('Error: Response status is not 200 OK', response.status)
+  //       }
+  //     } catch (error) {
+  //       console.error('Error getting product:', error)
+  //     }
+  //   }
+  //   fetchData()
+  // }, [])
+
+  //
+
   return (
     <div className="mb-12 lg:flex flex-col justify-center xl:p-16">
       <span className="flex md:ml-8 mt-3 items-center max-md:justify-center">

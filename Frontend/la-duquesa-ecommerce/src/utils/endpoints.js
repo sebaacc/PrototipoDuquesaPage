@@ -18,7 +18,9 @@ const endpoints = {
   postToCart: `${BASE_URL}/cart/cartInfo/addProductToCart`,
   getFromCart: `${BASE_URL}/cart/cartInfo/findCartProducts`,
   deleteFromCart: `${BASE_URL}/cart/cartInfo/removeProductFromCart`,
-  clearCart: `${BASE_URL}/cart/cartInfo/clearCart`
+  clearCart: `${BASE_URL}/cart/cartInfo/clearCart`,
+  getProduct: `${BASE_URL}/product/product/findAllProducts`,
+  getCategory: `${BASE_URL}/product/category/findAllCategories`
 }
 
 export default endpoints
