@@ -131,7 +131,13 @@ function LogIn () {
           </button>
         </form>
         <div className="flex flex-col items-center justify-between text-sm text-[#7F7C82]">
-          <p>¿Olvidé mi contraseña?</p>
+          <Link
+            to="/forgot-password"
+            className="text-[#2D5651] font-semibold hover:font-extrabold"
+          >
+            ¿Olvidé mi contraseña?
+          </Link>
+
           <Link
             to="/register"
             className="text-[#2D5651] font-semibold hover:font-extrabold"

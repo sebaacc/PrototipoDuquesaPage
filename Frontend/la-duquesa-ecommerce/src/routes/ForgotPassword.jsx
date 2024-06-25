@@ -51,6 +51,7 @@ const ForgotPassword = () => {
           <h2 className="mt-6 text-2xl font-extrabold text-[#2D5651] mb-16">
             Recuperar Contraseña
           </h2>
+          <h3>Por favor ingrese su email para poder cambiar su contraseña.</h3>
         </div>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
