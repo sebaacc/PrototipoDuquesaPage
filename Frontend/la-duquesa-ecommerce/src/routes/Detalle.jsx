@@ -1,61 +1,86 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import brownie from '../img/brownie.png'
-import chocolate from '../img/choco-chocolate 1.png'
-import { Link } from 'react-router-dom'
-import ImageGallery from '../components/ImageGallery'
+import { Link, useParams } from 'react-router-dom'
 import ScrollToTop from '../utils/ScrollToTop'
 import Sugeridos from '../components/Sugeridos'
 import SearchProduct from '../components/SearchProduct'
 import { MdOutlineTimer } from 'react-icons/md'
-
-// const Objeto =[
-//   {
-//     nombre: 'Torta Brownie',
-//     descripcion: 'alguna descripcion',
-//     img: 'https://aprende.com/wp-content/uploads/2020/10/brownies-postre_opt-940x580.jpg',
-//     precio: '62000',
-//     cantidad: 1
-//   }]
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import endpoints from '../utils/endpoints'
 
 const Detalle = () => {
-  // const [image, setImage] = useState(1)
-  const images = [chocolate, brownie, chocolate, brownie, chocolate, brownie]
+  const [product, setProduct] = useState({})
+  const { id } = useParams()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${endpoints.getProductById}/6674adf05cda3211c66c625d`
+        )
+        console.log(response.data)
+
+        if (response.status === 200) {
+          setProduct(response.data)
+        } else {
+          console.error('Error: Response status is not 200 OK', response.status)
+        }
+      } catch (error) {
+        console.error('Error getting product:', error)
+      }
+    }
+    fetchData()
+  }, [])
+
+  function addToCart () {
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = axios.post(
+        endpoints.postToCart,
+        {
+          client: JSON.parse(localStorage.getItem('user')).sub,
+          product: product.id,
+          quantity: selectedValue
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+
+      console.log(response.status)
+    } catch (error) {
+      console.error('Error adding to cart:', error)
+    }
+  }
+
+  const [selectedValue, setSelectedValue] = useState(1)
+
+  const handleChange = (event) => {
+    setSelectedValue(event.target.value)
+  }
+
   return (
     <>
       <div>
         <ScrollToTop />
         <Navbar />
         <SearchProduct />
-        {/*
-        <div className="bg-white shadow-sm top-0">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1 md:py-4">
-            <div className="flex items-center justify-between md:justify-start">
-              <div className="flex items-center space-x-4">
-                <button
-                  type="button"
-                  className="md:block w-20 h-12 flex justify-center items-center"
-                >
-                  <img
-                    src={Calificacion}
-                    alt="calification"
-                    className="rounded-lg mx-auto w-20 h-12"
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div> */}
 
         <div className="py-6">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
             <div className="flex flex-col md:flex-row">
               <div className="md:flex-1 px-4 sm:w-1/2">
-                <ImageGallery images={images} />
+                <img
+                  src="https://duquesabucket.s3.us-east-2.amazonaws.com/product_2274302744944653563.jpeg"
+                  alt=""
+                />
               </div>
               <div className="md:flex-1 px-4">
                 <h2 className="mb-2 leading-tight tracking-tight font-bold text-gray-800 text-2xl md:text-3xl">
-                  Torta de Chocolate.
+                  {product.name}
                 </h2>
                 <Link to={'/tienda?search=Pastel'}>
                   <button className="mr-6 w-28 p-3 bg-[#BD6292] text-white rounded-xl">
@@ -63,16 +88,16 @@ const Detalle = () => {
                   </button>{' '}
                 </Link>
                 <Link to={'/tienda?search=Tarta'}>
-                <button className="mr-6 w-28 p-3 bg-[#BD6292] text-white rounded-xl">
-                  Torta Fría
-                </button>
+                  <button className="mr-6 w-28 p-3 bg-[#BD6292] text-white rounded-xl">
+                    Torta Fría
+                  </button>
                 </Link>
                 <div className="flex items-center space-x-4 my-4">
                   <div>
                     <div className="rounded-lg bg-gray-100 flex py-2 px-3">
                       <span className="text-black-400 mr-1 mt-1">$</span>
                       <span className="font-bold text-black-600 text-3xl">
-                        14.000
+                        {product.price}
                       </span>
                     </div>
                   </div>
@@ -91,12 +116,16 @@ const Detalle = () => {
                     <div className="text-center left-0 pt-2 right-0 absolute block text-xs uppercase text-gray-400 tracking-wide font-semibold">
                       Cantidad
                     </div>
-                    <select className="cursor-pointer appearance-none rounded-xl border border-gray-200 pl-4 pr-12 h-14 flex items-end pb-1">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
+                    <select
+                      className="cursor-pointer appearance-none rounded-xl border border-gray-200 pl-4 pr-12 h-14 flex items-end pb-1"
+                      value={selectedValue}
+                      onChange={handleChange}
+                    >
+                      <option value={1}>1</option>
+                      <option value={2}>2</option>
+                      <option value={3}>3</option>
+                      <option value={4}>4</option>
+                      <option value={5}>5</option>
                     </select>
 
                     <svg
@@ -118,6 +147,7 @@ const Detalle = () => {
                     <button
                       type="button"
                       className="h-14 px-6 py-2 font-semibold rounded-xl bg-[#BD6292] hover:bg-[#f187bf] text-white"
+                      onClick={addToCart}
                     >
                       Añadir al carrito
                     </button>
@@ -130,14 +160,7 @@ const Detalle = () => {
 
         <div className="ml-9 mr-5 mt-12">
           <h1>Descripción</h1>
-          <p className="text-gray-500">
-            ¡Deléitate con nuestra deliciosa y esponjosa torta de chocolate!
-            Elaborada con los mejores ingredientes, nuestro postre es perfecto
-            para satisfacer tus antojos de chocolate. Disfruta de cada bocado
-            lleno de sabor y textura irresistible. ¡No te pierdas la oportunidad
-            de probar nuestra exquisita torta de chocolate y endulza tus
-            momentos especiales con nosotros!
-          </p>
+          <p className="text-gray-500">{product.description}</p>
         </div>
         <Sugeridos />
       </div>
