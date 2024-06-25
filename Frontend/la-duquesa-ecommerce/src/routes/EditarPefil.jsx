@@ -8,6 +8,7 @@ const EditProfile = () => {
   const [profilePicture, setProfilePicture] = useState('/placeholder-user.jpg')
   const [user, setUser] = useState({})
   const [isEditable, setIsEditable] = useState(false)
+  const [successMessage, setSuccessMessage] = useState('')
 
   const handleProfilePictureChange = useCallback((event) => {
     const file = event.target.files[0]
@@ -31,6 +32,7 @@ const EditProfile = () => {
 
       try {
         const response = await axios.get(`${endpoints.getUser}/${userId}`, config)
+        console.log(response.data)
 
         if (response.status === 200) {
           setUser(response.data)
@@ -39,13 +41,35 @@ const EditProfile = () => {
         console.error('Error getting user:', error)
       }
     }
-
     fetchData()
   }, [])
 
   const handleChange = useCallback((field, value) => {
     setUser(prevUser => ({ ...prevUser, [field]: value }))
   }, [])
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    const userId = JSON.parse(localStorage.getItem('user')).sub
+    const token = localStorage.getItem('accessToken')
+
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+
+    try {
+      const response = await axios.patch(`${endpoints.getUser}/${userId}`, user, config)
+
+      if (response.status === 200) {
+        setIsEditable(false)
+        setUser(response.data)
+        setSuccessMessage('Tus campos han sido guardados correctamente.')
+      }
+    } catch (error) {
+      console.error('Error updating user:', error)
+    }
+  }
 
   return (
     <div>
@@ -60,7 +84,12 @@ const EditProfile = () => {
               Edita tu información personal y foto de perfil.
             </p>
           </div>
-          <form className="mt-8 space-y-6">
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          {successMessage && (
+            <div className="mt-4 p-2 bg-green-100 text-green-700 rounded">
+              {successMessage}
+            </div>
+          )}
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <div className="space-y-2">
                 <label
@@ -111,7 +140,7 @@ const EditProfile = () => {
                   type="text"
                   value={user.username || ''}
                   onChange={(e) => handleChange('username', e.target.value)}
-                  disabled={!isEditable}
+                  disabled={true}
                 />
               </div>
               <div className="space-y-2">
@@ -167,6 +196,23 @@ const EditProfile = () => {
                   disabled={!isEditable}
                 />
               </div>
+              <div className="space-y-2">
+                <label
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  htmlFor="document"
+                >
+                  Dirección
+                </label>
+                <input
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  id="document"
+                  placeholder="Ejemplo: Cra 34 #43C - 31"
+                  type="text"
+                  value={user.location_details || ''}
+                  onChange={(e) => handleChange('location_details', e.target.value)}
+                  disabled={!isEditable}
+                />
+              </div>
             </div>
             <div className="space-y-2">
               <label
@@ -215,6 +261,7 @@ const EditProfile = () => {
               </button>
             </div>
           </form>
+
         </div>
       </section>
     </div>

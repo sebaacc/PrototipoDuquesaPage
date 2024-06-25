@@ -1,28 +1,27 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import axios from 'axios'
+import endpoints from '../utils/endpoints'
+import Loader from '../components/loader/Loader'
 
 function RegistroProducto () {
   const [formData, setFormData] = useState({
     nombre: '',
     precio: '',
     descripcion: '',
-    cantidadEnStock: '', // Nuevo campo
-    categoria: '', // Nuevo campo
-    subCategoria: '', // Nuevo campo
+    cantidadEnStock: '',
+    categoria: '',
+    subCategoria: '',
     imagenes: []
   })
 
   const [errors, setErrors] = useState({})
   const [showAlert, setShowAlert] = useState(false)
-  const fileInputRef = useRef(null) // Ref para el input de archivos
-
-  const categorias = ['Galletas', 'Pasteles', 'Tartas'] // Categorias
-  const subCategorias = {
-    Galletas: ['Dulces', 'Saladas', 'Festivas'],
-    Pasteles: ['Cumpleaños', 'Frutales'],
-    Tartas: ['Dulces', 'Saladas', 'Tradicionales']
-  } // Ejemplo de subcategorías
+  const [categories, setCategories] = useState([]) // Estado para las categorías
+  const [subCategories, setSubCategories] = useState([]) // Estado para las subcategorías
+  const [subCategoriesTwo, setSubCategoriesTwo] = useState([])
+  const fileInputRef = useRef(null)
 
   const handleChange = (e) => {
     const { id, value } = e.target
@@ -49,6 +48,14 @@ function RegistroProducto () {
       } else {
         setErrors((prevErrors) => ({ ...prevErrors, [id]: '' }))
       }
+    }
+
+    if (id === 'categoria') {
+      setSubCategoriesTwo(
+        subCategories.filter((categorie) => {
+          return categorie.categoryId === value
+        })
+      )
     }
   }
 
@@ -87,7 +94,7 @@ function RegistroProducto () {
     })
 
     if (newImages.length > 0) {
-      newErrors.imagen = '' // Borrar error si se han agregado imágenes válidas
+      newErrors.imagen = ''
     }
 
     setFormData((prevData) => ({
@@ -114,7 +121,8 @@ function RegistroProducto () {
 
     setErrors((prevErrors) => ({
       ...prevErrors,
-      imagen: newImages.length === 0 ? 'Por favor, sube al menos una imagen.' : ''
+      imagen:
+        newImages.length === 0 ? 'Por favor, sube al menos una imagen.' : ''
     }))
   }
 
@@ -138,13 +146,15 @@ function RegistroProducto () {
     if (!formData.descripcion) {
       formErrors.descripcion = 'Por favor, rellena este campo.'
     } else if (formData.descripcion.length < 10) {
-      formErrors.descripcion = 'La descripción debe tener al menos 10 caracteres.'
+      formErrors.descripcion =
+        'La descripción debe tener al menos 10 caracteres.'
     }
 
     if (!formData.cantidadEnStock) {
       formErrors.cantidadEnStock = 'Por favor, rellena este campo.'
     } else if (isNaN(formData.cantidadEnStock)) {
-      formErrors.cantidadEnStock = 'Por favor, introduce un valor numérico válido.'
+      formErrors.cantidadEnStock =
+        'Por favor, introduce un valor numérico válido.'
     }
 
     if (!formData.categoria) {
@@ -163,7 +173,7 @@ function RegistroProducto () {
 
     if (Object.keys(formErrors).length === 0) {
       setShowAlert(true)
-
+      createProduct()
       setFormData({
         nombre: '',
         precio: '',
@@ -184,14 +194,89 @@ function RegistroProducto () {
     }
   }
 
+  const token = localStorage.getItem('accessToken')
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(endpoints.categories, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        setCategories(response.data)
+        console.log(response.data)
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+      }
+    }
+
+    fetchCategories()
+    fetchSubCategories()
+  }, [])
+
+  function createProduct () {
+    const productData = new FormData()
+    productData.append('name', formData.nombre)
+    productData.append('description', formData.descripcion)
+    productData.append('subCategoryId', formData.subCategoria)
+    productData.append('price', formData.precio)
+    productData.append('amount', formData.cantidadEnStock)
+
+    formData.imagenes.forEach((imagen) => {
+      productData.append('images', imagen.file)
+    })
+
+    try {
+      axios.post(endpoints.postProduct, productData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+
+      setFormData({
+        nombre: '',
+        descripcion: '',
+        imagen: null,
+        categoria: ''
+      })
+
+      fileInputRef.current.value = ''
+
+      setTimeout(() => {
+        setShowAlert(false)
+      }, 6000)
+
+      console.log('Form data:', formData)
+    } catch (error) {
+      console.error('Error creating subcategory:', error)
+    }
+  }
+
+  // subcateogories
+  useEffect(() => {
+    console.log(formData)
+  }, [formData])
+
+  const fetchSubCategories = async () => {
+    try {
+      const response = await axios.get(`${endpoints.getSubcategories}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setSubCategories(response.data)
+      console.log(response.data)
+    } catch (error) {
+      console.error('Error fetching subcategories:', error)
+    }
+  }
+
   return (
     <div>
       <Navbar />
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <form
-          className="w-4/5 max-w-lg m-auto mb-10"
-          onSubmit={handleSubmit}
-        >
+        <form className="w-4/5 max-w-lg m-auto mb-10" onSubmit={handleSubmit}>
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label
@@ -229,10 +314,10 @@ function RegistroProducto () {
                 <input
                   className={`appearance-none block w-full pl-8 bg-gray-200 text-gray-700 border ${
                     errors.precio ? 'border-red-500' : 'border-gray-200'
-                  } rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mb-2`}
+                  } rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white`}
                   id="precio"
                   type="text"
-                  placeholder="0000"
+                  placeholder="Precio del producto"
                   value={formData.precio}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -242,7 +327,9 @@ function RegistroProducto () {
                 <p className="text-red-500 text-xs italic">{errors.precio}</p>
               )}
             </div>
-            <div className="w-full px-3 mb-6 mt-4">
+          </div>
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full px-3">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
                 htmlFor="descripcion"
@@ -250,14 +337,15 @@ function RegistroProducto () {
                 Descripción
               </label>
               <textarea
+                className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
+                  errors.descripcion ? 'border-red-500' : 'border-gray-200'
+                } rounded py-3 px-4 mb-2 leading-tight focus:outline-none focus:bg-white`}
                 id="descripcion"
-                className={`block w-full p-4 border ${
-                  errors.descripcion ? 'border-red-500' : 'border-gray-300'
-                } rounded-lg bg-[#e5e7eb] text-base focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2`}
+                rows="4"
+                placeholder="Descripción del producto"
                 value={formData.descripcion}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                maxLength={1000}
               />
               {errors.descripcion && (
                 <p className="text-red-500 text-xs italic">
@@ -265,17 +353,19 @@ function RegistroProducto () {
                 </p>
               )}
             </div>
-            <div className="w-full px-3 mb-6">
+          </div>
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
                 htmlFor="cantidadEnStock"
               >
-                Cantidad en Stock
+                Cantidad en stock
               </label>
               <input
                 className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
                   errors.cantidadEnStock ? 'border-red-500' : 'border-gray-200'
-                } rounded py-3 px-4 mb-2 leading-tight focus:outline-none focus:bg-white`}
+                } rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white`}
                 id="cantidadEnStock"
                 type="text"
                 placeholder="Cantidad en stock"
@@ -284,75 +374,85 @@ function RegistroProducto () {
                 onBlur={handleBlur}
               />
               {errors.cantidadEnStock && (
-                <p className="text-red-500 text-xs italic">{errors.cantidadEnStock}</p>
+                <p className="text-red-500 text-xs italic">
+                  {errors.cantidadEnStock}
+                </p>
               )}
             </div>
-            <div className="w-full px-3 mb-6">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
                 htmlFor="categoria"
               >
                 Categoría
               </label>
-              <select
-                id="categoria"
-                className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
-                  errors.categoria ? 'border-red-500' : 'border-gray-200'
-                } rounded py-3 px-4 mb-2 leading-tight focus:outline-none focus:bg-white`}
-                value={formData.categoria}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              >
-                <option value="">Selecciona una categoría</option>
-                {categorias.map((categoria, index) => (
-                  <option key={index} value={categoria}>
-                    {categoria}
-                  </option>
-                ))}
-              </select>
-              {errors.categoria && (
-                <p className="text-red-500 text-xs italic">{errors.categoria}</p>
-              )}
+              <div className="relative">
+                <select
+                  className={`block appearance-none w-full bg-gray-200 border ${
+                    errors.categoria ? 'border-red-500' : 'border-gray-200'
+                  } text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white`}
+                  id="categoria"
+                  value={formData.categoria}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                >
+                  <option value="">Selecciona una categoría</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+                {errors.categoria && (
+                  <p className="text-red-500 text-xs italic">
+                    {errors.categoria}
+                  </p>
+                )}
+              </div>
             </div>
-            <div className="w-full px-3 mb-6">
+            <div className="w-full px-3 mb-6 md:mb-0">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
                 htmlFor="subCategoria"
               >
                 Subcategoría
               </label>
-              <select
-                id="subCategoria"
-                className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
-                  errors.subCategoria ? 'border-red-500' : 'border-gray-200'
-                } rounded py-3 px-4 mb-2 leading-tight focus:outline-none focus:bg-white`}
-                value={formData.subCategoria}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              >
-                <option value="">Selecciona una subcategoría</option>
-                {formData.categoria &&
-                  subCategorias[formData.categoria]?.map((subCat, index) => (
-                    <option key={index} value={subCat}>
-                      {subCat}
+              <div className="relative">
+                <select
+                  className={`block appearance-none w-full bg-gray-200 border ${
+                    errors.subCategoria ? 'border-red-500' : 'border-gray-200'
+                  } text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white`}
+                  id="subCategoria"
+                  value={formData.subCategoria}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  disabled={formData.categoria === ''}
+                >
+                  <option value="">Selecciona una subcategoría</option>
+                  {subCategoriesTwo.map((subCategory) => (
+                    <option key={subCategory.id} value={subCategory.id}>
+                      {subCategory.name}
                     </option>
                   ))}
-              </select>
-              {errors.subCategoria && (
-                <p className="text-red-500 text-xs italic">{errors.subCategoria}</p>
-              )}
+                </select>
+                {errors.subCategoria && (
+                  <p className="text-red-500 text-xs italic">
+                    {errors.subCategoria}
+                  </p>
+                )}
+              </div>
             </div>
+          </div>
+          <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full px-3">
               <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
                 htmlFor="imagenes"
               >
                 Imágenes
               </label>
               <input
-                className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
-                  errors.imagen ? 'border-red-500' : 'border-gray-200'
-                } rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white mb-2`}
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-2 leading-tight focus:outline-none focus:bg-white"
                 id="imagenes"
                 type="file"
                 accept="image/*"
@@ -363,53 +463,61 @@ function RegistroProducto () {
               {errors.imagen && (
                 <p className="text-red-500 text-xs italic">{errors.imagen}</p>
               )}
-              <div className="grid grid-cols-3 gap-4 mt-2">
+              <div className="flex flex-wrap mt-4">
                 {formData.imagenes.map((image, index) => (
-                  <div key={index} className="relative">
+                  <div key={index} className="relative mr-4 mb-4">
                     <img
                       src={image.url}
                       alt={`Imagen ${index + 1}`}
-                      className="w-full h-auto rounded"
+                      className="w-20 h-20 object-cover rounded"
                     />
                     <button
                       type="button"
-                      className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 mt-1 mr-1"
                       onClick={() => handleRemoveImage(index)}
+                      className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 -mt-2 -mr-2 focus:outline-none focus:shadow-outline"
                     >
-                      &times;
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M6 18L18 6M6 6l12 12"
+                        ></path>
+                      </svg>
                     </button>
                   </div>
                 ))}
               </div>
             </div>
           </div>
-          {showAlert && (
-            <div
-              className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
-              role="alert"
-            >
-              <strong className="font-bold">
-                ¡Producto registrado con éxito!
-              </strong>
-              <span className="block sm:inline">
-                {' '}
-                Los detalles del producto han sido guardados.
-              </span>
-            </div>
-          )}
           <div className="flex justify-center">
-            {' '}
-            {/* Centrando el botón */}
             <button
-              className="shadow bg-[#a662bd] hover:bg-purple-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
             >
               Registrar Producto
             </button>
           </div>
         </form>
-        <Footer />
+        {showAlert && (
+          <div
+            className="bg-green-500 border-t border-b border-green-500 text-white px-4 py-3 fixed bottom-4 right-4 rounded"
+            role="alert"
+          >
+            <p className="font-bold">Producto registrado exitosamente</p>
+            <p className="text-sm">
+              Se ha registrado el producto correctamente.
+            </p>
+          </div>
+        )}
       </div>
+      <Footer />
     </div>
   )
 }

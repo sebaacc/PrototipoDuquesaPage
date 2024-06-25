@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { MdImageNotSupported } from 'react-icons/md'
 import { Pagination, Scrollbar, A11y } from 'swiper/modules'
@@ -20,26 +20,22 @@ const ImageGallery = ({ images }) => {
       ? [...images, ...Array(4 - images.length).fill(null)]
       : images
 
+  useEffect(() => {
+    console.log('hola')
+    console.log(images)
+  }, [])
+
   return (
     <>
       <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 shadow-md">
-        {filledImages[imageIndex]
-          ? (
           <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center p-3">
             <img
-              src={filledImages[imageIndex]}
+              // src={images[imageIndex]}
+              src="https://duquesabucket.s3.us-east-2.amazonaws.com/product_8134339177120133066.png"
               alt={`Imagen ${imageIndex + 1}`}
               className="h-full w-full object-contain"
             />
           </div>
-            )
-          : (
-          <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center">
-            <span className="text-5xl flex flex-col items-center p-8 text-gray-500">
-              No se encuentra la imagen <MdImageNotSupported />
-            </span>
-          </div>
-            )}
       </div>
 
       <Swiper
@@ -54,7 +50,7 @@ const ImageGallery = ({ images }) => {
           '--swiper-pagination-bullet-size': '10px'
         }}
       >
-        {filledImages.map((image, i) => (
+        {images.map((image, i) => (
           <div key={i}>
             <SwiperSlide className=" mb-8">
               <button

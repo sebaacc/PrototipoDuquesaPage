@@ -1,6 +1,9 @@
+import axios from 'axios'
 import { useState, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import endpoints from '../utils/endpoints'
+import Loader from '../components/loader/Loader'
 
 function Category () {
   const [formData, setFormData] = useState({
@@ -11,6 +14,7 @@ function Category () {
 
   const [errors, setErrors] = useState({})
   const [showAlert, setShowAlert] = useState(false)
+  const [loading, setLoading] = useState(false) // Estado de carga
   const fileInputRef = useRef(null)
 
   const handleChange = (e) => {
@@ -78,7 +82,7 @@ function Category () {
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     const formErrors = {}
@@ -102,21 +106,44 @@ function Category () {
     setErrors(formErrors)
 
     if (Object.keys(formErrors).length === 0) {
-      setShowAlert(true)
+      setLoading(true) // Mostrar el loader
+      const data = new FormData()
+      data.append('name', formData.nombre)
+      data.append('description', formData.descripcion)
+      data.append('categoryImage', formData.imagen.file)
 
-      setFormData({
-        nombre: '',
-        descripcion: '',
-        imagen: null
-      })
+      const token = localStorage.getItem('accessToken')
+      try {
+        const response = await axios.post(
+          endpoints.postCategory,
+          data,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
 
-      fileInputRef.current.value = ''
+        console.log('Response:', response.data)
+        setShowAlert(true)
 
-      setTimeout(() => {
-        setShowAlert(false)
-      }, 6000)
+        setFormData({
+          nombre: '',
+          descripcion: '',
+          imagen: null
+        })
 
-      console.log('Form data:', formData)
+        fileInputRef.current.value = ''
+
+        setTimeout(() => {
+          setShowAlert(false)
+        }, 6000)
+      } catch (error) {
+        console.error('Error:', error)
+      } finally {
+        setLoading(false) // Ocultar el loader
+      }
     }
   }
 
@@ -125,7 +152,11 @@ function Category () {
       <Navbar />
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h2 className="mt-6 text-2xl font-extrabold text-[#2D5651]">Crear categoría</h2>
-        <form className="w-4/5 max-w-lg m-auto mb-10" onSubmit={handleSubmit}>
+        {loading && <Loader />}
+        <form
+          className={`w-4/5 max-w-lg m-auto mb-10 ${loading ? 'opacity-50 pointer-events-none' : ''}`}
+          onSubmit={handleSubmit}
+        >
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full px-3 mb-6 md:mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3" htmlFor="nombre">
