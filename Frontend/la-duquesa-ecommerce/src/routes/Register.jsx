@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 import logo from '../img/lgofondoclaro-removebg-preview 1.png'
 import axios from 'axios'
 import Loader from '../components/loader/Loader'
-import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
 import endpoints from '../utils/endpoints'
 import { ArrowLeftIcon } from '../components/Arrows/ArrowLeftIcon'
+import TogglePass from '../components/TogglePass'
+import { inputStyle } from '../utils/inputStyle'
 
 function SignUp () {
   const [form, setForm] = useState({
@@ -22,6 +23,7 @@ function SignUp () {
   const [loadingOpen, setLoadingOpen] = useState(false)
   const [creationError, setCreationError] = useState(false)
   const [successOpen, setSuccessOpen] = useState(false)
+  const [passVisible, setPassVisible] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -32,11 +34,6 @@ function SignUp () {
     console.log(form)
   }, [form])
 
-  const [passVisible, setPassVisible] = useState(false)
-
-  const togglePassVisibility = () => {
-    setPassVisible((prev) => !prev)
-  }
   const validate = () => {
     const newErrors = {}
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -160,7 +157,7 @@ function SignUp () {
                 name="first_name"
                 type="text"
                 placeholder="Nombre"
-                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                className={inputStyle}
                 value={form.first_name}
                 onChange={handleChange}
               />
@@ -180,7 +177,7 @@ function SignUp () {
                 name="last_name"
                 type="text"
                 placeholder="Apellido"
-                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                className={inputStyle}
                 value={form.last_name}
                 onChange={handleChange}
               />
@@ -202,7 +199,7 @@ function SignUp () {
                 name="username"
                 type="text"
                 placeholder="Nombre de Usuario"
-                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                className={inputStyle}
                 value={form.username}
                 onChange={handleChange}
               />
@@ -222,7 +219,7 @@ function SignUp () {
                 name="email"
                 type="email"
                 placeholder="Correo Electrónico"
-                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                className={inputStyle}
                 value={form.email}
                 onChange={handleChange}
               />
@@ -242,7 +239,7 @@ function SignUp () {
                 name="phone"
                 type="text"
                 placeholder="Teléfono"
-                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                className={inputStyle}
                 value={form.phone}
                 onChange={handleChange}
               />
@@ -260,7 +257,7 @@ function SignUp () {
                 name="document"
                 type="text"
                 placeholder="Número de Documento"
-                className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                className={inputStyle}
                 value={form.document}
                 onChange={handleChange}
               />
@@ -283,17 +280,15 @@ function SignUp () {
                   name="password"
                   type={passVisible ? 'text' : 'password'}
                   placeholder="Contraseña"
-                  className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                  className={inputStyle}
                   value={form.password}
                   onChange={handleChange}
                 />
 
-                <div
-                  onClick={togglePassVisibility}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 text-lg"
-                >
-                  {passVisible ? <MdVisibility /> : <MdVisibilityOff />}
-                </div>
+                <TogglePass
+                  passVisible={passVisible}
+                  setPassVisible={setPassVisible}
+                />
               </div>
 
               {errors.password && (
@@ -313,16 +308,14 @@ function SignUp () {
                   name="confirmPassword"
                   type={passVisible ? 'text' : 'password'}
                   placeholder="Confirmar Contraseña"
-                  className="mt-1 block w-full p-3 border-1 bg-gray-200 rounded-lg appearance-none"
+                  className={inputStyle}
                   value={form.confirmPassword}
                   onChange={handleChange}
                 />
-                <div
-                  onClick={togglePassVisibility}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 text-lg"
-                >
-                  {passVisible ? <MdVisibility /> : <MdVisibilityOff />}
-                </div>
+                <TogglePass
+                  passVisible={passVisible}
+                  setPassVisible={setPassVisible}
+                />
               </div>
               {errors.confirmPassword && (
                 <p className={errorStyle}>{errors.confirmPassword}</p>

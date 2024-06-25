@@ -22,6 +22,7 @@ import VerificationError from './routes/VerificationError.jsx'
 import VerificationUnnecessary from './routes/VerificationUnnecessary.jsx'
 import ConfirmacionDeCompra from './routes/ConfirmacionDeCompra.jsx'
 import ForgotPassword from './routes/ForgotPassword.jsx'
+import ChangePassword from './routes/ChangePassword.jsx'
 
 const router = createBrowserRouter([
   {
@@ -106,17 +107,22 @@ const router = createBrowserRouter([
   },
   {
     path: 'confirmacion-de-compra',
-    element: <ConfirmacionDeCompra/>,
-    errorElement: <ErrorPage/>
+    element: <ConfirmacionDeCompra />,
+    errorElement: <ErrorPage />
   },
   {
     path: 'editar-perfil',
-    element: <EditarPerfil/>,
+    element: <EditarPerfil />,
     errorElement: <ErrorPage />
   },
   {
     path: 'forgot-password',
     element: <ForgotPassword />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'reset-password',
+    element: <ChangePassword />,
     errorElement: <ErrorPage />
   }
 ])

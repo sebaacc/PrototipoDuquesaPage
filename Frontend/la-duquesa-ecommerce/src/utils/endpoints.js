@@ -1,4 +1,4 @@
-const BASE_URL = 'https://2c8818ff533513b7028ffb54902ec104.serveo.net/'
+const BASE_URL = 'https://refresh-rfc-bookmark-seek.trycloudflare.com'
 
 const endpoints = {
   getAndPostUser: `${BASE_URL}/users`, // se puede registrar un usuario u obtener los usuarios, cambiando entre post y get, y además cambiando la data/requested_Options que se le pasan
