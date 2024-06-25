@@ -1,43 +1,63 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import CardCarrito from '../components/CardCarrito'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import bolsaVacia from '../img/Shopping-Bag-1.svg'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import axios from 'axios'
+import endpoints from '../utils/endpoints'
 
-const listaProductos = [
-  {
-    nombre: 'Torta de chocolate',
-    descripcion: 'alguna descripcion',
-    img: 'src/img/choco-chocolate 1.png',
-    precio: '14000',
-    cantidad: 1
-  },
-  {
-    nombre: 'Croissant',
-    descripcion: 'alguna descripcion',
-    img: 'https://aprende.com/wp-content/uploads/2020/10/brownies-postre_opt-940x580.jpg',
-    precio: '3800',
-    cantidad: 3
-  },
-  {
-    nombre: 'Cupcake de Naranja con crocante',
-    descripcion: 'alguna descripcion',
-    img: 'https://aprende.com/wp-content/uploads/2020/10/brownies-postre_opt-940x580.jpg',
-    precio: '5000',
-    cantidad: 2
-  }
-]
 function CarritoDeCompras () {
-  const [productos, setProductos] = useState(listaProductos)
+  const [productos, setProductos] = useState([])
   const [animationParent] = useAutoAnimate() // de la librería de auto-animation para animar las cards del carrito.
-  const deleteProducts = () => {
-    setProductos([])
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    })
+  // const deleteProducts = () => {
+  //   setProductos([])
+  //   window.scrollTo({
+  //     top: 0,
+  //     left: 0,
+  //     behavior: 'smooth'
+  //   })
+  // }
+
+  const token = localStorage.getItem('accessToken')
+  const userId = JSON.parse(localStorage.getItem('user')).sub
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+
+      try {
+        const response = await axios.get(`${endpoints.getFromCart}/${userId}`, config)
+        console.log(response.data)
+
+        if (response.status === 200) {
+          setProductos(response.data)
+        }
+      } catch (error) {
+        console.error('Error getting productos:', error)
+      }
+    }
+    fetchData()
+  }, [])
+
+  const deleteProducts = async () => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+
+    try {
+      const response = await axios.delete(`${endpoints.clearCart}/${userId}`, config)
+      console.log(response.data)
+
+      if (response.status === 200) {
+        console.log(response.data)
+        setProductos([])
+      }
+    } catch (error) {
+      console.error('Error deleting from cart:', error)
+    }
   }
 
   return (
