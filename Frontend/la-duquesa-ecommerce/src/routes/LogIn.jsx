@@ -135,7 +135,7 @@ function LogIn () {
             to="/forgot-password"
             className="text-[#2D5651] font-semibold hover:font-extrabold"
           >
-            ¿Olvidé mi contraseña?
+            ¿Olvidaste tu contraseña?
           </Link>
 
           <Link
