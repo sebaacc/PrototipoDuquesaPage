@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -195,9 +196,10 @@ func (h PayHandler) HandleWebhook(c *gin.Context) {
 
     // Extraer el "data.id" de los parámetros de la URL
     dataID := queryParams.Get("data.id")
+	fmt.Println("Data id obtenido: " + dataID)
 
     // Obtener la clave secreta desde una variable de entorno o configuración
-    secret := "CjXlkxPUyfyilAI3nzapvlYGOawfqSda"
+    secret := "FQDUEwo0Hiy5I2EhAKhamJ3rNpeQTjVJ"
 
     // Pasar los datos al servicio para que procese la lógica adicional
     if err := h.payService.ProcessWebhook(c, dataID, xRequestId, xSignature, secret); err != nil {

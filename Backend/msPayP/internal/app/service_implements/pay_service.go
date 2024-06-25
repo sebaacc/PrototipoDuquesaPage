@@ -83,60 +83,88 @@ la url del webhook(Endpoint en el que recibiremos la confiramción del pago) la 
 */
 
 func (s *payService) ProcessWebhook(ctx context.Context, dataID, xRequestId, xSignature, secret string) error {
-	// Separar el x-signature en partes
-	parts := strings.Split(xSignature, ",")
+    fmt.Printf("Iniciando ProcessWebhook con:\n"+
+        "dataID: %s\n"+
+        "xRequestId: %s\n"+
+        "xSignature: %s\n", dataID, xRequestId, xSignature)
 
-	// Inicializar variables para almacenar ts y hash
-	var ts, hash string
+    // Separar el x-signature en partes
+    parts := strings.Split(xSignature, ",")
+    fmt.Printf("Partes de x-signature:\n%v\n", parts)
 
-	// Iterar sobre los valores para obtener ts y v1
-	for _, part := range parts {
-		// Dividir cada parte en clave y valor
-		keyValue := strings.SplitN(part, "=", 2)
-		if len(keyValue) == 2 {
-			key := strings.TrimSpace(keyValue[0])
-			value := strings.TrimSpace(keyValue[1])
-			if key == "ts" {
-				ts = value
-			} else if key == "v1" {
-				hash = value
-			}
-		}
-	}
+    // Inicializar variables para almacenar ts y hash
+    var ts, hash string
 
-	// Verificar si se encontraron ts y hash
-	if ts == "" || hash == "" {
-		return fmt.Errorf("Invalid x-signature format")
-	}
+    // Iterar sobre los valores para obtener ts y v1
+    for _, part := range parts {
+        // Dividir cada parte en clave y valor
+        keyValue := strings.SplitN(part, "=", 2)
+        if len(keyValue) == 2 {
+            key := strings.TrimSpace(keyValue[0])
+            value := strings.TrimSpace(keyValue[1])
+            fmt.Printf("Clave: %s\nValor: %s\n", key, value)
+            if key == "ts" {
+                ts = value
+            } else if key == "v1" {
+                hash = value
+            }
+        }
+    }
 
-	// Generar la cadena manifest
-	manifest := fmt.Sprintf("id:%v;request-id:%v;ts:%v;", dataID, xRequestId, ts)
+    // Verificar si se encontraron ts y hash
+    if ts == "" || hash == "" {
+        fmt.Printf("Error: ts o hash no encontrados.\n"+
+            "ts: %s\n"+
+            "hash: %s\n", ts, hash)
+        return fmt.Errorf("Invalid x-signature format")
+    }
 
-	// Crear una firma HMAC definiendo el tipo de hash y la clave como un array de bytes
-	h := hmac.New(sha256.New, []byte(secret))
-	h.Write([]byte(manifest))
+    fmt.Printf("ts encontrado: %s\n", ts)
+    fmt.Printf("hash encontrado: %s\n", hash)
 
-	// Obtener el resultado del hash como una cadena hexadecimal
-	calculatedHash := hex.EncodeToString(h.Sum(nil))
+    // Generar la cadena manifest
+    manifest := fmt.Sprintf("id:%v;request-id:%v;ts:%v;", dataID, xRequestId, ts)
 
-	if calculatedHash == hash {
-		// Verificación HMAC aprobada
-		fmt.Println("HMAC verification passed")
-		// Aquí puedes agregar la lógica para procesar la notificación
-		// Por ejemplo, consultar el pago y actualizar la base de datos
-		return nil
-	} else {
-		// Verificación HMAC fallida
-		fmt.Println("HMAC verification failed")
-		return fmt.Errorf("Invalid HMAC signature")
-	}
+    fmt.Printf("Manifest generado:\n%s\n", manifest)
+
+    // Crear una firma HMAC definiendo el tipo de hash y la clave como un array de bytes
+    h := hmac.New(sha256.New, []byte(secret))
+    h.Write([]byte(manifest))
+
+    // Obtener el resultado del hash como una cadena hexadecimal
+    calculatedHash := hex.EncodeToString(h.Sum(nil))
+    fmt.Printf("Hash calculado:\n%s\n", calculatedHash)
+    fmt.Printf("Hash recibido:\n%s\n", hash)
+
+    if calculatedHash == hash {
+        fmt.Println("HMAC verification passed")
+        // Aquí puedes agregar la lógica para procesar la notificación
+        // Por ejemplo, consultar el pago y actualizar la base de datos
+        return nil
+    } else {
+        fmt.Println("HMAC verification failed")
+        fmt.Printf("Longitud del hash calculado: %d\n", len(calculatedHash))
+        fmt.Printf("Longitud del hash recibido: %d\n", len(hash))
+        return fmt.Errorf("Invalid HMAC signature")
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 func (s *payService) CreatePreference() (*preference.Response, error) {
 	fmt.Println("Iniciando CreatePreference")
 
 	// Configurar credenciales de Mercado Pago
-	cfg, err := config.New("{{APP_USR-2642587301219287-062217-a157595881172d53943208877ba1533d-1868085675}}")
+	cfg, err := config.New("APP_USR-2642587301219287-062217-a157595881172d53943208877ba1533d-1868085675")
 	if err != nil {
 		fmt.Println("Error al configurar credenciales:", err)
 		return nil, err
@@ -151,17 +179,18 @@ func (s *payService) CreatePreference() (*preference.Response, error) {
 			{
 				Title:     "My product",
 				Quantity:  1,
-				UnitPrice: 75.76,
+				UnitPrice: 7000,
 			},
 		},
-		/*
+		
 		   BackURLs: &preference.BackURLsRequest{
-		       Success: "http://your-success-url.com",
+		       Success: "https://youtube.com",
 		       Failure: "http://your-failure-url.com",
 		       Pending: "http://your-pending-url.com",
 		   },
-		*/
-		//NotificationURL: "http://your-notification-url.com/webhooks",
+		
+		NotificationURL: "https://2c8818ff533513b7028ffb54902ec104.serveo.net/mspayp/pay/handleWebhook",
+
 	}
 	fmt.Printf("Request creado: %+v\n", request)
 
