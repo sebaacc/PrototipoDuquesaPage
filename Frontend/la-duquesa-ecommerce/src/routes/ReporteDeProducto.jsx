@@ -34,7 +34,7 @@ function ReporteDeProducto () {
 
       // const response = await axios.get('http://localhost:8090/cart/cartInfo/findMostAddedProducts/15', config)
       const response = await axios.get(
-        endpoints.getMostAddedProducts + '15',
+        endpoints.getMostAddedProducts + '/15',
         config
       )
 

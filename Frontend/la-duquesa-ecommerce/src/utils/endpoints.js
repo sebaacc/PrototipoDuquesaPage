@@ -7,7 +7,8 @@ const endpoints = {
   postLogout: `${BASE_URL}/users/logout`,
   // getProducts: `${BASE_URL}/products`,
   // getOrders: `${BASE_URL}/orders`
-  getMostAddedProducts: `${BASE_URL}/cart/cartInfo/findMostAddedProducts/`,
+  getMostAddedProducts: `${BASE_URL}/cart/cartInfo/findMostAddedProducts`,
+  postForgotPass: `${BASE_URL}/users/forgot-password`,
   getUser: `${BASE_URL}/users`,
   postCategory: `${BASE_URL}/product/category/createCategory`,
   categories: `${BASE_URL}/product/category/findAllCategories`,

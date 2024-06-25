@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import SocialMedia from '../components/SocialMedia'
-import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
 import endpoints from '../utils/endpoints'
+import { ArrowLeftIcon } from '../components/Arrows/ArrowLeftIcon'
 import { jwtDecode } from 'jwt-decode'
+import TogglePass from '../components/TogglePass'
+import { inputStyle } from '../utils/inputStyle'
 
 function LogIn () {
   const [username, setUsername] = useState('')
@@ -12,9 +14,6 @@ function LogIn () {
   const [errors, setErrors] = useState({ username: '', password: '' })
   const [passVisible, setPassVisible] = useState(false)
 
-  const togglePassVisibility = () => {
-    setPassVisible((prev) => !prev)
-  }
   const handleSubmit = (e) => {
     e.preventDefault()
     const newErrors = { username: '', password: '' }
@@ -54,7 +53,10 @@ function LogIn () {
 
       if (response.status === 200) {
         localStorage.setItem('accessToken', response.data.access_token)
-        localStorage.setItem('user', JSON.stringify(jwtDecode(response.data.access_token)))
+        localStorage.setItem(
+          'user',
+          JSON.stringify(jwtDecode(response.data.access_token))
+        )
         console.log(jwtDecode(response.data.access_token))
         window.location.href = '/'
       }
@@ -92,7 +94,7 @@ function LogIn () {
               id="username"
               type="text"
               placeholder="Correo"
-              className="mt-1 block w-full p-3 bg-gray-200 rounded-lg appearance-none"
+              className={inputStyle}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
@@ -110,16 +112,14 @@ function LogIn () {
                 id="password"
                 type={passVisible ? 'text' : 'password'}
                 placeholder="Contraseña"
-                className="mt-1 block w-full p-3 bg-gray-200 rounded-lg appearance-none"
+                className={inputStyle}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <div
-                onClick={togglePassVisibility}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 text-lg"
-              >
-                {passVisible ? <MdVisibility /> : <MdVisibilityOff />}
-              </div>
+              <TogglePass
+                passVisible={passVisible}
+                setPassVisible={setPassVisible}
+              />
             </div>
             {errors.password && <p className={errorStyle}>{errors.password}</p>}
           </div>
@@ -131,7 +131,13 @@ function LogIn () {
           </button>
         </form>
         <div className="flex flex-col items-center justify-between text-sm text-[#7F7C82]">
-          <p>¿Olvidé mi contraseña?</p>
+          <Link
+            to="/forgot-password"
+            className="text-[#2D5651] font-semibold hover:font-extrabold"
+          >
+            ¿Olvidaste tu contraseña?
+          </Link>
+
           <Link
             to="/register"
             className="text-[#2D5651] font-semibold hover:font-extrabold"
@@ -145,23 +151,3 @@ function LogIn () {
 }
 
 export default LogIn
-
-function ArrowLeftIcon (props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m12 19-7-7 7-7" />
-      <path d="M19 12H5" />
-    </svg>
-  )
-}
