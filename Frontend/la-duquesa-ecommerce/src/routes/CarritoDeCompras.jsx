@@ -10,14 +10,6 @@ import endpoints from '../utils/endpoints'
 function CarritoDeCompras () {
   const [productos, setProductos] = useState([])
   const [animationParent] = useAutoAnimate() // de la librería de auto-animation para animar las cards del carrito.
-  // const deleteProducts = () => {
-  //   setProductos([])
-  //   window.scrollTo({
-  //     top: 0,
-  //     left: 0,
-  //     behavior: 'smooth'
-  //   })
-  // }
 
   const token = localStorage.getItem('accessToken')
   const userId = JSON.parse(localStorage.getItem('user')).sub

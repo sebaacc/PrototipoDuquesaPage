@@ -1,8 +1,10 @@
 import SearchProduct from './SearchProduct'
 import HomeCategories from './HomeCategories'
 import MobileHomeCategories from './MobileHomeCategories'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 function Principal () {
+  const [animationParent] = useAutoAnimate()
   return (
     <main>
       <header>
@@ -12,7 +14,7 @@ function Principal () {
       </header>
       <SearchProduct />
       <section className="flex items-center justify-center">
-        <div className="hidden md:flex justify-center">
+        <div ref={animationParent} className="hidden md:flex justify-center">
           <HomeCategories />
         </div>
         <div className="block md:hidden w-[85%]  m-auto mb-20">
