@@ -1,11 +1,29 @@
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import Sugeridos from './Sugeridos'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import products from '../data/productsData'
+import endpoints from '../utils/endpoints'
+import axios from 'axios'
 
 function Products () {
+  const [products, setProducts] = useState([])
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(endpoints.getProduct)
+        setProducts(response.data)
+        console.log(response.data)
+      } catch (error) {
+        console.error('Error fetching products:', error)
+      }
+    }
+
+    fetchProducts()
+  }, [])
+
   const settings = {
     dots: true,
     infinite: true,
@@ -36,28 +54,6 @@ function Products () {
     ]
   }
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `${endpoints.getProductById}/6674adf05cda3211c66c625d`
-  //       )
-  //       console.log(response.data)
-
-  //       if (response.status === 200) {
-  //         setProduct(response.data)
-  //       } else {
-  //         console.error('Error: Response status is not 200 OK', response.status)
-  //       }
-  //     } catch (error) {
-  //       console.error('Error getting product:', error)
-  //     }
-  //   }
-  //   fetchData()
-  // }, [])
-
-  //
-
   return (
     <div className="mb-12 lg:flex flex-col justify-center xl:p-16">
       <span className="flex md:ml-8 mt-3 items-center max-md:justify-center">
@@ -75,7 +71,7 @@ function Products () {
               <div className="bg-[#f8f8f8] p-4 rounded-2xl shadow-lg h-full transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
                 <div className="w-full h-48 overflow-hidden rounded-t-2xl">
                   <img
-                    src={product.image}
+                    src={product.imageURLs[0]}
                     alt={product.name}
                     className="object-cover w-full h-full"
                   />
@@ -85,11 +81,9 @@ function Products () {
                     <p className="font-black capitalize">{product.name}</p>
                     <span className="flex mt-2">
                       <p className="mr-6 text-gray-500 font-bold">
-                        {product.shipping}
+                        Envío gratis
                       </p>
-                      <p className="text-gray-500 font-bold">
-                        {product.deliveryTime}
-                      </p>
+                      <p className="text-gray-500 font-bold">40 - 50 min</p>
                     </span>
                   </div>
                   <div className="mt-4">
