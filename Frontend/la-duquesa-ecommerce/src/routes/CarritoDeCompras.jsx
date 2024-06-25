@@ -10,14 +10,14 @@ import endpoints from '../utils/endpoints'
 function CarritoDeCompras () {
   const [productos, setProductos] = useState([])
   const [animationParent] = useAutoAnimate() // de la librería de auto-animation para animar las cards del carrito.
-  const deleteProducts = () => {
-    setProductos([])
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    })
-  }
+  // const deleteProducts = () => {
+  //   setProductos([])
+  //   window.scrollTo({
+  //     top: 0,
+  //     left: 0,
+  //     behavior: 'smooth'
+  //   })
+  // }
 
   const token = localStorage.getItem('accessToken')
   const userId = JSON.parse(localStorage.getItem('user')).sub
@@ -41,6 +41,24 @@ function CarritoDeCompras () {
     }
     fetchData()
   }, [])
+
+  const deleteProducts = async () => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+
+    try {
+      const response = await axios.delete(`${endpoints.clearCart}/${userId}`, config)
+      console.log(response.data)
+
+      if (response.status === 200) {
+        console.log(response.data)
+        setProductos([])
+      }
+    } catch (error) {
+      console.error('Error deleting from cart:', error)
+    }
+  }
 
   return (
     <div>

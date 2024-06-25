@@ -19,18 +19,11 @@ function CardCarrito ({ producto, setProductos }) {
     const newQuantity = parseInt(event.target.value, 10)
     setProductos((prevProductos) =>
       prevProductos.map((p) =>
-        p.name === producto.name ? { ...p, cantidad: newQuantity } : p
+        p.name === producto.name ? { ...p, amount: newQuantity } : p
       )
     )
     console.log('valor seleccionado' + selectedValue)
   }
-
-  // Maneja la eliminación del producto
-  // const handleDelete = () => {
-  //   setProductos((prevProductos) =>
-  //     prevProductos.filter((p) => p.name !== producto.name)
-  //   )
-  // }
 
   const handleDelete = async () => {
     const config = {
@@ -43,6 +36,9 @@ function CardCarrito ({ producto, setProductos }) {
 
       if (response.status === 200) {
         console.log(response.data)
+        setProductos((prevProductos) =>
+          prevProductos.filter((p) => p.name !== producto.name)
+        )
       }
     } catch (error) {
       console.error('Error deleting from cart:', error)
