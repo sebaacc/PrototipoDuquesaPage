@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import axios from 'axios'
 import endpoints from '../utils/endpoints'
+import Loader from '../components/loader/Loader'
 
 function Subcategory () {
   const [formData, setFormData] = useState({
@@ -15,13 +16,20 @@ function Subcategory () {
   const [categories, setCategories] = useState([])
   const [errors, setErrors] = useState({})
   const [showAlert, setShowAlert] = useState(false)
+  const [isLoading, setIsLoading] = useState(false) // Estado para controlar la visibilidad del Loader
   const fileInputRef = useRef(null)
 
+  const token = localStorage.getItem('accessToken')
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(endpoints.categories) // Asegúrate de que 'endpoints.categories' esté configurado correctamente
+        const response = await axios.get(endpoints.categories, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
         setCategories(response.data)
+        console.log(response.data)
       } catch (error) {
         console.error('Error fetching categories:', error)
       }
@@ -109,7 +117,8 @@ function Subcategory () {
     if (!formData.descripcion) {
       formErrors.descripcion = 'Por favor, rellena este campo.'
     } else if (formData.descripcion.length < 10) {
-      formErrors.descripcion = 'La descripción debe tener al menos 10 caracteres.'
+      formErrors.descripcion =
+        'La descripción debe tener al menos 10 caracteres.'
     }
 
     if (!formData.imagen) {
@@ -123,15 +132,22 @@ function Subcategory () {
     setErrors(formErrors)
 
     if (Object.keys(formErrors).length === 0) {
-      setShowAlert(true)
+      setIsLoading(true) // Mostrar el Loader
 
-      // Aquí realiza la solicitud para crear la subcategoría
+      // Crear un objeto FormData para enviar la solicitud
+      const subcategoryData = new FormData()
+      subcategoryData.append('name', formData.nombre)
+      subcategoryData.append('description', formData.descripcion)
+      subcategoryData.append('subcategoryImage', formData.imagen.file)
+      subcategoryData.append('categoryId', formData.categoria)
+
+      // Realizar la solicitud para crear la subcategoría
       try {
-        await axios.post(endpoints.subcategories, {
-          nombre: formData.nombre,
-          descripcion: formData.descripcion,
-          imagen: formData.imagen.file, // Asegúrate de enviar la imagen de manera correcta, puede que necesites un FormData para esto
-          categoria: formData.categoria
+        await axios.post(endpoints.postSubcategory, subcategoryData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
         })
 
         setFormData({
@@ -142,6 +158,7 @@ function Subcategory () {
         })
 
         fileInputRef.current.value = ''
+        setShowAlert(true)
 
         setTimeout(() => {
           setShowAlert(false)
@@ -150,6 +167,8 @@ function Subcategory () {
         console.log('Form data:', formData)
       } catch (error) {
         console.error('Error creating subcategory:', error)
+      } finally {
+        setIsLoading(false) // Ocultar el Loader
       }
     }
   }
@@ -157,12 +176,22 @@ function Subcategory () {
   return (
     <div>
       <Navbar />
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <h2 className="mt-6 text-2xl font-extrabold text-[#2D5651]">Crear subcategoría</h2>
+      <div className="flex flex-col items-center justify-center min-h-screen relative">
+        {isLoading && (
+          <div className="overlay">
+            <Loader />
+          </div>
+        )}
+        <h2 className="mt-6 text-2xl font-extrabold text-[#2D5651]">
+          Crear subcategoría
+        </h2>
         <form className="w-4/5 max-w-lg m-auto mb-10" onSubmit={handleSubmit}>
           <div className="flex flex-wrap -mx-3 mb-6">
-          <div className="w-full px-3 mb-6 mt-4">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3" htmlFor="categoria">
+            <div className="w-full px-3 mb-6 mt-4">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
+                htmlFor="categoria"
+              >
                 Categoría
               </label>
               <select
@@ -181,11 +210,16 @@ function Subcategory () {
                 ))}
               </select>
               {errors.categoria && (
-                <p className="text-red-500 text-xs italic">{errors.categoria}</p>
+                <p className="text-red-500 text-xs italic">
+                  {errors.categoria}
+                </p>
               )}
             </div>
             <div className="w-full px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3" htmlFor="nombre">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
+                htmlFor="nombre"
+              >
                 Nombre
               </label>
               <input
@@ -204,7 +238,10 @@ function Subcategory () {
               )}
             </div>
             <div className="w-full px-3 mb-6 mt-4">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3" htmlFor="descripcion">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-3"
+                htmlFor="descripcion"
+              >
                 Descripción
               </label>
               <textarea
@@ -218,11 +255,16 @@ function Subcategory () {
                 maxLength={1000}
               />
               {errors.descripcion && (
-                <p className="text-red-500 text-xs italic">{errors.descripcion}</p>
+                <p className="text-red-500 text-xs italic">
+                  {errors.descripcion}
+                </p>
               )}
             </div>
             <div className="w-full px-3">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="imagen">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                htmlFor="imagen"
+              >
                 Imagen
               </label>
               <input
@@ -257,19 +299,30 @@ function Subcategory () {
             </div>
           </div>
           {showAlert && (
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-              <strong className="font-bold">Subcategoría registrada con éxito!</strong>
-              <span className="block sm:inline"> Los detalles de la subcategoría han sido guardados.</span>
+            <div
+              className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+              role="alert"
+            >
+              <strong className="font-bold">
+                Subcategoría registrada con éxito!
+              </strong>
+              <span className="block sm:inline">
+                {' '}
+                Los detalles de la subcategoría han sido guardados.
+              </span>
             </div>
           )}
           <div className="flex justify-center">
-            <button className="shadow bg-[#a662bd] hover:bg-purple-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded" type="submit">
+            <button
+              className="shadow bg-[#a662bd] hover:bg-purple-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
+              type="submit"
+            >
               Registrar Subcategoría
             </button>
           </div>
         </form>
-        <Footer />
       </div>
+      <Footer />
     </div>
   )
 }

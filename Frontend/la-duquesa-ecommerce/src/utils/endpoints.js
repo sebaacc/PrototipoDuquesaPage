@@ -9,7 +9,14 @@ const endpoints = {
   // getOrders: `${BASE_URL}/orders`
   getMostAddedProducts: `${BASE_URL}/cart/cartInfo/findMostAddedProducts`,
   postForgotPass: `${BASE_URL}/users/forgot-password`,
-  getUser: `${BASE_URL}/users`
+  getUser: `${BASE_URL}/users`,
+  postCategory: `${BASE_URL}/product/category/createCategory`,
+  categories: `${BASE_URL}/product/category/findAllCategories`,
+  postSubcategory: `${BASE_URL}/product/subCategory/createSubCategory`,
+  getSubcategories: `${BASE_URL}/product/subCategory/findAllSubCategories`,
+  postProduct: `${BASE_URL}/product/product/createProduct`,
+  getProductById: `${BASE_URL}/product/product/findProductById`,
+  postToCart: `${BASE_URL}/cart/cartInfo/addProductToCart`
 }
 
 export default endpoints
