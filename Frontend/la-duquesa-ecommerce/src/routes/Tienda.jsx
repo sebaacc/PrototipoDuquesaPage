@@ -7,15 +7,6 @@ import {
   lazy,
   useRef
 } from 'react'
-import {
-  useState,
-  useCallback,
-  useEffect,
-  useMemo,
-  Suspense,
-  lazy,
-  useRef
-} from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -52,10 +43,6 @@ const Tienda = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      categories &&
-        handleFilterChange(
-          categories.find((category) => category.id === initialSearchTerm)
-        )
       categories &&
         handleFilterChange(
           categories.find((category) => category.id === initialSearchTerm)
@@ -132,7 +119,6 @@ const Tienda = () => {
   useEffect(() => {
     if (initialLoad) {
       console.log('lo hemos llamado')
-      console.log('lo hemos llamado')
       fetchPaginatedProducts()
     }
   }, [selectedSubCategory])
@@ -192,12 +178,6 @@ const Tienda = () => {
     try {
       const response = await axios.get(
         endpoints.getProductPaginate +
-          'page=' +
-          currentPage +
-          '&limit=' +
-          itemsPerPage +
-          '&subCategoryId=' +
-          selectedSubCategory
           'page=' +
           currentPage +
           '&limit=' +
@@ -369,11 +349,6 @@ const Tienda = () => {
             <button
               key={index}
               onClick={() => handlePageChange(index + 1)}
-              className={`px-4 py-2 mx-1 rounded ${
-                currentPage === index + 1
-                  ? 'bg-[#BD6292] text-white'
-                  : 'bg-gray-200 text-gray-800'
-              }`}
               className={`px-4 py-2 mx-1 rounded ${
                 currentPage === index + 1
                   ? 'bg-[#BD6292] text-white'
