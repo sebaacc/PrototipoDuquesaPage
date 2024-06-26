@@ -315,7 +315,7 @@ const Tienda = () => {
             products2.map((pastry, index) => (
               <Link to={'/detalle-de-producto/' + pastry.id} key={index}>
                 <div
-                  className="bg-white rounded-lg shadow-md p-4 cursor-pointer flex flex-col justify-between"
+                  className="bg-white rounded-lg shadow-md p-4 cursor-pointer flex flex-col justify-between h-[430px]"
                   onClick={() => handlePastryClick(pastry)}
                 >
                   <div>
