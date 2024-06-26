@@ -21,7 +21,8 @@ const endpoints = {
   deleteFromCart: `${BASE_URL}/cart/cartInfo/removeProductFromCart`,
   clearCart: `${BASE_URL}/cart/cartInfo/clearCart`,
   getProduct: `${BASE_URL}/product/product/findAllProducts`,
-  getCategory: `${BASE_URL}/product/category/findAllCategories`
+  getCategory: `${BASE_URL}/product/category/findAllCategories`,
+  getProductPaginate: `${BASE_URL}/product/product/paginated?`
 }
 
 export default endpoints
