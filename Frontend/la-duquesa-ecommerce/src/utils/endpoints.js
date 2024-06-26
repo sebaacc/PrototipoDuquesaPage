@@ -22,7 +22,8 @@ const endpoints = {
   clearCart: `${BASE_URL}/cart/cartInfo/clearCart`,
   getProduct: `${BASE_URL}/product/product/findAllProducts`,
   getCategory: `${BASE_URL}/product/category/findAllCategories`,
-  getProductPaginate: `${BASE_URL}/product/product/paginated?`
+  getProductPaginate: `${BASE_URL}/product/product/paginated?`,
+  putToCart: `${BASE_URL}/cart/cartInfo/changeProductAmount`
 }
 
 export default endpoints

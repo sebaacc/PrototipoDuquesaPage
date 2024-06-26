@@ -72,7 +72,10 @@ const Tienda = () => {
   const clearSearch = useCallback(() => {
     setSearchTerm('')
     setFilter('Todos')
+    setFilter2('')
     setCurrentPage(1)
+    setSelectedSubCategory('')
+    setSelectedCategory('')
   }, [])
 
   useEffect(() => {
@@ -205,6 +208,11 @@ const Tienda = () => {
                   />
                 </Suspense>
               ))}
+          </div>
+          <div>
+            <button onClick={clearSearch}>
+              REINICIAR CATEGORÍA
+            </button>
           </div>
           {/* se muestran las subcategories */}
           <div className="flex flex-wrap items-center gap-4">

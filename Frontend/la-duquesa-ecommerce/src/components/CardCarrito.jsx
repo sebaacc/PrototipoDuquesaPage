@@ -16,6 +16,7 @@ function CardCarrito ({ producto, setProductos }) {
   // Maneja el cambio del valor seleccionado del "select" de cantidad
   const handleChange = (event) => {
     setSelectedValue(event.target.value)
+    changeAmount(event.target.value)
     const newQuantity = parseInt(event.target.value, 10)
     setProductos((prevProductos) =>
       prevProductos.map((p) =>
@@ -23,6 +24,43 @@ function CardCarrito ({ producto, setProductos }) {
       )
     )
     console.log('valor seleccionado' + selectedValue)
+  }
+
+  async function changeAmount (selectedValue) {
+    console.log(selectedValue)
+    const token = localStorage.getItem('accessToken')
+    try {
+      const response = await axios.put(
+        endpoints.putToCart,
+        {
+          client: JSON.parse(localStorage.getItem('user')).sub,
+          product: producto.id,
+          quantity: Number(selectedValue)
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+
+      if (response.status === 200) {
+        console.log('se envió correctamente')
+        // mostrar un cartel que diga el producto se a anadido al carrito y un boton que diga "ver el carrito"
+      }
+
+      console.log(response.status)
+    } catch (error) {
+      if (
+        error.response.data ===
+        'The user already has that product added to the cart'
+      ) {
+        // mostrar un cartel que diga el producto se a anadido al carrito y un boton que diga "ver el carrito"
+      } else {
+        // hubo en error al anadir el producto
+      }
+      console.error('Error adding to cart:', error)
+    }
   }
 
   const handleDelete = async () => {
@@ -63,7 +101,7 @@ function CardCarrito ({ producto, setProductos }) {
               value={producto.amount}
               onChange={handleChange}
             >
-              {[...Array(10).keys()].map((num) => (
+              {[...Array(producto.quantityAvailable).keys()].map((num) => (
                 <option key={num + 1} value={num + 1}>
                   {num + 1}
                 </option>
