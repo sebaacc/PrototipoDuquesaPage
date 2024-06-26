@@ -16,6 +16,7 @@ import ScrollToTop from '../utils/ScrollToTop' // Cuando se carga la tienda te d
 import axios from 'axios'
 import endpoints from '../utils/endpoints'
 import AddToCart from '../components/Buttons/AddToCart'
+import { shortenUrl } from '../utils/shortenUrl'
 
 const FilterButton = lazy(() => import('../components/FilterButton'))
 const PastryModal = lazy(() => import('../components/PastryModal'))
@@ -230,7 +231,7 @@ const Tienda = () => {
           </p>
         </div>
         <div className="flex flex-col items-start md:items-center justify-between">
-          <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed my-2">
+          <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-lg/relaxed my-2">
             Categorías:
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
@@ -247,7 +248,7 @@ const Tienda = () => {
           </div>
           {/* se muestran las subcategories */}
           {selectedCategory && (
-            <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed my-2">
+            <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-lg/relaxed my-2">
               Sub-categorías:
             </p>
           )}
@@ -263,15 +264,17 @@ const Tienda = () => {
                 </Suspense>
               ))}
           </div>
-          <div className="flex justify-center mt-5">
-            <button
-              type="button"
-              className="h-18 px-6 py-2 font-semibold rounded-xl bg-[#C5E4E2] hover:bg-[#cb86ab] text-[#2c2c2c] hover:text-white transition-all duration-300"
-              onClick={clearSearch}
-            >
-              Reiniciar Categoría
-            </button>
-          </div>
+          {selectedCategory && (
+            <div className="flex justify-center mt-5">
+              <button
+                type="button"
+                className="h-18 px-6 py-2 font-semibold rounded-xl bg-[#C5E4E2] hover:bg-[#cb86ab] text-[#2c2c2c] hover:text-white transition-all duration-300"
+                onClick={clearSearch}
+              >
+                Reiniciar Categoría
+              </button>
+            </div>
+          )}
         </div>
         <div className="relative mb-4">
           <label className="block text-gray-700 font-bold mb-2">
@@ -318,7 +321,7 @@ const Tienda = () => {
                   <div>
                     <LazyLoad height={200} offset={100}>
                       <img
-                        src={pastry.imageURLs[0]}
+                        src={shortenUrl(pastry.imageURLs[0])}
                         alt={pastry.title}
                         className="h-40 w-full object-cover mb-4 rounded-lg"
                       />
