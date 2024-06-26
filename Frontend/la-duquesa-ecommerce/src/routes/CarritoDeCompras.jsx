@@ -104,17 +104,18 @@ function CarritoDeCompras () {
             </button>
           </div>
           <div className="flex justify-center">
-            <button
-              className={`${
-                productos.length === 0
-                  ? 'bg-gray-400'
-                  : 'bg-[#8B7BB1] hover:bg-[#BD6292]'
-              } text-white font-bold py-2 px-4 rounded mb-8 shadow transition-colors focus-visible:outline-none focus-visible:ring-1`}
-              disabled={productos.length === 0}
-              onClick={() => (window.location.href = '/pagos')}
-            >
-              Continuar Compra
-            </button>
+            <Link to={'/pagos'}>
+              <button
+                className={`${
+                  productos.length === 0
+                    ? 'bg-gray-400'
+                    : 'bg-[#8B7BB1] hover:bg-[#BD6292]'
+                } text-white font-bold py-2 px-4 rounded mb-8 shadow transition-colors focus-visible:outline-none focus-visible:ring-1`}
+                disabled={productos.length === 0}
+              >
+                Continuar Compra
+              </button>
+            </Link>
           </div>
         </div>
       </div>
