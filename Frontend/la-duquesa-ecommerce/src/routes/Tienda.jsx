@@ -345,7 +345,7 @@ const Tienda = () => {
             ))}
         </div>
         <div className="flex justify-center mt-8">
-          {Array.from({ length: totalPages }, (_, index) => (
+          {Array.from({ length: 3 }, (_, index) => (
             <button
               key={index}
               onClick={() => handlePageChange(index + 1)}
