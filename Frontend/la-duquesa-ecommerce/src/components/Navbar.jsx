@@ -5,34 +5,60 @@ import logo from '../img/LogoRosayAmarillo.png'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
-import { TbTruckDelivery, TbReport } from 'react-icons/tb'
-import {
-  MdFavorite,
-  MdHelp,
-  MdOutlineProductionQuantityLimits
-} from 'react-icons/md'
+import { TbReport } from 'react-icons/tb'
+import { MdOutlineProductionQuantityLimits } from 'react-icons/md'
 import { IoIosAddCircle } from 'react-icons/io'
 import { CiShoppingCart } from 'react-icons/ci'
 import { GrPowerShutdown } from 'react-icons/gr'
+import axios from 'axios'
+import endpoints from '../utils/endpoints'
 // import { icon } from '@fortawesome/fontawesome-svg-core'
 
 // import shopCar from '../img/cart-large-minimalistic-svgrepo-com.png'
 
 function Navbar () {
   const [nav, setNav] = useState(false)
-
+  const user = JSON.parse(localStorage.getItem('user'))
+  const userType = user?.realm_access?.roles?.includes('ADMIN') ?? false
   const [navMobile, setNavMobile] = useState(false)
   const [logedOut, setLogedOut] = useState(false)
 
   const liStyle = 'hover:text-[#CE76A4] mr-6 flex'
+  const [userFound, setUserFound] = useState()
 
   useEffect(() => {
     if (
-      localStorage.getItem('accessToken') == null ||
-      localStorage.getItem('accessToken') == undefined
+      localStorage.getItem('accessToken') === null ||
+      localStorage.getItem('accessToken') === undefined
     ) {
       setLogedOut(true)
     }
+  }, [])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userId = JSON.parse(localStorage.getItem('user')).sub
+      const token = localStorage.getItem('accessToken')
+
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+
+      try {
+        const response = await axios.get(
+          `${endpoints.getUser}/${userId}`,
+          config
+        )
+        console.log(response.data)
+
+        if (response.status === 200) {
+          setUserFound(response.data)
+        }
+      } catch (error) {
+        console.error('Error getting user:', error)
+      }
+    }
+    fetchData()
   }, [])
 
   const menuItems = [
@@ -133,7 +159,8 @@ function Navbar () {
       </div>
       {/* Rutas o vistas del sitio */}
 
-      {logedOut ? (
+      {logedOut
+        ? (
         <Link to={'/'} className="flex justify-between">
           <img
             className="size-28 mr-1 relative md:left-0 lg:left-0"
@@ -141,21 +168,29 @@ function Navbar () {
             alt=""
           />
         </Link>
-      ) : (
-        <article className="flex justify-between">
+          )
+        : (
+        <article className="flex justify-between items-center">
           <img
-            className="size-7 mr-1 relative left-7 md:left-0 lg:left-0"
+            className="size-7 mr-1 left-7 md:left-0 lg:left-0"
             src={ubication}
             alt=""
           />
           <p className="mt-1 flex flex-col md:flex-row text-center">
-            {/* <span className="font-bold mr-1">Enviar a</span> KR 21B #29 B - 149 */}
-            <span className="font-bold mr-1">
-              Configura tu dirección <br /> para recibir pedidos
+            <span className="font-bold mr-1 text-sm capitalize">
+              {userFound && userFound.location_details
+                ? (
+                    userFound.location_details
+                  )
+                : (
+                <>
+                  Configura tu dirección <br /> para recibir pedidos
+                </>
+                  )}
             </span>
           </p>
         </article>
-      )}
+          )}
 
       <article className="hidden sm:hidden md:hidden lg:block xl:block 2xl:block mt-1">
         <ul className="flex text-black font-semibold h-full items-center">
@@ -231,29 +266,35 @@ function Navbar () {
             <ul className="flex flex-col p-4 text-black gap-7 font-medium">
               {menuItems.map(({ icon, text, route }, index) => {
                 return (
-                  <div key={index} className="py-4">
-                    {route === '/'
-                      ? (
-                      <Link to={route}>
-                        <li
-                          onClick={() => {
-                            localStorage.clear()
-                            window.location.reload()
-                          }}
-                          className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300"
-                        >
-                          {icon} {text}
-                        </li>
-                      </Link>
-                        )
-                      : (
-                      <Link to={route}>
-                        <li className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300">
-                          {icon} {text}
-                        </li>
-                      </Link>
-                        )}
-                  </div>
+                  ((userType &&
+                    (text === 'Cargar Producto' ||
+                      text === 'Reporte de usuario' ||
+                      text === 'Reporte de producto')) ||
+                    text === 'Cerrar sesión') && (
+                    <div key={index} className="py-4">
+                      {route === '/'
+                        ? (
+                        <Link to={route}>
+                          <li
+                            onClick={() => {
+                              localStorage.clear()
+                              window.location.reload()
+                            }}
+                            className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300"
+                          >
+                            {icon} {text}
+                          </li>
+                        </Link>
+                          )
+                        : (
+                        <Link to={route}>
+                          <li className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300">
+                            {icon} {text}
+                          </li>
+                        </Link>
+                          )}
+                    </div>
+                  )
                 )
               })}
             </ul>

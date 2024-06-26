@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar'
 import { FaUserCircle } from 'react-icons/fa'
 import axios from 'axios'
 import endpoints from '../utils/endpoints'
+import Footer from '../components/Footer'
 
 const EditProfile = () => {
   const [profilePicture, setProfilePicture] = useState('/placeholder-user.jpg')
@@ -31,7 +32,10 @@ const EditProfile = () => {
       }
 
       try {
-        const response = await axios.get(`${endpoints.getUser}/${userId}`, config)
+        const response = await axios.get(
+          `${endpoints.getUser}/${userId}`,
+          config
+        )
         console.log(response.data)
 
         if (response.status === 200) {
@@ -45,7 +49,7 @@ const EditProfile = () => {
   }, [])
 
   const handleChange = useCallback((field, value) => {
-    setUser(prevUser => ({ ...prevUser, [field]: value }))
+    setUser((prevUser) => ({ ...prevUser, [field]: value }))
   }, [])
 
   const handleSubmit = async (event) => {
@@ -59,7 +63,11 @@ const EditProfile = () => {
     }
 
     try {
-      const response = await axios.patch(`${endpoints.getUser}/${userId}`, user, config)
+      const response = await axios.patch(
+        `${endpoints.getUser}/${userId}`,
+        user,
+        config
+      )
 
       if (response.status === 200) {
         setIsEditable(false)
@@ -74,10 +82,10 @@ const EditProfile = () => {
   return (
     <div>
       <Navbar />
-      <section className="w-full max-w-3xl mx-auto">
+      <section className="w-[90%] max-w-3xl mx-auto mb-10 ">
         <div className="px-4 md:px-6">
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-2xl">
               Edita tu perfil
             </h2>
             <p className="text-gray-500">
@@ -85,11 +93,11 @@ const EditProfile = () => {
             </p>
           </div>
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {successMessage && (
-            <div className="mt-4 p-2 bg-green-100 text-green-700 rounded">
-              {successMessage}
-            </div>
-          )}
+            {successMessage && (
+              <div className="mt-4 p-2 bg-green-100 text-green-700 rounded">
+                {successMessage}
+              </div>
+            )}
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <div className="space-y-2">
                 <label
@@ -209,7 +217,9 @@ const EditProfile = () => {
                   placeholder="Ejemplo: Cra 34 #43C - 31"
                   type="text"
                   value={user.location_details || ''}
-                  onChange={(e) => handleChange('location_details', e.target.value)}
+                  onChange={(e) =>
+                    handleChange('location_details', e.target.value)
+                  }
                   disabled={!isEditable}
                 />
               </div>
@@ -261,9 +271,9 @@ const EditProfile = () => {
               </button>
             </div>
           </form>
-
         </div>
       </section>
+      <Footer />
     </div>
   )
 }

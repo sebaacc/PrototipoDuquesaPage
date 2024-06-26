@@ -16,7 +16,7 @@ const SearchProduct = () => {
       <div className="m-10 md:flex justify-center">
         <form onSubmit={handleSearch} className="relative w-full max-w-4xl">
           <input
-            className="border p-4 rounded-lg w-full h-[80px] bg-[#D9D9D9] text-black font-medium pl-12 outline-none"
+            className="border border-[#D9D9D9] p-4 rounded-2xl w-full h-[80px] bg-[#F3F3F3] text-black font-medium pl-12 outline-none shadow-sm hover:shadow-md transition-all duration-150"
             type="text"
             placeholder="Busca un producto..."
             value={searchTerm}
@@ -27,7 +27,7 @@ const SearchProduct = () => {
             type="submit"
             className="absolute left-4 top-1/2 transform -translate-y-1/2"
           >
-            <FaSearch className="text-black" />
+            <FaSearch className="text-[#808080]" />
           </button>
         </form>
       </div>
