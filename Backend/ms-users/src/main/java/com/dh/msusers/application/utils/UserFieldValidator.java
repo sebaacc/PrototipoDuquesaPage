@@ -37,8 +37,8 @@ public class UserFieldValidator {
         return isNull(user.getEmail()) || isNull(user.getFirstName()) || isNull(user.getLastName()) || isNull(user.getPassword());
     }
 
-    public static void validateUserFields(User user) {
-        if (isNullField(user)) {
+    public static void validateUserFields(User user, boolean required) {
+        if (required && isNullField(user)) {
             throwInvalidFieldException("user", "The fields email, firstName, lastName and password are required.");
         }
 
@@ -79,3 +79,4 @@ public class UserFieldValidator {
         throw new RestException(BAD_REQUEST, Map.of(field, message).toString());
     }
 }
+

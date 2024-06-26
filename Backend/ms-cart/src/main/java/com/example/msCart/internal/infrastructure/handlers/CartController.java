@@ -7,6 +7,7 @@ import com.example.msCart.internal.domain.models.Product;
 import com.example.msCart.internal.domain.services.ICartService;
 import com.example.msCart.internal.infrastructure.feign.ProductClient;
 import com.example.msCart.internal.utils.exceptions.BadRequestException;
+import com.example.msCart.internal.utils.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,12 @@ public class CartController {
         public ResponseEntity addProductToCart(@RequestBody Cart cart) throws BadRequestException {
                 cartService.addProductToCart(cart);
                 return ResponseEntity.ok("Product added to the cart");
+        }
+
+        @PutMapping("/changeProductAmount")
+        public ResponseEntity changeProductAmount(@RequestBody Cart cart) throws BadRequestException, ResourceNotFoundException {
+                cartService.changingProductAmount(cart);
+                return ResponseEntity.ok("Amount changed");
         }
 
 

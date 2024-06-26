@@ -41,7 +41,11 @@ public class SecurityConfiguration {
         return http.authorizeExchange(exchanges -> exchanges
                 .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .pathMatchers(HttpMethod.POST, "/users/save", "/users/login", "/mspayp/pay/handleWebhook").permitAll()
-                .pathMatchers(HttpMethod.GET, "/users/verify").permitAll()
+                .pathMatchers(HttpMethod.GET, "/users/verify", "/product/**").permitAll()
+                .pathMatchers(HttpMethod.POST,  "/product/**").hasRole("ADMIN")
+                .pathMatchers(HttpMethod.PUT,  "/product/**").hasRole("ADMIN")
+                .pathMatchers(HttpMethod.DELETE,  "/product/**").hasRole("ADMIN")
+                .pathMatchers(HttpMethod.PATCH,  "/product/**").hasRole("ADMIN")
                 .pathMatchers("/admin").hasRole("ADMIN") // Example of role-based access control
                 .anyExchange().authenticated())
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)

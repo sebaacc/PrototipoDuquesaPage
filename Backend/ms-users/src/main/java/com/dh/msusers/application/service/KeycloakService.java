@@ -51,7 +51,7 @@ public class KeycloakService implements IKeycloakService {
 
     @Override
     public UserResponse save(User user) {
-        UserFieldValidator.validateUserFields(user);
+        UserFieldValidator.validateUserFields(user, true);
 
         List<User> users = keycloakRepository.findByUsername(user.getUsername());
         if (!users.isEmpty()) {
@@ -92,25 +92,10 @@ public class KeycloakService implements IKeycloakService {
                 .findFirst()
                 .orElseThrow(() -> new RestException(NOT_FOUND, String.format("User with id %s not found", id)));
 
-        if (nonNull(user.getFirstName()) && UserFieldValidator.isValidName(user.getFirstName())) {
-            userToPatch.setFirstName(user.getFirstName());
-        }
+        UserFieldValidator.validateUserFields(user, false);
 
-        if (nonNull(user.getLastName()) && UserFieldValidator.isValidName(user.getLastName())) {
-            userToPatch.setLastName(user.getLastName());
-        }
-
-        if (nonNull(user.getEmail()) && UserFieldValidator.isValidEmail(user.getEmail())) {
-            userToPatch.setEmail(user.getEmail());
-        }
-        
-        /*
-        if (nonNull(user.getPassword()) && UserFieldValidator.isValidPassword(user.getPassword())) {
-            userToPatch.setPassword(user.getPassword());
-        }
-*/
         try {
-            return new UserResponse(keycloakRepository.patchUpdate(userToPatch, id));
+            return new UserResponse(keycloakRepository.patchUpdate(user, id));
         } catch (HttpClientErrorException e) {
             throw new RestException(INTERNAL_SERVER_ERROR, e.getResponseBodyAsString());
         } catch (Exception e) {

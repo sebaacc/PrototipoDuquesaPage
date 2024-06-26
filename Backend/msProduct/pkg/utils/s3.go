@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"os"
-	"time"
-
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -50,7 +48,7 @@ func GetFileFromS3(fileName string) (*s3.GetObjectOutput, error) {
     })
 }
 
-
+/*
 func GeneratePresignedURL(fileName string) (string, error) {
     req, _ := S3Session.GetObjectRequest(&s3.GetObjectInput{
         Bucket: aws.String(BucketName),
@@ -61,5 +59,9 @@ func GeneratePresignedURL(fileName string) (string, error) {
         return "", fmt.Errorf("failed to sign request: %v", err)
     }
     return urlStr, nil
+}
+*/
+func GeneratePresignedURL(fileName string) string {
+    return fmt.Sprintf("https://%s.s3.%s.amazonaws.com/%s", BucketName, "us-east-2", fileName)
 }
 

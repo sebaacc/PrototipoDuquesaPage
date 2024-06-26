@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo, Suspense, lazy } from 'react'
+import { useState, useCallback, useEffect, useMemo, Suspense, lazy, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -30,12 +30,18 @@ const Tienda = () => {
   const [products, setProducts] = useState([])
   const [products2, setProducts2] = useState([])
   const [subcategories2, setSubcategories2] = useState([])
+  const initialLoad = useRef(false)
 
   useEffect(() => {
-    categories &&
-      handleFilterChange(
+
+    setTimeout(() => {
+      categories && handleFilterChange(
         categories.find((category) => category.id === initialSearchTerm)
       )
+
+      initialLoad.current = true
+    }, 1000)
+
   }, [subcategories])
 
   const handleFilterChange = useCallback((newFilter) => {
@@ -103,21 +109,28 @@ const Tienda = () => {
   }, [selectedCategory])
 
   useEffect(() => {
-    fetchPaginatedProducts()
+    if (initialLoad) {
+      console.log("lo hemos llamado");
+      fetchPaginatedProducts()
+    }
   }, [selectedSubCategory])
 
   useEffect(() => {
     fetchCategories()
-    fetchSubCategories()
     fetchPaginatedProducts()
+    fetchSubCategories()
   }, [])
 
   useEffect(() => {
-    fetchPaginatedProducts()
+    if (initialLoad) {
+      fetchPaginatedProducts()
+    }
   }, [itemsPerPage])
 
   useEffect(() => {
-    fetchPaginatedProducts()
+    if (initialLoad) {
+      fetchPaginatedProducts()
+    }
   }, [currentPage])
 
   const fetchCategories = async () => {
@@ -153,31 +166,35 @@ const Tienda = () => {
   }
 
   const fetchPaginatedProducts = async () => {
-    if (initialSearchTerm) {
-      try {
-        const response = await axios.get(
-          endpoints.getProductPaginate +
-            'page=' +
-            currentPage +
-            '&limit=' +
-            itemsPerPage +
-            '&subCategoryId=' +
-            selectedSubCategory
-        )
-        console.log(response.data)
+    console.log(selectedSubCategory)
+    try {
+      const response = await axios.get(
+        endpoints.getProductPaginate +
+        'page=' +
+        currentPage +
+        '&limit=' +
+        itemsPerPage +
+        '&subCategoryId=' +
+        selectedSubCategory
+      )
+      console.log(response.data)
 
-        if (response.status === 200) {
-          console.log(response.data)
-          setProducts(response.data)
-          setProducts2(response.data)
-        } else {
-          console.error('Error: Response status is not 200 OK', response.status)
-        }
-      } catch (error) {
-        console.error('Error getting categories:', error)
+      if (response.status === 200) {
+        console.log(response.data)
+        setProducts(response.data)
+        setProducts2(response.data)
+      } else {
+        console.error('Error: Response status is not 200 OK', response.status)
       }
+    } catch (error) {
+      console.error('Error getting categories:', error)
     }
+
   }
+
+  useEffect(() => {
+    console.log(products2)
+  }, [products])
 
   const filteredPastries = useMemo(() => {
     console.log(products)
@@ -306,11 +323,10 @@ const Tienda = () => {
             <button
               key={index}
               onClick={() => handlePageChange(index + 1)}
-              className={`px-4 py-2 mx-1 rounded ${
-                currentPage === index + 1
-                  ? 'bg-[#BD6292] text-white'
-                  : 'bg-gray-200 text-gray-800'
-              }`}
+              className={`px-4 py-2 mx-1 rounded ${currentPage === index + 1
+                ? 'bg-[#BD6292] text-white'
+                : 'bg-gray-200 text-gray-800'
+                }`}
             >
               {index + 1}
             </button>

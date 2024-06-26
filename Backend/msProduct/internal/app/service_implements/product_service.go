@@ -52,8 +52,11 @@ func (s *productService) CreateProduct(product *models.Product, files []*multipa
             return err
         }
 
+
+        
+
         // Generate the presigned URL
-        imageURL, err := utils.GeneratePresignedURL(filename)
+        imageURL := utils.GeneratePresignedURL(filename)
         if err != nil {
             fmt.Println("Error al generar la URL presignada:", err)
             return err

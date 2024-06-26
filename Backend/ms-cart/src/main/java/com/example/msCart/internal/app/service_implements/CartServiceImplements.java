@@ -8,6 +8,7 @@ import com.example.msCart.internal.domain.models.Product;
 import com.example.msCart.internal.domain.services.ICartService;
 import com.example.msCart.internal.infrastructure.feign.ProductClient;
 import com.example.msCart.internal.utils.exceptions.BadRequestException;
+import com.example.msCart.internal.utils.exceptions.ResourceNotFoundException;
 import feign.FeignException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -67,12 +68,31 @@ public class CartServiceImplements implements ICartService {
                     cartRepository.save(cart);
                 }
                 // Actualizar la cantidad del producto para reflejar la cantidad en el carrito
+                product.setQuantityAvailable(product.getAmount());
                 product.setAmount(cart.getQuantity());
                 updatedProducts.add(product);
             }
         }
 
         return updatedProducts;
+    }
+
+    @Override
+    public void changingProductAmount(Cart cart) throws ResourceNotFoundException, BadRequestException {
+        Optional<Cart> posibleCart = cartRepository.findByClientAndProduct(cart.getClient(), cart.getProduct());
+        if(posibleCart.isEmpty())
+        {
+            throw new ResourceNotFoundException("The cart was not found");
+        }
+
+        Boolean isAvailable = productClient.isProductAvailable(cart.getProduct(), cart.getQuantity(), false);
+        if (isAvailable) {
+            posibleCart.get().setQuantity(cart.getQuantity());
+            cartRepository.save(posibleCart.get());
+        } else {
+            throw new BadRequestException("The amount of products that you want to add is not available");
+        }
+
     }
 
 

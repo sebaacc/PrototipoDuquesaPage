@@ -85,6 +85,10 @@ func (s *categoryService) CreateCategory(category *models.Category, file *multip
 		return err
 	}
 
+	category.CategoryImage = utils.GeneratePresignedURL(filename)
+    fmt.Println("URL de la imagen:", category.CategoryImage)
+
+	/*
 	// Asignar la URL de la imagen al campo CategoryImage
 	category.CategoryImage, err = utils.GeneratePresignedURL(filename)
 	if err != nil {
@@ -93,7 +97,7 @@ func (s *categoryService) CreateCategory(category *models.Category, file *multip
 	}
 
 	fmt.Println("URL de la imagen:", category.CategoryImage)
-
+*/
 	fmt.Println("Categoría a crear:", category)
 	err = s.categoryRepo.Create(category)
 	if err != nil {
