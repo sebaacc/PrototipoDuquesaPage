@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, Suspense, lazy } from 'react'
+import { useState, useCallback, useEffect, useMemo, Suspense, lazy } from 'react'
 import { useLocation } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -7,6 +7,8 @@ import { IoMdClose } from 'react-icons/io' // Import the close icon
 import LazyLoad from 'react-lazyload'
 import pastries from '../data/pastries'
 import ScrollToTop from '../utils/ScrollToTop' // Cuando se carga la tienda te dirige al inicio de la misma incorporando este componente.
+import axios from 'axios'
+import endpoints from '../utils/endpoints'
 
 const FilterButton = lazy(() => import('../components/FilterButton'))
 const PastryModal = lazy(() => import('../components/PastryModal'))
@@ -22,6 +24,11 @@ const Tienda = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [cart, setCart] = useState([])
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm)
+  const [categories, setCategories] = useState()
+  const [subcategories, setSubCategories] = useState()
+  const [selectedCategory, setSelectedCategory] = useState()
+  const [selectedSubCategory, setSelectedSubCategory] = useState('')
+  const [products, setProducts] = useState([])
 
   const handleFilterChange = useCallback((newFilter) => {
     setSearchTerm('')
@@ -61,6 +68,68 @@ const Tienda = () => {
     setCurrentPage(1)
   }, [])
 
+  useEffect(() => {
+    fetchCategories()
+    fetchSubCategories()
+    fetcPaginatedProducts()
+  }, [])
+
+  useEffect(() => {
+    fetcPaginatedProducts()
+  }, [itemsPerPage])
+
+  useEffect(() => {
+    fetcPaginatedProducts()
+  }, [currentPage])
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(endpoints.getCategory)
+      console.log(response.data)
+
+      if (response.status === 200) {
+        console.log(response.data)
+        setCategories(response.data)
+      } else {
+        console.error('Error: Response status is not 200 OK', response.status)
+      }
+    } catch (error) {
+      console.error('Error getting categories:', error)
+    }
+  }
+
+  const fetchSubCategories = async () => {
+    try {
+      const response = await axios.get(endpoints.getSubcategories)
+      console.log(response.data)
+
+      if (response.status === 200) {
+        console.log(response.data)
+        setSubCategories(response.data)
+      } else {
+        console.error('Error: Response status is not 200 OK', response.status)
+      }
+    } catch (error) {
+      console.error('Error getting categories:', error)
+    }
+  }
+
+  const fetcPaginatedProducts = async () => {
+    try {
+      const response = await axios.get(endpoints.getProductPaginate + 'page=' + currentPage + '&limit=' + itemsPerPage + '&subCategoryId=' + selectedSubCategory)
+      console.log(response.data)
+
+      if (response.status === 200) {
+        console.log(response.data)
+        setProducts(response.data)
+      } else {
+        console.error('Error: Response status is not 200 OK', response.status)
+      }
+    } catch (error) {
+      console.error('Error getting categories:', error)
+    }
+  }
+
   const filteredPastries = useMemo(() => {
     return pastries
       .filter((pastry) => (filter === 'Todos' ? true : pastry.type === filter))
@@ -89,11 +158,11 @@ const Tienda = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
-            {['Todos', 'Pastel', 'Galleta', 'Tarta', 'Pastelería'].map(
+            {categories && categories.map(
               (type) => (
-                <Suspense fallback={<div>Cargando...</div>} key={type}>
+                <Suspense fallback={<div>Cargando...</div>} key={type.id}>
                   <FilterButton
-                    filter={type}
+                    filter={type.name}
                     currentFilter={filter}
                     onClick={handleFilterChange}
                   />
@@ -137,7 +206,7 @@ const Tienda = () => {
           </label>
         </div>
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
-          {currentPastries.map((pastry, index) => (
+          {products.map((pastry, index) => (
             <div
               key={index}
               className="bg-white rounded-lg shadow-md p-4 cursor-pointer flex flex-col justify-between"
@@ -146,12 +215,12 @@ const Tienda = () => {
               <div>
                 <LazyLoad height={200} offset={100}>
                   <img
-                    src={pastry.imageURL}
+                    src={pastry.imageURLs[0]}
                     alt={pastry.title}
                     className="h-40 w-full object-cover mb-4 rounded-lg"
                   />
                 </LazyLoad>
-                <h2 className="text-xl font-semibold mb-2">{pastry.title}</h2>
+                <h2 className="text-xl font-semibold mb-2">{pastry.name}</h2>
                 <p className="text-gray-600 mb-2">{pastry.description}</p>
                 <p className="text-gray-800 font-bold mb-2">
                   ${pastry.price.toLocaleString()}

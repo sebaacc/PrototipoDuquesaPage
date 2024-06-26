@@ -16,24 +16,26 @@ const HomeCategories = () => {
   const [categories, setCategories] = useState()
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(endpoints.getCategory)
-        console.log(response.data)
-
-        if (response.status === 200) {
-          console.log(response.data)
-          const shuffledCategories = shuffleArray(response.data)
-          setCategories(shuffledCategories)
-        } else {
-          console.error('Error: Response status is not 200 OK', response.status)
-        }
-      } catch (error) {
-        console.error('Error getting categories:', error)
-      }
-    }
     fetchCategories()
+    // fetchSubCategories()
   }, [])
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(endpoints.getCategory)
+      console.log(response.data)
+
+      if (response.status === 200) {
+        console.log(response.data)
+        const shuffledCategories = shuffleArray(response.data)
+        setCategories(shuffledCategories)
+      } else {
+        console.error('Error: Response status is not 200 OK', response.status)
+      }
+    } catch (error) {
+      console.error('Error getting categories:', error)
+    }
+  }
 
   return (
     <>
