@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useMemo, Suspense, lazy } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { CiShoppingCart } from 'react-icons/ci'
@@ -206,9 +206,9 @@ const Tienda = () => {
           </label>
         </div>
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
-          {products.map((pastry, index) => (
+        {products && products.map((pastry, index) => (
+            <Link to={'/detalle-de-producto/' + pastry.id} key={index}>
             <div
-              key={index}
               className="bg-white rounded-lg shadow-md p-4 cursor-pointer flex flex-col justify-between"
               onClick={() => handlePastryClick(pastry)}
             >
@@ -224,9 +224,8 @@ const Tienda = () => {
                 <p className="text-gray-600 mb-2">{pastry.description}</p>
                 <p className="text-gray-800 font-bold mb-2">
                   ${pastry.price.toLocaleString()}
-                </p>{' '}
+                </p>
               </div>
-              {/* Mostrar el precio */}
               <div className="flex justify-between items-center">
                 <p className="text-gray-800 font-bold">{pastry.type}</p>
                 <button
@@ -241,7 +240,9 @@ const Tienda = () => {
                 </button>
               </div>
             </div>
-          ))}
+          </Link>
+
+        ))}
         </div>
         <div className="flex justify-center mt-8">
           {Array.from({ length: totalPages }, (_, index) => (
