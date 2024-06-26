@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { priceFormatter } from '../utils/PriceFormatter'
 import axios from 'axios'
 import endpoints from '../utils/endpoints'
+
 function CardCarrito ({ producto, setProductos }) {
   const { name, imageURLs, price, amount } = producto
-  // Define el estado para el valor seleccionado del select
   const [selectedValue, setSelectedValue] = useState('opcion2') // Valor por defecto
 
   const precioFormateado = priceFormatter(price * amount)
@@ -13,7 +13,6 @@ function CardCarrito ({ producto, setProductos }) {
   const token = localStorage.getItem('accessToken')
   const userId = JSON.parse(localStorage.getItem('user')).sub
 
-  // Maneja el cambio del valor seleccionado del "select" de cantidad
   const handleChange = (event) => {
     setSelectedValue(event.target.value)
     changeAmount(event.target.value)
@@ -46,20 +45,14 @@ function CardCarrito ({ producto, setProductos }) {
 
       if (response.status === 200) {
         console.log('se envió correctamente')
-        // mostrar un cartel que diga el producto se a anadido al carrito y un boton que diga "ver el carrito"
       }
 
       console.log(response.status)
     } catch (error) {
-      if (
-        error.response.data ===
-        'The user already has that product added to the cart'
-      ) {
-        // mostrar un cartel que diga el producto se a anadido al carrito y un boton que diga "ver el carrito"
+      if (error.response.data === 'The user already has that product added to the cart') {
       } else {
-        // hubo en error al anadir el producto
+        console.error('Error adding to cart:', error)
       }
-      console.error('Error adding to cart:', error)
     }
   }
 
@@ -73,7 +66,6 @@ function CardCarrito ({ producto, setProductos }) {
       console.log(response.data)
 
       if (response.status === 200) {
-        console.log(response.data)
         setProductos((prevProductos) =>
           prevProductos.filter((p) => p.name !== producto.name)
         )
@@ -85,9 +77,9 @@ function CardCarrito ({ producto, setProductos }) {
 
   return (
     <>
-      <div className="relative w-11/12 flex m-auto mt-5 mb-5 border-2 border-[#D1D1D1] rounded-xl">
+      <div className="relative w-11/12 flex m-auto mt-5 mb-5 border-2 border-[#D1D1D1] rounded-xl max-h-35" style={{ height: '250px' }}>
         <img
-          className="w-2/4 rounded-l-xl object-cover"
+          className="w-2/4 h-full rounded-l-xl object-cover"
           src={imageURLs[0]}
           alt={name}
         />
@@ -95,7 +87,6 @@ function CardCarrito ({ producto, setProductos }) {
           <p className="font-bold mb-3">{name}</p>
           <div className="flex max-sm:flex-col lg:flex-row items-center">
             <p className="font-light mr-2">Cantidad:</p>
-
             <select
               className="py-1 px-1 border border-[#2D5651] mr-6 focus:outline-none rounded text-lg text-center"
               value={producto.amount}
@@ -108,7 +99,6 @@ function CardCarrito ({ producto, setProductos }) {
               ))}
             </select>
           </div>
-
           <p className="mb-4 mt-4 text-[#2D5651] font-normal font-sans">
             ${precioFormateado}
           </p>
@@ -128,14 +118,14 @@ function CardCarrito ({ producto, setProductos }) {
   )
 }
 
-// Validación de tipos de props
 CardCarrito.propTypes = {
   producto: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     imageURLs: PropTypes.array.isRequired,
     price: PropTypes.number.isRequired,
-    amount: PropTypes.number.isRequired
+    amount: PropTypes.number.isRequired,
+    quantityAvailable: PropTypes.number.isRequired
   }).isRequired,
   setProductos: PropTypes.func.isRequired
 }

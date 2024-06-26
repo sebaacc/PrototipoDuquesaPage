@@ -1,9 +1,13 @@
+import { useState } from 'react'
 import axios from 'axios'
 import endpoints from '../../utils/endpoints'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 const AddToCart = ({ product, selectedValue }) => {
+  const [isAdded, setIsAdded] = useState(false)
+  const [isAlreadyInCart, setIsAlreadyInCart] = useState(false)
+
   async function addToCart () {
     console.log('prueba')
     const token = localStorage.getItem('accessToken')
@@ -24,7 +28,8 @@ const AddToCart = ({ product, selectedValue }) => {
 
       if (response.status === 200) {
         console.log('se envió correctamente')
-        // mostrar un cartel que diga el producto se a anadido al carrito y un boton que diga "ver el carrito"
+        setIsAdded(true)
+        setIsAlreadyInCart(false)
       }
 
       console.log(response.status)
@@ -33,25 +38,45 @@ const AddToCart = ({ product, selectedValue }) => {
         error.response.data ===
         'The user already has that product added to the cart'
       ) {
-        // mostrar un cartel que diga el producto se a anadido al carrito y un boton que diga "ver el carrito"
+        setIsAlreadyInCart(true)
+        setIsAdded(false)
       } else {
-        // hubo en error al anadir el producto
+        console.error('Error adding to cart:', error)
+        setIsAdded(false)
+        setIsAlreadyInCart(false)
       }
-      console.error('Error adding to cart:', error)
     }
   }
 
   return (
     <>
-      <Link to={'/carrito-de-compras'}>
-        <button
-          type="button"
-          className="h-14 px-6 py-2 font-semibold rounded-xl bg-[#BD6292] hover:bg-[#f187bf] text-white transition-all duration-150"
-          onClick={addToCart}
-        >
-          Añadir al carrito
-        </button>
-      </Link>
+      <button
+        type="button"
+        className="h-14 px-6 py-2 font-semibold rounded-xl bg-[#BD6292] hover:bg-[#f187bf] text-white"
+        onClick={addToCart}
+      >
+        Añadir al carrito
+      </button>
+      {isAdded && (
+        <div className="fixed bottom-0 right-0 m-4 p-4 bg-green-500 text-white rounded-xl shadow-lg">
+          <p>Producto añadido al carrito correctamente</p>
+          <Link to={'/carrito-de-compras'}>
+            <button className="mt-2 px-4 py-2 bg-white text-green-500 rounded-md">
+              Ver el carrito
+            </button>
+          </Link>
+        </div>
+      )}
+      {isAlreadyInCart && (
+        <div className="fixed bottom-0 right-0 m-4 p-4 bg-red-500 text-white rounded-xl shadow-lg">
+          <p>Este producto ya existe en el carrito</p>
+          <Link to={'/carrito-de-compras'}>
+            <button className="mt-2 px-4 py-2 bg-white text-red-500 rounded-md">
+              Ver el carrito
+            </button>
+          </Link>
+        </div>
+      )}
     </>
   )
 }
