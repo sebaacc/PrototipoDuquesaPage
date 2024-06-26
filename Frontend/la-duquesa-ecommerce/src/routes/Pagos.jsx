@@ -21,7 +21,9 @@ const PaymentForm = () => {
   }, [])
 
   useEffect(() => {
-    handleSubmitPayment()
+    setTimeout(() => {
+      handleSubmitPayment()
+    }, 6000)
   }, [productos])
 
   const fetchData = async () => {
@@ -40,7 +42,7 @@ const PaymentForm = () => {
         let precioTotalASumar = 0
 
         response.data.forEach((producto) => {
-          precioTotalASumar += (producto.price * producto.amount)
+          precioTotalASumar += producto.price * producto.amount
         })
         setTotalPrice(precioTotalASumar)
 
@@ -217,9 +219,7 @@ const PaymentForm = () => {
               Pay Now
             </button>
             */}
-            {preferenceId && (
-              <Wallet initialization={{ preferenceId }} />
-            )}
+            {preferenceId && <Wallet initialization={{ preferenceId }} />}
           </div>
         </div>
       </div>
