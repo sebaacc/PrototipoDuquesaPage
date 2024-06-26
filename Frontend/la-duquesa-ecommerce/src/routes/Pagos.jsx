@@ -23,7 +23,7 @@ const PaymentForm = () => {
   useEffect(() => {
     setTimeout(() => {
       handleSubmitPayment()
-    }, 6000)
+    }, 2000)
   }, [productos])
 
   const fetchData = async () => {
