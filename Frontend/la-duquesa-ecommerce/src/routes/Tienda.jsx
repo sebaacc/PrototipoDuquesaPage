@@ -19,6 +19,7 @@ const Tienda = () => {
   const initialSearchTerm = queryParams.get('search') || ''
 
   const [filter, setFilter] = useState('Todos')
+  const [filter2, setFilter2] = useState('')
   const [selectedPastry, setSelectedPastry] = useState(null)
   const [itemsPerPage, setItemsPerPage] = useState(6)
   const [currentPage, setCurrentPage] = useState(1)
@@ -29,11 +30,23 @@ const Tienda = () => {
   const [selectedCategory, setSelectedCategory] = useState()
   const [selectedSubCategory, setSelectedSubCategory] = useState('')
   const [products, setProducts] = useState([])
+  const [products2, setProducts2] = useState([])
+  const [subcategories2, setSubcategories2] = useState([])
 
   const handleFilterChange = useCallback((newFilter) => {
     setSearchTerm('')
-    setFilter(newFilter)
+    setFilter(newFilter.name)
     setCurrentPage(1)
+    setSelectedCategory(newFilter.id)
+    console.log(newFilter)
+  }, [])
+
+  const handleFilterChange2 = useCallback((newFilter) => {
+    setSearchTerm('')
+    setFilter2(newFilter.name)
+    setCurrentPage(1)
+    setSelectedSubCategory(newFilter.id)
+    console.log(newFilter)
   }, [])
 
   const handlePastryClick = useCallback((pastry) => {
@@ -69,17 +82,38 @@ const Tienda = () => {
   }, [])
 
   useEffect(() => {
+    if (subcategories) {
+      const filteredSubcategories = subcategories.filter(
+        (category) => category.categoryId === selectedCategory
+      )
+
+      setSubcategories2(filteredSubcategories)
+
+      if (filteredSubcategories.length > 0) {
+        setSelectedSubCategory(filteredSubcategories[0].id)
+        setFilter2(filteredSubcategories[0].name)
+      } else {
+        setSelectedSubCategory(null)
+      }
+    }
+  }, [selectedCategory])
+
+  useEffect(() => {
+    fetchPaginatedProducts()
+  }, [selectedSubCategory])
+
+  useEffect(() => {
     fetchCategories()
     fetchSubCategories()
-    fetcPaginatedProducts()
+    fetchPaginatedProducts()
   }, [])
 
   useEffect(() => {
-    fetcPaginatedProducts()
+    fetchPaginatedProducts()
   }, [itemsPerPage])
 
   useEffect(() => {
-    fetcPaginatedProducts()
+    fetchPaginatedProducts()
   }, [currentPage])
 
   const fetchCategories = async () => {
@@ -114,14 +148,23 @@ const Tienda = () => {
     }
   }
 
-  const fetcPaginatedProducts = async () => {
+  const fetchPaginatedProducts = async () => {
     try {
-      const response = await axios.get(endpoints.getProductPaginate + 'page=' + currentPage + '&limit=' + itemsPerPage + '&subCategoryId=' + selectedSubCategory)
+      const response = await axios.get(
+        endpoints.getProductPaginate +
+          'page=' +
+          currentPage +
+          '&limit=' +
+          itemsPerPage +
+          '&subCategoryId=' +
+          selectedSubCategory
+      )
       console.log(response.data)
 
       if (response.status === 200) {
         console.log(response.data)
         setProducts(response.data)
+        setProducts2(response.data)
       } else {
         console.error('Error: Response status is not 200 OK', response.status)
       }
@@ -131,18 +174,18 @@ const Tienda = () => {
   }
 
   const filteredPastries = useMemo(() => {
-    return pastries
-      .filter((pastry) => (filter === 'Todos' ? true : pastry.type === filter))
-      .filter((pastry) =>
+    console.log(products)
+    setProducts2(
+      products.filter((pastry) =>
         pastry.name.toLowerCase().includes(searchTerm.toLowerCase())
       )
+    )
   }, [filter, searchTerm])
 
-  const totalItems = filteredPastries.length
+  const totalItems = products.length
   const totalPages = Math.ceil(totalItems / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
-  const currentPastries = filteredPastries.slice(startIndex, endIndex)
 
   return (
     <section className="min-h-screen">
@@ -158,17 +201,29 @@ const Tienda = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
-            {categories && categories.map(
-              (type) => (
+            {categories &&
+              categories.map((type) => (
                 <Suspense fallback={<div>Cargando...</div>} key={type.id}>
                   <FilterButton
                     filter={type.name}
                     currentFilter={filter}
-                    onClick={handleFilterChange}
+                    onClick={() => handleFilterChange(type)}
                   />
                 </Suspense>
-              )
-            )}
+              ))}
+          </div>
+          {/* se muestran las subcategories */}
+          <div className="flex flex-wrap items-center gap-4">
+            {subcategories2 &&
+              subcategories2.map((type) => (
+                <Suspense fallback={<div>Cargando...</div>} key={type.id}>
+                  <FilterButton
+                    filter={type.name}
+                    currentFilter={filter2}
+                    onClick={() => handleFilterChange2(type)}
+                  />
+                </Suspense>
+              ))}
           </div>
         </div>
         <div className="relative mb-4">
@@ -206,43 +261,45 @@ const Tienda = () => {
           </label>
         </div>
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
-        {products && products.map((pastry, index) => (
-            <Link to={'/detalle-de-producto/' + pastry.id} key={index}>
-            <div
-              className="bg-white rounded-lg shadow-md p-4 cursor-pointer flex flex-col justify-between"
-              onClick={() => handlePastryClick(pastry)}
-            >
-              <div>
-                <LazyLoad height={200} offset={100}>
-                  <img
-                    src={pastry.imageURLs[0]}
-                    alt={pastry.title}
-                    className="h-40 w-full object-cover mb-4 rounded-lg"
-                  />
-                </LazyLoad>
-                <h2 className="text-xl font-semibold mb-2">{pastry.name}</h2>
-                <p className="text-gray-600 mb-2">{pastry.description}</p>
-                <p className="text-gray-800 font-bold mb-2">
-                  ${pastry.price.toLocaleString()}
-                </p>
-              </div>
-              <div className="flex justify-between items-center">
-                <p className="text-gray-800 font-bold">{pastry.type}</p>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleAddToCart(pastry)
-                  }}
-                  className="bg-[#BD6292] text-white px-4 py-2 rounded-lg shadow-md"
+          {products2 &&
+            products2.map((pastry, index) => (
+              <Link to={'/detalle-de-producto/' + pastry.id} key={index}>
+                <div
+                  className="bg-white rounded-lg shadow-md p-4 cursor-pointer flex flex-col justify-between"
+                  onClick={() => handlePastryClick(pastry)}
                 >
-                  <CiShoppingCart className="inline-block mr-1" />
-                  Agregar al carrito
-                </button>
-              </div>
-            </div>
-          </Link>
-
-        ))}
+                  <div>
+                    <LazyLoad height={200} offset={100}>
+                      <img
+                        src={pastry.imageURLs[0]}
+                        alt={pastry.title}
+                        className="h-40 w-full object-cover mb-4 rounded-lg"
+                      />
+                    </LazyLoad>
+                    <h2 className="text-xl font-semibold mb-2">
+                      {pastry.name}
+                    </h2>
+                    <p className="text-gray-600 mb-2">{pastry.description}</p>
+                    <p className="text-gray-800 font-bold mb-2">
+                      ${pastry.price.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <p className="text-gray-800 font-bold">{pastry.type}</p>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleAddToCart(pastry)
+                      }}
+                      className="bg-[#BD6292] text-white px-4 py-2 rounded-lg shadow-md"
+                    >
+                      <CiShoppingCart className="inline-block mr-1" />
+                      Agregar al carrito
+                    </button>
+                  </div>
+                </div>
+              </Link>
+            ))}
         </div>
         <div className="flex justify-center mt-8">
           {Array.from({ length: totalPages }, (_, index) => (
