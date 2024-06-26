@@ -1,13 +1,99 @@
 import Navbar from '../components/Navbar'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import endpoints from '../utils/endpoints'
+import { data } from 'autoprefixer'
 
 const PaymentForm = () => {
+  const [productos, setProductos] = useState([])
+  const [user, setUser] = useState()
+  const token = localStorage.getItem('accessToken')
+  const userId = JSON.parse(localStorage.getItem('user')).sub
+
+  useEffect(() => {
+    fetchData()
+    getUser()
+  }, [])
+
+  const fetchData = async () => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+
+    try {
+      const response = await axios.get(
+        `${endpoints.getFromCart}/${userId}`,
+        config
+      )
+      console.log(response.data)
+
+      if (response.status === 200) {
+        setProductos(response.data)
+      }
+    } catch (error) {
+      console.error('Error getting productos:', error)
+    }
+  }
+
+  const getUser = async () => {
+    const userId = JSON.parse(localStorage.getItem('user')).sub
+    const token = localStorage.getItem('accessToken')
+
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+
+    try {
+      const response = await axios.get(`${endpoints.getUser}/${userId}`, config)
+      console.log(response.data)
+
+      if (response.status === 200) {
+        setUser(response.data)
+      }
+    } catch (error) {
+      console.error('Error getting user:', error)
+    }
+  }
+
+  function addressChange (value) {
+    setUser({ ...user, location_details: value })
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+    const data = {
+      location_details: user.location_details
+    }
+    try {
+      const response = await axios.patch(
+        `${endpoints.getUser}/${userId}`,
+        data,
+        config
+      )
+
+      if (response.status === 200) {
+        // setSuccessMessage('Tus campos han sido guardados correctamente.')
+      }
+    } catch (error) {
+      console.error('Error updating user:', error)
+    }
+  }
+
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <div className="flex justify-center items-center mb-12 rounded-lg">
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-md" data-v0-t="card">
+        <div
+          className="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-md"
+          data-v0-t="card"
+        >
           <div className="flex flex-col space-y-1.5 p-6 bg-[#BD6292] rounded">
-            <h3 className="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight text-white">Detalle de Compra</h3>
+            <h3 className="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight text-white">
+              Detalle de Compra
+            </h3>
           </div>
           <div className="p-6 space-y-4">
             <div className="space-y-2">
@@ -21,9 +107,11 @@ const PaymentForm = () => {
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 id="name"
                 placeholder="Nueva Córdoba, Cba, etc..."
+                value={user && user.location_details}
+                onChange={(e) => addressChange(e.target.value)}
               />
             </div>
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <label
                 className="text-sm font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 htmlFor="email"
@@ -36,7 +124,7 @@ const PaymentForm = () => {
                 placeholder="Piso 4, Depto B, etc..."
                 type="email"
               />
-            </div>
+            </div> */}
             <div className="space-y-2">
               <label
                 className="text-sm font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -44,9 +132,18 @@ const PaymentForm = () => {
               >
                 Productos
               </label>
-              <h2 className='font-bold'>Torta de Chocolate x2 unidades</h2><span>Precio:$33,333</span>
-              <h2 className='font-bold'>Torta de Limon x1 unidad</h2><span>Precio:$33,333</span>
-              <h2 className='font-bold'>Galletas de manteca x12 unidades</h2><span>Precio:$33,333</span>
+              {productos &&
+                productos.map((producto) => (
+                  <>
+                    <h2 className="font-bold">
+                      {producto.name} x{producto.amount}
+                    </h2>
+                    <span>
+                      Precio:{' '}
+                      {(producto.amount * producto.price).toLocaleString()}$
+                    </span>
+                  </>
+                ))}
             </div>
             <div className="space-y-2">
               <label
@@ -62,6 +159,7 @@ const PaymentForm = () => {
             <button
               className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm border border-gray-900 font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
               type="submit"
+              onClick={handleSubmit}
             >
               Pay Now
             </button>

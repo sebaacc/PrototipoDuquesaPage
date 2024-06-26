@@ -1,4 +1,4 @@
-const BASE_URL = 'https://got-father-catalyst-output.trycloudflare.com'
+const BASE_URL = 'https://classified-crazy-whats-garcia.trycloudflare.com'
 
 const endpoints = {
   getAndPostUser: `${BASE_URL}/users`, // se puede registrar un usuario u obtener los usuarios, cambiando entre post y get, y además cambiando la data/requested_Options que se le pasan

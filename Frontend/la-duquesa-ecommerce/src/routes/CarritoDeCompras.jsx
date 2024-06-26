@@ -7,6 +7,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import axios from 'axios'
 import endpoints from '../utils/endpoints'
 import ScrollToTop from '../utils/ScrollToTop'
+import { Link } from 'react-router-dom'
 
 function CarritoDeCompras () {
   const [productos, setProductos] = useState([])
@@ -103,9 +104,11 @@ function CarritoDeCompras () {
             </button>
           </div>
           <div className="flex justify-center">
-            <button className="bg-[#8B7BB1] hover:bg-[#BD6292] text-white font-bold py-2 px-4 rounded mb-8 shadow transition-colors focus-visible:outline-none focus-visible:ring-1">
-              Continuar Compra
-            </button>
+            <Link to={'/pagos'}>
+              <button className="bg-[#8B7BB1] hover:bg-[#BD6292] text-white font-bold py-2 px-4 rounded mb-8 shadow transition-colors focus-visible:outline-none focus-visible:ring-1">
+                Continuar Compra
+              </button>
+            </Link>
           </div>
         </div>
       </div>
