@@ -8,7 +8,7 @@ const HomeCategories = ({ categories }) => {
       {categories
         ? (
             categories.slice(0, 6).map((category) => (
-          <Link key={category.id} to={`/tienda?search=${category.name}`}>
+          <Link key={category.id} to={`/tienda?search=${category.id}`}>
             <article className="group font-medium m-4 h-40 rounded-full bg-[#F3F0EC] p-2 hover:bg-[#BD6292] transition duration-300 transform hover:-translate-y-2 active:translate-y-0 w-24 text-center">
               <img
                 className="group-hover:bg-white rounded-full w-[80px] h-[80px] transition duration-300"

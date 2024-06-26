@@ -22,7 +22,7 @@ const Tienda = () => {
   const [selectedPastry, setSelectedPastry] = useState(null)
   const [itemsPerPage, setItemsPerPage] = useState(6)
   const [currentPage, setCurrentPage] = useState(1)
-  const [searchTerm, setSearchTerm] = useState(initialSearchTerm)
+  const [searchTerm, setSearchTerm] = useState('')
   const [categories, setCategories] = useState()
   const [subcategories, setSubCategories] = useState()
   const [selectedCategory, setSelectedCategory] = useState()
@@ -30,6 +30,13 @@ const Tienda = () => {
   const [products, setProducts] = useState([])
   const [products2, setProducts2] = useState([])
   const [subcategories2, setSubcategories2] = useState([])
+
+  useEffect(() => {
+    categories &&
+      handleFilterChange(
+        categories.find((category) => category.id === initialSearchTerm)
+      )
+  }, [subcategories])
 
   const handleFilterChange = useCallback((newFilter) => {
     setSearchTerm('')
@@ -146,27 +153,29 @@ const Tienda = () => {
   }
 
   const fetchPaginatedProducts = async () => {
-    try {
-      const response = await axios.get(
-        endpoints.getProductPaginate +
-          'page=' +
-          currentPage +
-          '&limit=' +
-          itemsPerPage +
-          '&subCategoryId=' +
-          selectedSubCategory
-      )
-      console.log(response.data)
-
-      if (response.status === 200) {
+    if (initialSearchTerm) {
+      try {
+        const response = await axios.get(
+          endpoints.getProductPaginate +
+            'page=' +
+            currentPage +
+            '&limit=' +
+            itemsPerPage +
+            '&subCategoryId=' +
+            selectedSubCategory
+        )
         console.log(response.data)
-        setProducts(response.data)
-        setProducts2(response.data)
-      } else {
-        console.error('Error: Response status is not 200 OK', response.status)
+
+        if (response.status === 200) {
+          console.log(response.data)
+          setProducts(response.data)
+          setProducts2(response.data)
+        } else {
+          console.error('Error: Response status is not 200 OK', response.status)
+        }
+      } catch (error) {
+        console.error('Error getting categories:', error)
       }
-    } catch (error) {
-      console.error('Error getting categories:', error)
     }
   }
 
@@ -210,9 +219,7 @@ const Tienda = () => {
               ))}
           </div>
           <div>
-            <button onClick={clearSearch}>
-              REINICIAR CATEGORÍA
-            </button>
+            <button onClick={clearSearch}>REINICIAR CATEGORÍA</button>
           </div>
           {/* se muestran las subcategories */}
           <div className="flex flex-wrap items-center gap-4">
