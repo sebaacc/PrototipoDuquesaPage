@@ -1,4 +1,12 @@
-import { useState, useCallback, useEffect, useMemo, Suspense, lazy, useRef } from 'react'
+import {
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  Suspense,
+  lazy,
+  useRef
+} from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -33,15 +41,14 @@ const Tienda = () => {
   const initialLoad = useRef(false)
 
   useEffect(() => {
-
     setTimeout(() => {
-      categories && handleFilterChange(
-        categories.find((category) => category.id === initialSearchTerm)
-      )
+      categories &&
+        handleFilterChange(
+          categories.find((category) => category.id === initialSearchTerm)
+        )
 
       initialLoad.current = true
     }, 1000)
-
   }, [subcategories])
 
   const handleFilterChange = useCallback((newFilter) => {
@@ -110,7 +117,7 @@ const Tienda = () => {
 
   useEffect(() => {
     if (initialLoad) {
-      console.log("lo hemos llamado");
+      console.log('lo hemos llamado')
       fetchPaginatedProducts()
     }
   }, [selectedSubCategory])
@@ -170,12 +177,12 @@ const Tienda = () => {
     try {
       const response = await axios.get(
         endpoints.getProductPaginate +
-        'page=' +
-        currentPage +
-        '&limit=' +
-        itemsPerPage +
-        '&subCategoryId=' +
-        selectedSubCategory
+          'page=' +
+          currentPage +
+          '&limit=' +
+          itemsPerPage +
+          '&subCategoryId=' +
+          selectedSubCategory
       )
       console.log(response.data)
 
@@ -189,7 +196,6 @@ const Tienda = () => {
     } catch (error) {
       console.error('Error getting categories:', error)
     }
-
   }
 
   useEffect(() => {
@@ -312,7 +318,9 @@ const Tienda = () => {
                   </div>
                   <div className="flex justify-between items-center">
                     <p className="text-gray-800 font-bold">{pastry.type}</p>
-                    <AddToCart product={pastry} selectedValue={1} />
+                    <Link to={'/carrito-de-compras'}>
+                      <AddToCart product={pastry} selectedValue={1} />
+                    </Link>
                   </div>
                 </div>
               </Link>
@@ -323,10 +331,11 @@ const Tienda = () => {
             <button
               key={index}
               onClick={() => handlePageChange(index + 1)}
-              className={`px-4 py-2 mx-1 rounded ${currentPage === index + 1
-                ? 'bg-[#BD6292] text-white'
-                : 'bg-gray-200 text-gray-800'
-                }`}
+              className={`px-4 py-2 mx-1 rounded ${
+                currentPage === index + 1
+                  ? 'bg-[#BD6292] text-white'
+                  : 'bg-gray-200 text-gray-800'
+              }`}
             >
               {index + 1}
             </button>
