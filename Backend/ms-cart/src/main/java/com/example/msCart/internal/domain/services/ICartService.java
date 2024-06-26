@@ -4,6 +4,7 @@ import com.example.msCart.internal.domain.models.Cart;
 import com.example.msCart.internal.domain.models.MostAddedProduct;
 import com.example.msCart.internal.domain.models.Product;
 import com.example.msCart.internal.utils.exceptions.BadRequestException;
+import com.example.msCart.internal.utils.exceptions.ResourceNotFoundException;
 
 
 import java.util.List;
@@ -25,6 +26,8 @@ public interface ICartService {
     public void removeProductFromAllCarts(String productId);
 
     List<MostAddedProduct> findMostAddedProducts(Integer limit);
+
+    public void changingProductAmount(Cart cart) throws ResourceNotFoundException, BadRequestException;
 
     // Método para calcular el total del carrito
     //double calculateTotalPrice(Long cartId);

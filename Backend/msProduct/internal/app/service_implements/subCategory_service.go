@@ -52,13 +52,17 @@ func (s *subCategoryService) CreateSubCategory(subCategory *models.SubCategory, 
         return err
     }
 
+    // Asignar la URL pública al campo SubCategoryImage
+    subCategory.SubCategoryImage = utils.GeneratePresignedURL(filename)
+    fmt.Println("URL de la imagen:", subCategory.SubCategoryImage)
+/*
     // Asignar la URL de la imagen al campo SubCategoryImage
     subCategory.SubCategoryImage, err = utils.GeneratePresignedURL(filename)
     if err != nil {
         fmt.Println("Error al generar la URL presignada:", err)
         return err
     }
-
+*/
     fmt.Println("URL de la imagen:", subCategory.SubCategoryImage)
 
     fmt.Println("SubCategoría a crear:", subCategory)

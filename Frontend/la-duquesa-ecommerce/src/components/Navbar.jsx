@@ -16,7 +16,7 @@ import endpoints from '../utils/endpoints'
 
 // import shopCar from '../img/cart-large-minimalistic-svgrepo-com.png'
 
-function Navbar () {
+function Navbar() {
   const [nav, setNav] = useState(false)
   const user = JSON.parse(localStorage.getItem('user'))
   const userType = user?.realm_access?.roles?.includes('ADMIN') ?? false
@@ -37,27 +37,30 @@ function Navbar () {
 
   useEffect(() => {
     const fetchData = async () => {
-      const userId = JSON.parse(localStorage.getItem('user')).sub
-      const token = localStorage.getItem('accessToken')
+        if (user) {
+        const userId = JSON.parse(localStorage.getItem('user')).sub
+        const token = localStorage.getItem('accessToken')
 
-      const config = {
-        headers: { Authorization: `Bearer ${token}` }
-      }
-
-      try {
-        const response = await axios.get(
-          `${endpoints.getUser}/${userId}`,
-          config
-        )
-        console.log(response.data)
-
-        if (response.status === 200) {
-          setUserFound(response.data)
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
         }
-      } catch (error) {
-        console.error('Error getting user:', error)
+
+        try {
+          const response = await axios.get(
+            `${endpoints.getUser}/${userId}`,
+            config
+          )
+          console.log(response.data)
+
+          if (response.status === 200) {
+            setUserFound(response.data)
+          }
+        } catch (error) {
+          console.error('Error getting user:', error)
+        }
       }
     }
+
     fetchData()
   }, [])
 
@@ -107,14 +110,14 @@ function Navbar () {
 
         {navMobile
           ? (
-          <div
-            className="bg-black/80 fixed w-full h-screen z-10 top-0 left-0"
-            onClick={() => setNavMobile(!navMobile)}
-          ></div>
-            )
+            <div
+              className="bg-black/80 fixed w-full h-screen z-10 top-0 left-0"
+              onClick={() => setNavMobile(!navMobile)}
+            ></div>
+          )
           : (
-              ''
-            )}
+            ''
+          )}
 
         <div
           className={
@@ -161,36 +164,36 @@ function Navbar () {
 
       {logedOut
         ? (
-        <Link to={'/'} className="flex justify-between">
-          <img
-            className="size-28 mr-1 relative md:left-0 lg:left-0"
-            src={logo}
-            alt=""
-          />
-        </Link>
-          )
+          <Link to={'/'} className="flex justify-between">
+            <img
+              className="size-28 mr-1 relative md:left-0 lg:left-0"
+              src={logo}
+              alt=""
+            />
+          </Link>
+        )
         : (
-        <article className="flex justify-between items-center">
-          <img
-            className="size-7 mr-1 left-7 md:left-0 lg:left-0"
-            src={ubication}
-            alt=""
-          />
-          <p className="mt-1 flex flex-col md:flex-row text-center">
-            <span className="font-bold mr-1 text-sm capitalize">
-              {userFound && userFound.location_details
-                ? (
+          <article className="flex justify-between items-center">
+            <img
+              className="size-7 mr-1 left-7 md:left-0 lg:left-0"
+              src={ubication}
+              alt=""
+            />
+            <p className="mt-1 flex flex-col md:flex-row text-center">
+              <span className="font-bold mr-1 text-sm capitalize">
+                {userFound && userFound.location_details
+                  ? (
                     userFound.location_details
                   )
-                : (
-                <>
-                  Configura tu dirección <br /> para recibir pedidos
-                </>
+                  : (
+                    <>
+                      Configura tu dirección <br /> para recibir pedidos
+                    </>
                   )}
-            </span>
-          </p>
-        </article>
-          )}
+              </span>
+            </p>
+          </article>
+        )}
 
       <article className="hidden sm:hidden md:hidden lg:block xl:block 2xl:block mt-1">
         <ul className="flex text-black font-semibold h-full items-center">
@@ -215,37 +218,37 @@ function Navbar () {
       <div className="flex items-center">
         {logedOut
           ? (
-          <div className="flex items-center">
-            <Link to={'/login'}>
-              <button className="bg-[#BD6292] text-white p-2 rounded">
-                Ingresar
-              </button>
-            </Link>
-          </div>
-            )
+            <div className="flex items-center">
+              <Link to={'/login'}>
+                <button className="bg-[#BD6292] text-white p-2 rounded">
+                  Ingresar
+                </button>
+              </Link>
+            </div>
+          )
           : (
-          <div className="flex items-center">
-            <article>
-              <img
-                onClick={() => setNav(!nav)}
-                className="size-16 cursor-pointer"
-                src={profile}
-                alt="Perfil"
-              />
-            </article>
-          </div>
-            )}
+            <div className="flex items-center">
+              <article>
+                <img
+                  onClick={() => setNav(!nav)}
+                  className="size-16 cursor-pointer"
+                  src={profile}
+                  alt="Perfil"
+                />
+              </article>
+            </div>
+          )}
 
         {nav
           ? (
-          <div
-            className="bg-black/80 fixed w-full h-screen z-10 top-0 left-0"
-            onClick={() => setNav(!nav)}
-          ></div>
-            )
+            <div
+              className="bg-black/80 fixed w-full h-screen z-10 top-0 left-0"
+              onClick={() => setNav(!nav)}
+            ></div>
+          )
           : (
-              ''
-            )}
+            ''
+          )}
 
         <div
           className={
@@ -274,25 +277,25 @@ function Navbar () {
                     <div key={index} className="py-4">
                       {route === '/'
                         ? (
-                        <Link to={route}>
-                          <li
-                            onClick={() => {
-                              localStorage.clear()
-                              window.location.reload()
-                            }}
-                            className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300"
-                          >
-                            {icon} {text}
-                          </li>
-                        </Link>
-                          )
+                          <Link to={route}>
+                            <li
+                              onClick={() => {
+                                localStorage.clear()
+                                window.location.reload()
+                              }}
+                              className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300"
+                            >
+                              {icon} {text}
+                            </li>
+                          </Link>
+                        )
                         : (
-                        <Link to={route}>
-                          <li className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300">
-                            {icon} {text}
-                          </li>
-                        </Link>
-                          )}
+                          <Link to={route}>
+                            <li className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300">
+                              {icon} {text}
+                            </li>
+                          </Link>
+                        )}
                     </div>
                   )
                 )
