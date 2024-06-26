@@ -1,4 +1,4 @@
-const BASE_URL = 'https://classified-crazy-whats-garcia.trycloudflare.com'
+const BASE_URL = 'https://andrea-attach-childhood-prospects.trycloudflare.com'
 
 const endpoints = {
   getAndPostUser: `${BASE_URL}/users`, // se puede registrar un usuario u obtener los usuarios, cambiando entre post y get, y además cambiando la data/requested_Options que se le pasan
@@ -25,7 +25,7 @@ const endpoints = {
   getProductPaginate: `${BASE_URL}/product/product/paginated?`,
   putToCart: `${BASE_URL}/cart/cartInfo/changeProductAmount`,
   createPayment: `${BASE_URL}/mspayp/pay/createPay`,
-  getPayments: `${BASE_URL}/mspayp/pay/user`,
+  getPayments: `${BASE_URL}/mspayp/pay/user`
 }
 
 export default endpoints
