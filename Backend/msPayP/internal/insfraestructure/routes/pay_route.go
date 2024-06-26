@@ -18,4 +18,5 @@ func PayRoutes(r *gin.Engine, payService services.PayService, orderService servi
     r.PATCH(payRoute + "/:id/payment-status", payHandler.UpdatePaymentStatus)
     r.POST(payRoute + "/handleWebhook", payHandler.HandleWebhook)
     r.POST(payRoute + "/create_preference", payHandler.CreatePreference)
+    r.GET(payRoute + "/user/:userID", payHandler.GetPayByUserID)
 }

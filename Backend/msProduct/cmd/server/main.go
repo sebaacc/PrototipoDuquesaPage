@@ -98,7 +98,7 @@ func main() {
 	// Inicialización del servicio pasando los repo anteriores
 	subCategoryService := services_implement.NewSubCategoryService(subCategoryRepository, productRepository)
 	categoryService := services_implement.NewCategoryService(categoryRepository, subCategoryService)
-	productService := services_implement.NewProductService(productRepository)
+	productService := services_implement.NewProductService(productRepository, subCategoryRepository)
 	productImagesService := services_implement.NewProductImagesService(productImagesRepository)
 
 	// Llamado a las rutas, que inicializan los handlers

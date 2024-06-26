@@ -27,7 +27,7 @@ const PedidosTable = ({ pedidos }) => {
         <tbody>
           {pedidos.map(
             (pedido, index) =>
-              index <= 5 && (
+              index <= 15 && (
                 <tr key={index} className="bg-white border-b border-[#464646]">
                   <td scope="row" className="px-6 py-4 font-medium">
                     {pedido.idTransaction}

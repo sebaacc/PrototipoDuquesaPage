@@ -10,8 +10,8 @@ import (
 
 type ProductService interface {
 	CreateProduct(product *models.Product, file []*multipart.FileHeader) error
-	GetProductByID(id primitive.ObjectID) (*models.Product, error)
-	GetAllProducts() ([]*models.Product, error)
+	GetProductByID(id primitive.ObjectID) (*dto.ProductWithSubCategory, error)
+	GetAllProducts() ([]*dto.ProductWithSubCategory, error)
 	UpdateProduct(product *models.Product) error
 	DeleteProduct(id primitive.ObjectID) error
 	GetPaginatedProductsWithFilters(page, limit int64, name string, minPrice, maxPrice float64, subCategoryID primitive.ObjectID) ([]models.Product, error)
