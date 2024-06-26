@@ -285,7 +285,7 @@ function Navbar () {
                     (text === 'Cargar Producto' ||
                       text === 'Reporte de usuario' ||
                       text === 'Reporte de producto')) ||
-                    text === 'Cerrar sesión') && (
+                    text === 'Cerrar sesión' || text === 'Editar Perfil' || text === 'Pedidos') && (
                     <div key={index} className="py-4">
                       {route === '/'
                         ? (
