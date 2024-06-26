@@ -5,7 +5,6 @@ import endpoints from '../utils/endpoints'
 import { data } from 'autoprefixer'
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 
-
 const PaymentForm = () => {
   const [productos, setProductos] = useState([])
   const [productosToPay, setProductosToPay] = useState([])
@@ -13,19 +12,17 @@ const PaymentForm = () => {
   const [totalPrice, setTotalPrice] = useState(0)
   const token = localStorage.getItem('accessToken')
   const userId = JSON.parse(localStorage.getItem('user')).sub
-  const [preferenceId, setPreferenceId] = useState(null);
+  const [preferenceId, setPreferenceId] = useState(null)
 
   useEffect(() => {
     fetchData()
     getUser()
-    initMercadoPago("APP_USR-77d602c0-2bb3-4d97-aa9f-36b7b8882c90");
+    initMercadoPago('APP_USR-77d602c0-2bb3-4d97-aa9f-36b7b8882c90')
   }, [])
 
   useEffect(() => {
     handleSubmitPayment()
   }, [productos])
-
-
 
   const fetchData = async () => {
     const config = {
@@ -40,7 +37,6 @@ const PaymentForm = () => {
       console.log(response.data)
 
       if (response.status === 200) {
-
         let precioTotalASumar = 0
 
         response.data.forEach((producto) => {
@@ -75,13 +71,11 @@ const PaymentForm = () => {
     }
   }
 
-  function addressChange(value) {
+  function addressChange (value) {
     setUser({ ...user, location_details: value })
   }
 
-
   const handleSubmitPayment = async () => {
-
     const config = {
       headers: { Authorization: `Bearer ${token}` }
     }
@@ -97,7 +91,7 @@ const PaymentForm = () => {
 
     const data = {
       iduser: userId,
-      paymentMethod: "Mercado pago",
+      paymentMethod: 'Mercado pago',
       address: user.location_details,
       allOrders: productsToPayArray
     }
@@ -116,7 +110,6 @@ const PaymentForm = () => {
       console.error('Error updating user:', error)
     }
   }
-
 
   const handleSubmit = async (event) => {
     event.preventDefault()
