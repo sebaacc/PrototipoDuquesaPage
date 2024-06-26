@@ -10,6 +10,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
+import { shortenUrl } from '../utils/shortenUrl'
 
 const ImageGallery = ({ images }) => {
   const [imageIndex, setImageIndex] = useState(0)
@@ -30,7 +31,7 @@ const ImageGallery = ({ images }) => {
       <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 shadow-md">
           <div className="h-64 md:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center p-3">
             <img
-              src={images[imageIndex]}
+              src={shortenUrl(images[imageIndex])}
               // src="https://duquesabucket.s3.us-east-2.amazonaws.com/product_8134339177120133066.png"
               alt={`Imagen ${imageIndex + 1}`}
               className="h-full w-full object-contain"
@@ -44,7 +45,7 @@ const ImageGallery = ({ images }) => {
         slidesPerView={4}
         pagination={{ clickable: true }}
         scrollbar={{ draggable: true }}
-        className="custom-swiper p-2 shadow-lg rounded-md "
+        className="custom-swiper p-2 shadow-lg rounded-md max-h-28 md:max-h-[150px]"
         style={{
           '--swiper-pagination-color': '#BD6292',
           '--swiper-pagination-bullet-size': '10px'
@@ -52,7 +53,7 @@ const ImageGallery = ({ images }) => {
       >
         {images.map((image, i) => (
           <div key={i}>
-            <SwiperSlide className=" mb-8">
+            <SwiperSlide >
               <button
                 onClick={() => setImageIndex(i)}
                 className={`focus:outline-none w-full rounded-lg h-24 md:h-32 bg-gray-100 flex items-center justify-center ${
@@ -63,7 +64,7 @@ const ImageGallery = ({ images }) => {
                 {image
                   ? (
                   <img
-                    src={image}
+                    src={shortenUrl(image)}
                     alt={`Miniatura ${i + 1}`}
                     className="h-full w-full object-cover rounded-lg"
                   />

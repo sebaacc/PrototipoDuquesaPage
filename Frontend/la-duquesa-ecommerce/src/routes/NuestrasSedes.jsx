@@ -1,6 +1,7 @@
 import React from 'react'
 import sedes from '../data/sedesData' // Asegúrate de ajustar la ruta según la ubicación del archivo
 import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
 
 const SedeCard = ({ imageSrc, sedeTitle, sedeCityCountry, sedeDescription }) => (
   <div className="rounded-lg border bg-white shadow-sm ">
@@ -24,7 +25,7 @@ const SedeCard = ({ imageSrc, sedeTitle, sedeCityCountry, sedeDescription }) => 
 const SedesSection = () => (
   <div>
     <Navbar />
-    <section className="w-full p-4">
+    <section className="w-full p-4 mb-11">
       <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10">
         <div className="space-y-3">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
@@ -48,6 +49,7 @@ const SedesSection = () => (
         </div>
       </div>
     </section>
+    <Footer />
   </div>
 )
 

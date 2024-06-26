@@ -6,6 +6,8 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import endpoints from '../utils/endpoints'
 import axios from 'axios'
+import { shortenUrl } from '../utils/shortenUrl'
+import Loading from '../utils/Loading'
 
 function Products () {
   const [products, setProducts] = useState([])
@@ -65,42 +67,50 @@ function Products () {
         </Link>
       </span>
       <section className="ml-10 mt-8">
-        <Slider {...settings} className="carousel">
-          {products.map((product) => (
-            <article key={product.id} className="p-4 mb-2">
-              <div className="bg-[#f8f8f8] p-4 rounded-2xl shadow-lg h-full transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-                <div className="w-full h-48 overflow-hidden rounded-t-2xl">
-                  <img
-                    src={product.imageURLs[0]}
-                    alt={product.name}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <div className="p-6 rounded-b-2xl h-full flex flex-col justify-between">
-                  <div>
-                    <p className="font-black capitalize">{product.name}</p>
-                    <span className="flex mt-2">
-                      <p className="mr-6 text-gray-500 font-bold">
-                        Envío gratis
-                      </p>
-                      <p className="text-gray-500 font-bold">40 - 50 min</p>
-                    </span>
+        {products
+          ? (
+          <Slider {...settings} className="carousel">
+            {products.map((product) => (
+              <article key={product.id} className="p-4 mb-2">
+                <div className="bg-[#f8f8f8] p-4 rounded-2xl shadow-lg h-full transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                  <div className="w-full h-48 overflow-hidden rounded-t-2xl">
+                    <img
+                      src={shortenUrl(product.imageURLs[0])}
+                      alt={product.name}
+                      className="object-cover w-full h-full"
+                    />
                   </div>
-                  <div className="mt-4">
-                    <Link to={'detalle-de-producto/' + product.id}>
-                      <button className="mr-6 w-28 p-3 bg-[#BD6292] text-white rounded-xl hover:bg-[#df75ae] hover:shadow-sm transition-all duration-300">
-                        Información
-                      </button>
-                    </Link>
-                    <button className="p-3 w-28 bg-[#BD6292] text-white rounded-xl capitalize pointer-events-none">
-                      {product.type}
-                    </button>
+                  <div className="p-6 rounded-b-2xl h-full flex flex-col justify-between">
+                    <div>
+                      <p className="font-black capitalize">{product.name}</p>
+                      <span className="flex mt-2">
+                        <p className="mr-6 text-gray-500 font-bold">
+                          Envío gratis
+                        </p>
+                        <p className="text-gray-500 font-bold">40 - 50 min</p>
+                      </span>
+                    </div>
+                    <div className="mt-4">
+                      <Link to={'detalle-de-producto/' + product.id}>
+                        <button className="mr-6 w-28 p-3 bg-[#BD6292] text-white rounded-xl hover:bg-[#df75ae] hover:shadow-sm transition-all duration-300">
+                          Información
+                        </button>
+                      </Link>
+                      {/* <button className="p-3 w-28 bg-[#BD6292] text-white rounded-xl capitalize pointer-events-none">
+                        {product.type}
+                      </button> */}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </article>
-          ))}
-        </Slider>
+              </article>
+            ))}
+          </Slider>
+            )
+          : (
+          <div className="flex justify-center">
+            <Loading />
+          </div>
+            )}
       </section>
       {/* Sugeridos */}
       <Sugeridos />

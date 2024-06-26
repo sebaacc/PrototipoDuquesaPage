@@ -23,6 +23,7 @@ import VerificationUnnecessary from './routes/VerificationUnnecessary.jsx'
 import ConfirmacionDeCompra from './routes/ConfirmacionDeCompra.jsx'
 import ForgotPassword from './routes/ForgotPassword.jsx'
 import ChangePassword from './routes/ChangePassword.jsx'
+import ReporteDePedido from './routes/ReporteDePedido.jsx'
 
 const router = createBrowserRouter([
   {
@@ -123,6 +124,11 @@ const router = createBrowserRouter([
   {
     path: 'reset-password',
     element: <ChangePassword />,
+    errorElement: <ErrorPage />
+  },
+  {
+    path: 'reporte-pedido',
+    element: <ReporteDePedido />,
     errorElement: <ErrorPage />
   }
 ])
