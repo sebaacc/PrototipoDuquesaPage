@@ -25,7 +25,7 @@ const PedidosTable = ({ pedidos }) => {
           </tr>
         </thead>
         <tbody>
-          {pedidos.map(
+          {pedidos && pedidos.map(
             (pedido, index) =>
               index <= 15 && (
                 <tr key={index} className="bg-white border-b border-[#464646]">
