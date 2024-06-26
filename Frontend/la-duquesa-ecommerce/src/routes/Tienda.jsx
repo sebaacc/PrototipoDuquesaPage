@@ -2,13 +2,12 @@ import { useState, useCallback, useEffect, useMemo, Suspense, lazy } from 'react
 import { Link, useLocation } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { CiShoppingCart } from 'react-icons/ci'
 import { IoMdClose } from 'react-icons/io' // Import the close icon
 import LazyLoad from 'react-lazyload'
-import pastries from '../data/pastries'
 import ScrollToTop from '../utils/ScrollToTop' // Cuando se carga la tienda te dirige al inicio de la misma incorporando este componente.
 import axios from 'axios'
 import endpoints from '../utils/endpoints'
+import AddToCart from '../components/Buttons/AddToCart'
 
 const FilterButton = lazy(() => import('../components/FilterButton'))
 const PastryModal = lazy(() => import('../components/PastryModal'))
@@ -23,7 +22,6 @@ const Tienda = () => {
   const [selectedPastry, setSelectedPastry] = useState(null)
   const [itemsPerPage, setItemsPerPage] = useState(6)
   const [currentPage, setCurrentPage] = useState(1)
-  const [cart, setCart] = useState([])
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm)
   const [categories, setCategories] = useState()
   const [subcategories, setSubCategories] = useState()
@@ -64,10 +62,6 @@ const Tienda = () => {
 
   const handlePageChange = useCallback((newPage) => {
     setCurrentPage(newPage)
-  }, [])
-
-  const handleAddToCart = useCallback((pastry) => {
-    setCart((prevCart) => [...prevCart, pastry])
   }, [])
 
   const handleSearchChange = useCallback((event) => {
@@ -286,16 +280,7 @@ const Tienda = () => {
                   </div>
                   <div className="flex justify-between items-center">
                     <p className="text-gray-800 font-bold">{pastry.type}</p>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleAddToCart(pastry)
-                      }}
-                      className="bg-[#BD6292] text-white px-4 py-2 rounded-lg shadow-md"
-                    >
-                      <CiShoppingCart className="inline-block mr-1" />
-                      Agregar al carrito
-                    </button>
+                    <AddToCart product={pastry} selectedValue={1} />
                   </div>
                 </div>
               </Link>

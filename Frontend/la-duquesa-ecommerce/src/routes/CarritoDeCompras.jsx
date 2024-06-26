@@ -6,6 +6,7 @@ import bolsaVacia from '../img/Shopping-Bag-1.svg'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import axios from 'axios'
 import endpoints from '../utils/endpoints'
+import ScrollToTop from '../utils/ScrollToTop'
 
 function CarritoDeCompras () {
   const [productos, setProductos] = useState([])
@@ -21,7 +22,10 @@ function CarritoDeCompras () {
       }
 
       try {
-        const response = await axios.get(`${endpoints.getFromCart}/${userId}`, config)
+        const response = await axios.get(
+          `${endpoints.getFromCart}/${userId}`,
+          config
+        )
         console.log(response.data)
 
         if (response.status === 200) {
@@ -40,7 +44,10 @@ function CarritoDeCompras () {
     }
 
     try {
-      const response = await axios.delete(`${endpoints.clearCart}/${userId}`, config)
+      const response = await axios.delete(
+        `${endpoints.clearCart}/${userId}`,
+        config
+      )
       console.log(response.data)
 
       if (response.status === 200) {
@@ -102,6 +109,7 @@ function CarritoDeCompras () {
           </div>
         </div>
       </div>
+      <ScrollToTop />
       <Footer />
     </div>
   )
