@@ -1,4 +1,12 @@
-import { useState, useCallback, useEffect, useMemo, Suspense, lazy, useRef } from 'react'
+import {
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  Suspense,
+  lazy,
+  useRef
+} from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -33,15 +41,14 @@ const Tienda = () => {
   const initialLoad = useRef(false)
 
   useEffect(() => {
-
     setTimeout(() => {
-      categories && handleFilterChange(
-        categories.find((category) => category.id === initialSearchTerm)
-      )
+      categories &&
+        handleFilterChange(
+          categories.find((category) => category.id === initialSearchTerm)
+        )
 
       initialLoad.current = true
-    }, 1000)
-
+    }, 2000)
   }, [subcategories])
 
   const handleFilterChange = useCallback((newFilter) => {
@@ -110,7 +117,7 @@ const Tienda = () => {
 
   useEffect(() => {
     if (initialLoad) {
-      console.log("lo hemos llamado");
+      console.log('lo hemos llamado')
       fetchPaginatedProducts()
     }
   }, [selectedSubCategory])
@@ -170,12 +177,12 @@ const Tienda = () => {
     try {
       const response = await axios.get(
         endpoints.getProductPaginate +
-        'page=' +
-        currentPage +
-        '&limit=' +
-        itemsPerPage +
-        '&subCategoryId=' +
-        selectedSubCategory
+          'page=' +
+          currentPage +
+          '&limit=' +
+          itemsPerPage +
+          '&subCategoryId=' +
+          selectedSubCategory
       )
       console.log(response.data)
 
@@ -189,7 +196,6 @@ const Tienda = () => {
     } catch (error) {
       console.error('Error getting categories:', error)
     }
-
   }
 
   useEffect(() => {
@@ -215,15 +221,19 @@ const Tienda = () => {
       <Navbar />
       <ScrollToTop />
       <div className="px-4 container max-w-6xl mx-auto py-4">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
-          <div className="grid gap-4">
-            <h1 className="text-3xl font-bold">Nuestros productos</h1>
-            <p className="text-black">
-              Explora nuestras deliciosas pastelerías
-            </p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-4">
+        <div className="grid  gap-10 mb-3 text-center">
+          <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+            Nuestros productos
+          </h1>
+          <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+            ¡Explora nuestras deliciosas propuestas!
+          </p>
+        </div>
+        <div className="flex flex-col items-start md:items-center justify-between">
+          <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed my-2">
+            Categorías:
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
             {categories &&
               categories.map((type) => (
                 <Suspense fallback={<div>Cargando...</div>} key={type.id}>
@@ -235,11 +245,13 @@ const Tienda = () => {
                 </Suspense>
               ))}
           </div>
-          <div>
-            <button onClick={clearSearch}>REINICIAR CATEGORÍA</button>
-          </div>
           {/* se muestran las subcategories */}
-          <div className="flex flex-wrap items-center gap-4">
+          {selectedCategory && (
+            <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed my-2">
+              Sub-categorías:
+            </p>
+          )}
+          <div className="flex  flex-wrap gap-4">
             {subcategories2 &&
               subcategories2.map((type) => (
                 <Suspense fallback={<div>Cargando...</div>} key={type.id}>
@@ -250,6 +262,15 @@ const Tienda = () => {
                   />
                 </Suspense>
               ))}
+          </div>
+          <div className="flex justify-center mt-5">
+            <button
+              type="button"
+              className="h-18 px-6 py-2 font-semibold rounded-xl bg-[#C5E4E2] hover:bg-[#cb86ab] text-[#2c2c2c] hover:text-white transition-all duration-300"
+              onClick={clearSearch}
+            >
+              Reiniciar Categoría
+            </button>
           </div>
         </div>
         <div className="relative mb-4">
@@ -323,10 +344,11 @@ const Tienda = () => {
             <button
               key={index}
               onClick={() => handlePageChange(index + 1)}
-              className={`px-4 py-2 mx-1 rounded ${currentPage === index + 1
-                ? 'bg-[#BD6292] text-white'
-                : 'bg-gray-200 text-gray-800'
-                }`}
+              className={`px-4 py-2 mx-1 rounded ${
+                currentPage === index + 1
+                  ? 'bg-[#BD6292] text-white'
+                  : 'bg-gray-200 text-gray-800'
+              }`}
             >
               {index + 1}
             </button>

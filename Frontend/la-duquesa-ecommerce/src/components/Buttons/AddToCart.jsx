@@ -46,7 +46,7 @@ const AddToCart = ({ product, selectedValue }) => {
       <Link to={'/carrito-de-compras'}>
         <button
           type="button"
-          className="h-14 px-6 py-2 font-semibold rounded-xl bg-[#BD6292] hover:bg-[#f187bf] text-white"
+          className="h-14 px-6 py-2 font-semibold rounded-xl bg-[#BD6292] hover:bg-[#f187bf] text-white transition-all duration-150"
           onClick={addToCart}
         >
           Añadir al carrito
