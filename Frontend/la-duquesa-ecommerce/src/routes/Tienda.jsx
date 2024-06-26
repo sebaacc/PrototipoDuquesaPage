@@ -230,11 +230,11 @@ const Tienda = () => {
             ¡Explora nuestras deliciosas propuestas!
           </p>
         </div>
-        <div className="flex flex-col items-start md:items-center justify-between">
-          <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-lg/relaxed my-2">
+        <div className="flex flex-col  items-start md:items-center justify-between">
+          <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-lg/relaxed my-4 font-bold">
             Categorías:
           </p>
-          <div className="flex flex-wrap gap-4 justify-center">
+          <div className="flex flex-wrap gap-4 justify-center mb-6">
             {categories &&
               categories.map((type) => (
                 <Suspense fallback={<div>Cargando...</div>} key={type.id}>
@@ -248,7 +248,7 @@ const Tienda = () => {
           </div>
           {/* se muestran las subcategories */}
           {selectedCategory && (
-            <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-lg/relaxed my-2">
+            <p className="max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-lg/relaxed my-2 font-bold">
               Sub-categorías:
             </p>
           )}
