@@ -17,12 +17,15 @@ import (
 )
 
 type productService struct {
-	repo repositories.ProductRepository
+    repo            repositories.ProductRepository
+    subCategoryRepo repositories.SubCategoryRepository
 }
 
-func NewProductService(repo repositories.ProductRepository) services.ProductService {
-	return &productService{repo}
+func NewProductService(repo repositories.ProductRepository, subCategoryRepo repositories.SubCategoryRepository) services.ProductService {
+    return &productService{repo: repo, subCategoryRepo: subCategoryRepo}
 }
+
+
 func (s *productService) CreateProduct(product *models.Product, files []*multipart.FileHeader) error {
     product.ID = primitive.NewObjectID()
 
@@ -104,12 +107,53 @@ func (s *productService) CreateProduct(product *models.Product, files []*multipa
 // 	return nil
 // }
 
-func (s *productService) GetProductByID(id primitive.ObjectID) (*models.Product, error) {
-	return s.repo.GetByID(id)
+func (s *productService) GetProductByID(id primitive.ObjectID) (*dto.ProductWithSubCategory, error) {
+    product, err := s.repo.GetByID(id)
+    if err != nil {
+        return nil, err
+    }
+    
+    subCategoryName := ""
+    if !product.SubCategoryID.IsZero() {
+        subCategory, err := s.subCategoryRepo.GetByID(product.SubCategoryID)
+        if err == nil {
+            subCategoryName = subCategory.Name
+        }
+        // Si hay un error al obtener la subcategoría, simplemente lo ignoramos
+        // y dejamos el nombre de la subcategoría como una cadena vacía
+    }
+    
+    return &dto.ProductWithSubCategory{
+        Product:         *product,
+        SubCategoryName: subCategoryName,
+    }, nil
 }
 
-func (s *productService) GetAllProducts() ([]*models.Product, error) {
-	return s.repo.GetAll()
+func (s *productService) GetAllProducts() ([]*dto.ProductWithSubCategory, error) {
+    products, err := s.repo.GetAll()
+    if err != nil {
+        return nil, err
+    }
+    
+    result := make([]*dto.ProductWithSubCategory, len(products))
+    for i, product := range products {
+        subCategoryName := ""
+        if !product.SubCategoryID.IsZero() {
+            subCategory, err := s.subCategoryRepo.GetByID(product.SubCategoryID)
+            if err == nil {
+                subCategoryName = subCategory.Name
+            }
+            // Si hay un error al obtener la subcategoría, simplemente lo ignoramos
+            // y dejamos el nombre de la subcategoría como una cadena vacía
+        }
+        
+        result[i] = &dto.ProductWithSubCategory{
+            Product:         *product,
+            SubCategoryName: subCategoryName,
+        }
+    }
+    
+    return result, nil
 }
 
 func (s *productService) UpdateProduct(product *models.Product) error {

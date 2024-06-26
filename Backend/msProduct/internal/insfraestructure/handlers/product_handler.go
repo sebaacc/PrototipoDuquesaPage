@@ -77,32 +77,32 @@ func (h *ProductHandler) Post() gin.HandlerFunc {
 
 // FindAll handles the retrieval of all products
 func (h *ProductHandler) FindAll() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		products, err := h.s.GetAllProducts()
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, products)
-	}
+    return func(c *gin.Context) {
+        products, err := h.s.GetAllProducts()
+        if err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+            return
+        }
+        c.JSON(http.StatusOK, products)
+    }
 }
 
 // FindById handles the retrieval of a product by its ID
 func (h *ProductHandler) FindById() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		idParam := c.Param("id")
-		id, err := primitive.ObjectIDFromHex(idParam)
-		if err != nil {
-			web.Failure(c, 400, errors.New("Invalid id"))
-			return
-		}
-		product, err := h.s.GetProductByID(id)
-		if err != nil {
-			web.Failure(c, 404, errors.New("Product not found"))
-			return
-		}
-		web.Success(c, 200, product)
-	}
+    return func(c *gin.Context) {
+        idParam := c.Param("id")
+        id, err := primitive.ObjectIDFromHex(idParam)
+        if err != nil {
+            web.Failure(c, 400, errors.New("Invalid id"))
+            return
+        }
+        product, err := h.s.GetProductByID(id)
+        if err != nil {
+            web.Failure(c, 404, errors.New("Product not found"))
+            return
+        }
+        web.Success(c, 200, product)
+    }
 }
 
 func (h *ProductHandler) IsAmountAvailable() gin.HandlerFunc {

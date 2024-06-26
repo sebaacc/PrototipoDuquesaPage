@@ -47,7 +47,7 @@ func (r *payRepository) CreatePay(ctx context.Context, pay *models.Pay) error {
 	return err
 }
 
-func (r *payRepository) GetPayByID(ctx context.Context, id string) (*models.Pay, error) {
+func (r *payRepository) GetPayByID(ctx context.Context, id primitive.ObjectID) (*models.Pay, error) {
 	var pay models.Pay
 	err := r.collection.FindOne(ctx, bson.M{"_id": id}).Decode(&pay)
 	if err != nil {
@@ -77,4 +77,23 @@ func (r *payRepository) UpdatePaymentStatus(payID primitive.ObjectID, paymentSta
 
     _, err := r.collection.UpdateOne(context.Background(), filter, update)
     return err
+}
+
+func (r *payRepository) GetPayByUserID(userID string) ([]models.Pay, error) {
+    var pays []models.Pay
+    filter := bson.M{"idUser": userID}
+    cursor, err := r.collection.Find(context.Background(), filter)
+    if err != nil {
+        return nil, err
+    }
+    defer cursor.Close(context.Background())
+
+    for cursor.Next(context.Background()) {
+        var pay models.Pay
+        if err := cursor.Decode(&pay); err != nil {
+            return nil, err
+        }
+        pays = append(pays, pay)
+    }
+    return pays, cursor.Err()
 }

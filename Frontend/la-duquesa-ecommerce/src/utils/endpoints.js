@@ -23,7 +23,9 @@ const endpoints = {
   getProduct: `${BASE_URL}/product/product/findAllProducts`,
   getCategory: `${BASE_URL}/product/category/findAllCategories`,
   getProductPaginate: `${BASE_URL}/product/product/paginated?`,
-  putToCart: `${BASE_URL}/cart/cartInfo/changeProductAmount`
+  putToCart: `${BASE_URL}/cart/cartInfo/changeProductAmount`,
+  createPayment: `${BASE_URL}/mspayp/pay/createPay`,
+  getPayments: `${BASE_URL}/mspayp/pay/user`,
 }
 
 export default endpoints
