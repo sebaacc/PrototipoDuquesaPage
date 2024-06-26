@@ -3,6 +3,7 @@ package handlers
 import (
 	"errors"
 	"fmt"
+
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -58,11 +59,17 @@ func NewPayHandler(payService services.PayService, orderService services.OrderSe
 	}
 */
 func (h *PayHandler) GetPayByIDHandler(c *gin.Context) {
-	payID := c.Param("id")
+	id := c.Param("id")
 
-	pay, err := h.payService.GetPayByID(c, payID)
+	payId, err := primitive.ObjectIDFromHex(id)
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid pay ID"})
+        return
+    }
+
+	pay, err := h.payService.GetPayByID(c, payId)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Pay not"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
 		return
 	}
 
@@ -110,27 +117,7 @@ func (h *PayHandler) DeletePayHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Pago eliminado exitosamente"})
 }
 
-// ----------------------------------------------------------------------------
-
-func (h *PayHandler) Post(c *gin.Context) {
-
-	var pay models.Pay
-
-	if err := c.ShouldBindJSON(&pay); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	// Guardar el pago en la base de datos
-	err := h.payService.CreatePay(c, &pay)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusCreated, gin.H{"message": "Pay and order create successful"})
-
-}
+// -----------------------------------------
 
 func (h *PayHandler) FindAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -143,6 +130,26 @@ func (h *PayHandler) FindAll() gin.HandlerFunc {
 	}
 }
 
+//---------------------------------------------
+
+func (h *PayHandler) Post(c *gin.Context) {
+    var pay models.Pay
+
+    if err := c.ShouldBindJSON(&pay); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    var order models.Order
+
+    resource, err := h.payService.CreatePay(c, &pay, &order)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"id": resource.ID})
+}
 // ---------------------------------------------------------
 
 func (h *PayHandler) UpdatePaymentStatus(c *gin.Context) {
@@ -174,7 +181,13 @@ func (h *PayHandler) UpdatePaymentStatus(c *gin.Context) {
 /// ---
 
 func (h PayHandler) CreatePreference(c *gin.Context) {
-    preference, err := h.payService.CreatePreference()
+    // Crear un objeto de pago adecuado, dependiendo de tu implementación
+    pay := &models.Pay{
+        
+    }
+
+    // Llamar a CreatePreference con el contexto y el objeto de pago
+    preference, err := h.payService.CreatePreference(c, pay)
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
         return
@@ -208,4 +221,21 @@ func (h PayHandler) HandleWebhook(c *gin.Context) {
     }
 
     c.JSON(http.StatusOK, gin.H{"message": "Webhook processed successfully"})
+}
+
+//------------------------------------------------------------
+
+func (h *PayHandler) GetPayByUserID(c *gin.Context) {
+    userID := c.Param("userID")
+    if userID == "" {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "User ID is required"})
+        return
+    }
+
+    pays, err := h.payService.GetPayByUserID(userID)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+    c.JSON(http.StatusOK, pays)
 }

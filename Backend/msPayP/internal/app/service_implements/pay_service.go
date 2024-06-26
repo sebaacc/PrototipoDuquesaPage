@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	
 	"strings"
 
 	"time"
@@ -33,14 +34,34 @@ func (s *payService) GetAllPay() ([]*models.Pay, error) {
 	return s.repo.GetAll()
 }
 
-func (s *payService) CreatePay(ctx context.Context, pay *models.Pay) error {
+func (s *payService) CreatePay(ctx context.Context, pay *models.Pay, order *models.Order) (*preference.Response, error) {
 	pay.ID = primitive.NewObjectID()
 	pay.Date = primitive.NewDateTimeFromTime(time.Now())
-	return s.repo.CreatePay(ctx, pay)
+
+  var total float64 = 0
+
+    // Iterar sobre todos los pedidos en AllOrders y calcular el total pagado
+    for _, order := range pay.AllOrders {
+        total += (order.NumberOfUnits * order.Price)
+    }
+
+    pay.TotalPaid = total
+    pay.PaymentStatus= "Success"
+    resource, err := s.CreatePreference(ctx,pay) 
+    pay.IdTransaction = resource.ID
+    if err != nil {
+		fmt.Println("Error al crear la preferencia:", err)
+		return nil, err
+    }
+
+    s.repo.CreatePay(ctx, pay)
+
+	return resource, nil 
+
 
 }
 
-func (s *payService) GetPayByID(ctx context.Context, id string) (*models.Pay, error) {
+func (s *payService) GetPayByID(ctx context.Context, id primitive.ObjectID) (*models.Pay, error) {
 	return s.repo.GetPayByID(ctx, id)
 }
 
@@ -81,6 +102,19 @@ Creación de preferencias(pagos): https://www.mercadopago.com.co/developers/es/d
 
 la url del webhook(Endpoint en el que recibiremos la confiramción del pago) la podremos en nuestra cuenta de mercado pago(A investiger(¿Se puede poner en la creación de la preferencia? ¿Qué implicaciones tendría?))
 */
+
+
+
+
+/*
+//Documentación webhooks: https://www.mercadopago.com.co/developers/es/docs/checkout-pro/additional-content/your-integrations/notifications/webhooks#editor_8
+// Chequear
+// Firma ; Dato del pago + Secret Key (mia) = hace hash de todo 
+// El hash calculado y el hash recibido deben ser iguales 
+// hash recibido y encontrado es lo mismo, el recibido lo genera mercado pago 
+// trabajar con la nueva version de notificacion de mp (webhook data.ip)
+*/
+
 
 func (s *payService) ProcessWebhook(ctx context.Context, dataID, xRequestId, xSignature, secret string) error {
     fmt.Printf("Iniciando ProcessWebhook con:\n"+
@@ -150,17 +184,7 @@ func (s *payService) ProcessWebhook(ctx context.Context, dataID, xRequestId, xSi
 }
 
 
-
-
-
-
-
-
-
-
-
-
-func (s *payService) CreatePreference() (*preference.Response, error) {
+func (s *payService) CreatePreference(ctx context.Context, pay *models.Pay) (*preference.Response, error) {
 	fmt.Println("Iniciando CreatePreference")
 
 	// Configurar credenciales de Mercado Pago
@@ -174,22 +198,24 @@ func (s *payService) CreatePreference() (*preference.Response, error) {
 	client := preference.NewClient(cfg)
 	fmt.Println("Cliente de preferencia creado")
 
+	
+
 	request := preference.Request{
 		Items: []preference.ItemRequest{
 			{
-				Title:     "My product",
+				Title:     "La Duquesa",
 				Quantity:  1,
-				UnitPrice: 7000,
+				UnitPrice: pay.TotalPaid,
 			},
 		},
 		
 		   BackURLs: &preference.BackURLsRequest{
-		       Success: "https://youtube.com",
+		       Success: "http://localhost:5173/reporte-pedido",
 		       Failure: "http://your-failure-url.com",
 		       Pending: "http://your-pending-url.com",
 		   },
 		
-		NotificationURL: "https://2c8818ff533513b7028ffb54902ec104.serveo.net/mspayp/pay/handleWebhook",
+		NotificationURL: "https://attended-remote-registry-amend.trycloudflare.com/mspayp/pay/handleWebhook",
 
 	}
 	fmt.Printf("Request creado: %+v\n", request)
@@ -204,3 +230,10 @@ func (s *payService) CreatePreference() (*preference.Response, error) {
 
 	return resource, nil
 }
+
+
+
+func (s *payService) GetPayByUserID(userID string) ([]models.Pay, error) {
+    return s.repo.GetPayByUserID(userID)
+}
+

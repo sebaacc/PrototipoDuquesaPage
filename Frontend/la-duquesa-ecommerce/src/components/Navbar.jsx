@@ -12,11 +12,13 @@ import { CiShoppingCart } from 'react-icons/ci'
 import { GrPowerShutdown } from 'react-icons/gr'
 import axios from 'axios'
 import endpoints from '../utils/endpoints'
+import { FiEdit } from 'react-icons/fi'
+import { BiPurchaseTag } from 'react-icons/bi'
 // import { icon } from '@fortawesome/fontawesome-svg-core'
 
 // import shopCar from '../img/cart-large-minimalistic-svgrepo-com.png'
 
-function Navbar() {
+function Navbar () {
   const [nav, setNav] = useState(false)
   const user = JSON.parse(localStorage.getItem('user'))
   const userType = user?.realm_access?.roles?.includes('ADMIN') ?? false
@@ -37,7 +39,7 @@ function Navbar() {
 
   useEffect(() => {
     const fetchData = async () => {
-        if (user) {
+      if (user) {
         const userId = JSON.parse(localStorage.getItem('user')).sub
         const token = localStorage.getItem('accessToken')
 
@@ -88,6 +90,16 @@ function Navbar() {
       text: 'Reporte de producto',
       route: '/reporte-producto'
     },
+    {
+      icon: <FiEdit size={25} className="mr-4" />,
+      text: 'Editar Perfil',
+      route: '/editar-perfil'
+    },
+    {
+      icon: <BiPurchaseTag size={25} className="mr-4" />,
+      text: 'Pedidos',
+      route: '/reporte-pedido'
+    },
     /* { icon: <MdHelp size={25} className="mr-4" />, text: 'Ayuda' }, */
     {
       icon: <GrPowerShutdown size={25} className="mr-4" />,
@@ -110,14 +122,14 @@ function Navbar() {
 
         {navMobile
           ? (
-            <div
-              className="bg-black/80 fixed w-full h-screen z-10 top-0 left-0"
-              onClick={() => setNavMobile(!navMobile)}
-            ></div>
-          )
+          <div
+            className="bg-black/80 fixed w-full h-screen z-10 top-0 left-0"
+            onClick={() => setNavMobile(!navMobile)}
+          ></div>
+            )
           : (
-            ''
-          )}
+              ''
+            )}
 
         <div
           className={
@@ -164,36 +176,36 @@ function Navbar() {
 
       {logedOut
         ? (
-          <Link to={'/'} className="flex justify-between">
-            <img
-              className="size-28 mr-1 relative md:left-0 lg:left-0"
-              src={logo}
-              alt=""
-            />
-          </Link>
-        )
+        <Link to={'/'} className="flex justify-between">
+          <img
+            className="size-28 mr-1 relative md:left-0 lg:left-0"
+            src={logo}
+            alt=""
+          />
+        </Link>
+          )
         : (
-          <article className="flex justify-between items-center">
-            <img
-              className="size-7 mr-1 left-7 md:left-0 lg:left-0"
-              src={ubication}
-              alt=""
-            />
-            <p className="mt-1 flex flex-col md:flex-row text-center">
-              <span className="font-bold mr-1 text-sm capitalize">
-                {userFound && userFound.location_details
-                  ? (
+        <article className="flex justify-between items-center">
+          <img
+            className="size-7 mr-1 left-7 md:left-0 lg:left-0"
+            src={ubication}
+            alt=""
+          />
+          <p className="mt-1 flex flex-col md:flex-row text-center">
+            <span className="font-bold mr-1 text-sm capitalize">
+              {userFound && userFound.location_details
+                ? (
                     userFound.location_details
                   )
-                  : (
-                    <>
-                      Configura tu dirección <br /> para recibir pedidos
-                    </>
+                : (
+                <>
+                  Configura tu dirección <br /> para recibir pedidos
+                </>
                   )}
-              </span>
-            </p>
-          </article>
-        )}
+            </span>
+          </p>
+        </article>
+          )}
 
       <article className="hidden sm:hidden md:hidden lg:block xl:block 2xl:block mt-1">
         <ul className="flex text-black font-semibold h-full items-center">
@@ -218,37 +230,37 @@ function Navbar() {
       <div className="flex items-center">
         {logedOut
           ? (
-            <div className="flex items-center">
-              <Link to={'/login'}>
-                <button className="bg-[#BD6292] text-white p-2 rounded">
-                  Ingresar
-                </button>
-              </Link>
-            </div>
-          )
+          <div className="flex items-center">
+            <Link to={'/login'}>
+              <button className="bg-[#BD6292] text-white p-2 rounded">
+                Ingresar
+              </button>
+            </Link>
+          </div>
+            )
           : (
-            <div className="flex items-center">
-              <article>
-                <img
-                  onClick={() => setNav(!nav)}
-                  className="size-16 cursor-pointer"
-                  src={profile}
-                  alt="Perfil"
-                />
-              </article>
-            </div>
-          )}
+          <div className="flex items-center">
+            <article>
+              <img
+                onClick={() => setNav(!nav)}
+                className="size-16 cursor-pointer"
+                src={profile}
+                alt="Perfil"
+              />
+            </article>
+          </div>
+            )}
 
         {nav
           ? (
-            <div
-              className="bg-black/80 fixed w-full h-screen z-10 top-0 left-0"
-              onClick={() => setNav(!nav)}
-            ></div>
-          )
+          <div
+            className="bg-black/80 fixed w-full h-screen z-10 top-0 left-0"
+            onClick={() => setNav(!nav)}
+          ></div>
+            )
           : (
-            ''
-          )}
+              ''
+            )}
 
         <div
           className={
@@ -277,25 +289,25 @@ function Navbar() {
                     <div key={index} className="py-4">
                       {route === '/'
                         ? (
-                          <Link to={route}>
-                            <li
-                              onClick={() => {
-                                localStorage.clear()
-                                window.location.reload()
-                              }}
-                              className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300"
-                            >
-                              {icon} {text}
-                            </li>
-                          </Link>
-                        )
+                        <Link to={route}>
+                          <li
+                            onClick={() => {
+                              localStorage.clear()
+                              window.location.reload()
+                            }}
+                            className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300"
+                          >
+                            {icon} {text}
+                          </li>
+                        </Link>
+                          )
                         : (
-                          <Link to={route}>
-                            <li className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300">
-                              {icon} {text}
-                            </li>
-                          </Link>
-                        )}
+                        <Link to={route}>
+                          <li className="text-xl flex cursor-pointer w-[100%] rounded-full mx-auto p-2 hover:text-white hover:bg-[#8B7BB1] transition duration-300">
+                            {icon} {text}
+                          </li>
+                        </Link>
+                          )}
                     </div>
                   )
                 )

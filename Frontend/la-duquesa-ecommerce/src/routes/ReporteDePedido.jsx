@@ -31,7 +31,8 @@ const pedidosList = [
 ]
 
 function ReporteDePedido () {
-  const [pedidos, setPedido] = useState(pedidosList)
+  const [pedidos, setPedidos] = useState([])
+  const userId = JSON.parse(localStorage.getItem("user")).sub
 
   useEffect(() => {
     fetchData()
@@ -46,16 +47,16 @@ function ReporteDePedido () {
       }
 
       const response = await axios.get(
-        endpoints.getMostAddedProducts + '/15',
+        endpoints.getPayments + "/" + userId,
         config
       )
 
       if (response.status === 200) {
         console.log(response.data)
-        setPedido(response.data)
+        setPedidos(response.data)
       }
     } catch (error) {
-      console.error('Error updating user:', error)
+      console.error('Error getting payments:', error)
     }
   }
 

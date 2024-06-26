@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { priceFormatter } from '../utils/PriceFormatter'
 import axios from 'axios'
 import endpoints from '../utils/endpoints'
+import { shortenUrl } from '../utils/shortenUrl'
 
 function CardCarrito ({ producto, setProductos }) {
   const { name, imageURLs, price, amount } = producto
@@ -80,7 +81,7 @@ function CardCarrito ({ producto, setProductos }) {
       <div className="relative w-11/12 flex m-auto mt-5 mb-5 border-2 border-[#D1D1D1] rounded-xl max-h-35" style={{ height: '250px' }}>
         <img
           className="w-2/4 h-full rounded-l-xl object-cover"
-          src={imageURLs[0]}
+          src={shortenUrl(imageURLs[0])}
           alt={name}
         />
         <span className="w-2/4 bg-[#D9D9D9] rounded-r-xl p-3 flex flex-col justify-center max-md:items-start lg:items-center">

@@ -3,17 +3,29 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import endpoints from '../utils/endpoints'
 import { data } from 'autoprefixer'
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
+
 
 const PaymentForm = () => {
   const [productos, setProductos] = useState([])
+  const [productosToPay, setProductosToPay] = useState([])
   const [user, setUser] = useState()
+  const [totalPrice, setTotalPrice] = useState(0)
   const token = localStorage.getItem('accessToken')
   const userId = JSON.parse(localStorage.getItem('user')).sub
+  const [preferenceId, setPreferenceId] = useState(null);
 
   useEffect(() => {
     fetchData()
     getUser()
+    initMercadoPago("APP_USR-77d602c0-2bb3-4d97-aa9f-36b7b8882c90");
   }, [])
+
+  useEffect(() => {
+    handleSubmitPayment()
+  }, [productos])
+
+
 
   const fetchData = async () => {
     const config = {
@@ -28,6 +40,14 @@ const PaymentForm = () => {
       console.log(response.data)
 
       if (response.status === 200) {
+
+        let precioTotalASumar = 0
+
+        response.data.forEach((producto) => {
+          precioTotalASumar += (producto.price * producto.amount)
+        })
+        setTotalPrice(precioTotalASumar)
+
         setProductos(response.data)
       }
     } catch (error) {
@@ -55,9 +75,48 @@ const PaymentForm = () => {
     }
   }
 
-  function addressChange (value) {
+  function addressChange(value) {
     setUser({ ...user, location_details: value })
   }
+
+
+  const handleSubmitPayment = async () => {
+
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+
+    const productsToPayArray = []
+    productos.forEach((producto) => {
+      productsToPayArray.push({
+        idproduct: producto.id,
+        numberofunits: producto.amount,
+        price: producto.price
+      })
+    })
+
+    const data = {
+      iduser: userId,
+      paymentMethod: "Mercado pago",
+      address: user.location_details,
+      allOrders: productsToPayArray
+    }
+    try {
+      const response = await axios.post(
+        `${endpoints.createPayment}`,
+        data,
+        config
+      )
+
+      if (response.status === 200) {
+        console.log(response.data)
+        setPreferenceId(response.data.id)
+      }
+    } catch (error) {
+      console.error('Error updating user:', error)
+    }
+  }
+
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -152,10 +211,11 @@ const PaymentForm = () => {
               >
                 Total
               </label>
-              <h3>$100,00</h3>
+              <h3>{totalPrice && totalPrice.toLocaleString()}</h3>
             </div>
           </div>
           <div className="flex items-center p-6">
+            {/*
             <button
               className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm border border-gray-900 font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
               type="submit"
@@ -163,6 +223,10 @@ const PaymentForm = () => {
             >
               Pay Now
             </button>
+            */}
+            {preferenceId && (
+              <Wallet initialization={{ preferenceId }} />
+            )}
           </div>
         </div>
       </div>
