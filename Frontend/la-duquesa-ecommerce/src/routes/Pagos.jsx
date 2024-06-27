@@ -39,6 +39,7 @@ const PaymentForm = () => {
       console.log(response.data)
 
       if (response.status === 200) {
+        handleSubmitPayment()
         let precioTotalASumar = 0
 
         response.data.forEach((producto) => {
